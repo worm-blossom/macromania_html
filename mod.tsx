@@ -41,7 +41,7 @@ export type AriaProps = {
    * Indicates the current "checked" state of checkboxes, radio buttons, and other widgets.
    * @see aria-pressed @see aria-selected.
    */
-  "aria-checked"?: boolean | "false" | "mixed" | "true" | undefined;
+  "aria-checked"?: boolean | "mixed" | undefined;
   /**
    * Defines the total number of columns in a table, grid, or treegrid.
    * @see aria-colindex.
@@ -70,8 +70,6 @@ export type AriaProps = {
   /** Indicates the element that represents the current item within a container or set of related elements. */
   "aria-current"?:
     | boolean
-    | "false"
-    | "true"
     | "page"
     | "step"
     | "location"
@@ -130,8 +128,6 @@ export type AriaProps = {
   /** Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element. */
   "aria-haspopup"?:
     | boolean
-    | "false"
-    | "true"
     | "menu"
     | "listbox"
     | "tree"
@@ -149,8 +145,6 @@ export type AriaProps = {
    */
   "aria-invalid"?:
     | boolean
-    | "false"
-    | "true"
     | "grammar"
     | "spelling"
     | undefined;
@@ -198,7 +192,7 @@ export type AriaProps = {
    * Indicates the current "pressed" state of toggle buttons.
    * @see aria-checked @see aria-selected.
    */
-  "aria-pressed"?: boolean | "false" | "mixed" | "true" | undefined;
+  "aria-pressed"?: boolean | "mixed" | undefined;
   /**
    * Indicates that the element is not editable, but is otherwise operable.
    * @see aria-disabled.
@@ -341,65 +335,56 @@ export type AriaRole =
   | "treegrid"
   | "treeitem";
 
-export type HtmlProps = AriaProps & {
+export type TagProps = AriaProps & {
   // Standard HTML Attributes
-  accessKey?: Expression | undefined;
-  autoFocus?: boolean | undefined;
-  className?: Expression | undefined;
-  contentEditable?: boolean | "inherit" | "plaintext-only" | undefined;
-  contextMenu?: Expression | undefined;
+  accesskey?: Expression | undefined;
+  autofocus?: boolean | undefined;
+  clazz?: Expression | undefined;
+  contenteditable?: boolean | "inherit" | "plaintext-only" | undefined;
+  contextmenu?: Expression | undefined;
   dir?: Expression | undefined;
   draggable?: boolean | undefined;
+  enterkeyhint?:
+    | "enter"
+    | "done"
+    | "go"
+    | "next"
+    | "previous"
+    | "search"
+    | "send"
+    | undefined;
+  exportparts?: Expression | undefined;
   hidden?: boolean | undefined;
   id?: Expression | undefined;
+  inert?: boolean | undefined;
   lang?: Expression | undefined;
   nonce?: Expression | undefined;
+  part?: Expression | undefined;
+  popover?: "auto" | "manual" | null;
   slot?: Expression | undefined;
   spellCheck?: boolean | undefined;
   style?: CssProperties | undefined;
   tabIndex?: number | undefined;
   title?: Expression | undefined;
-  translate?: "yes" | "no" | undefined;
-
-  // Unknown
-  radioGroup?: Expression | undefined; // <command>, <menuitem>
+  translate?: boolean | undefined;
 
   // WAI-ARIA
   role?: AriaRole | undefined;
 
-  // RDFa Attributes
-  about?: Expression | undefined;
-  content?: Expression | undefined;
-  datatype?: Expression | undefined;
-  inlist?: null | undefined;
-  prefix?: Expression | undefined;
-  property?: Expression | undefined;
-  rel?: Expression | undefined;
-  resource?: Expression | undefined;
-  rev?: Expression | undefined;
-  typeof?: Expression | undefined;
-  vocab?: Expression | undefined;
-
   // Non-standard Attributes
-  autoCapitalize?: Expression | undefined;
-  autoCorrect?: Expression | undefined;
-  autoSave?: Expression | undefined;
-  color?: Expression | undefined;
-  itemProp?: Expression | undefined;
-  itemScope?: boolean | undefined;
-  itemType?: Expression | undefined;
-  itemID?: Expression | undefined;
-  itemRef?: Expression | undefined;
-  results?: number | undefined;
-  security?: Expression | undefined;
-  unselectable?: "on" | "off" | undefined;
+  autocapitalize?: Expression | undefined;
+  itemid?: Expression | undefined;
+  itemprop?: Expression | undefined;
+  itemref?: Expression | undefined;
+  itemscope?: boolean | undefined;
+  itemtype?: Expression | undefined;
 
   // Living Standard
   /**
    * Hints at the type of data that might be entered by the user while editing the element or its contents
    * @see {@link https://html.spec.whatwg.org/multipage/interaction.html#input-modalities:-the-inputmode-attribute}
    */
-  inputMode?:
+  inputmode?:
     | "none"
     | "text"
     | "tel"
@@ -416,8 +401,8 @@ export type HtmlProps = AriaProps & {
   is?: Expression | undefined;
 };
 
-export type AProps = HtmlProps & {
-  download?: Expression | null;
+export type AProps = TagProps & {
+  download?: Expression | null | undefined;
   href?: Expression | undefined;
   hrefLang?: Expression | undefined;
   media?: Expression | undefined;
@@ -444,7 +429,7 @@ export type HTMLAttributeReferrerPolicy =
   | "strict-origin-when-cross-origin"
   | "unsafe-url";
 
-export type MediaHtmlProps = HtmlProps & {
+export type MediaHtmlProps = TagProps & {
   autoPlay?: boolean | undefined;
   controls?: boolean | undefined;
   controlsList?: Expression | undefined;
@@ -456,14 +441,14 @@ export type MediaHtmlProps = HtmlProps & {
   preload?: Expression | undefined;
   src?: Expression | undefined;
 };
-export type BaseProps = HtmlProps & {
+export type BaseProps = TagProps & {
   href?: Expression | undefined;
   target?: Expression | undefined;
 };
-export type BlockquoteProps = HtmlProps & {
+export type BlockquoteProps = TagProps & {
   cite?: Expression | undefined;
 };
-export type ButtonProps = HtmlProps & {
+export type ButtonProps = TagProps & {
   disabled?: boolean | undefined;
   form?: Expression | undefined;
   formAction?:
@@ -477,43 +462,43 @@ export type ButtonProps = HtmlProps & {
   type?: "submit" | "reset" | "button" | undefined;
   value?: Expression | readonly Expression[] | number | undefined;
 };
-export type CanvasProps = HtmlProps & {
+export type CanvasProps = TagProps & {
   height?: number | Expression | undefined;
   width?: number | Expression | undefined;
 };
-export type ColProps = HtmlProps & {
+export type ColProps = TagProps & {
   span?: number | undefined;
   width?: number | Expression | undefined;
 };
-export type ColgroupProps = HtmlProps & {
+export type ColgroupProps = TagProps & {
   span?: number | undefined;
 };
-export type DataProps = HtmlProps & {
+export type DataProps = TagProps & {
   value?: Expression | readonly Expression[] | number | undefined;
 };
-export type DelProps = HtmlProps & {
+export type DelProps = TagProps & {
   cite?: Expression | undefined;
   dateTime?: Expression | undefined;
 };
-export type DetailsProps = HtmlProps & {
+export type DetailsProps = TagProps & {
   open?: boolean | undefined;
   name?: Expression | undefined;
 };
-export type DialogProps = HtmlProps & {
+export type DialogProps = TagProps & {
   open?: boolean | undefined;
 };
-export type EmbedProps = HtmlProps & {
+export type EmbedProps = TagProps & {
   height?: number | Expression | undefined;
   src?: Expression | undefined;
   type?: Expression | undefined;
   width?: number | Expression | undefined;
 };
-export type FieldsetProps = HtmlProps & {
+export type FieldsetProps = TagProps & {
   disabled?: boolean | undefined;
   form?: Expression | undefined;
   name?: Expression | undefined;
 };
-export type FormProps = HtmlProps & {
+export type FormProps = TagProps & {
   acceptCharset?: Expression | undefined;
   action?:
     | Expression
@@ -525,10 +510,10 @@ export type FormProps = HtmlProps & {
   noValidate?: boolean | undefined;
   target?: Expression | undefined;
 };
-export type HtmlHtmlProps = HtmlProps & {
+export type HtmlProps = TagProps & {
   manifest?: Expression | undefined;
 };
-export type IframeProps = HtmlProps & {
+export type IframeProps = TagProps & {
   allow?: Expression | undefined;
   allowFullScreen?: boolean | undefined;
   allowTransparency?: boolean | undefined;
@@ -550,7 +535,7 @@ export type IframeProps = HtmlProps & {
   srcDoc?: Expression | undefined;
   width?: number | Expression | undefined;
 };
-export type ImgProps = HtmlProps & {
+export type ImgProps = TagProps & {
   alt?: Expression | undefined;
   crossOrigin?: CrossOrigin;
   decoding?: "async" | "auto" | "sync" | undefined;
@@ -563,7 +548,7 @@ export type ImgProps = HtmlProps & {
   useMap?: Expression | undefined;
   width?: number | Expression | undefined;
 };
-export type InputProps = HtmlProps & {
+export type InputProps = TagProps & {
   accept?: Expression | undefined;
   alt?: Expression | undefined;
   autoComplete?: Expression | undefined;
@@ -631,11 +616,11 @@ export type HTMLInputTypeAttribute =
   | "url"
   | "week";
 
-export type InsProps = HtmlProps & {
+export type InsProps = TagProps & {
   cite?: Expression | undefined;
   dateTime?: Expression | undefined;
 };
-export type KeygenProps = HtmlProps & {
+export type KeygenProps = TagProps & {
   challenge?: Expression | undefined;
   disabled?: boolean | undefined;
   form?: Expression | undefined;
@@ -643,14 +628,14 @@ export type KeygenProps = HtmlProps & {
   keyParams?: Expression | undefined;
   name?: Expression | undefined;
 };
-export type LabelProps = HtmlProps & {
+export type LabelProps = TagProps & {
   form?: Expression | undefined;
   htmlFor?: Expression | undefined;
 };
-export type LiProps = HtmlProps & {
+export type LiProps = TagProps & {
   value?: Expression | readonly Expression[] | number | undefined;
 };
-export type LinkProps = HtmlProps & {
+export type LinkProps = TagProps & {
   as?: Expression | undefined;
   crossOrigin?: CrossOrigin;
   fetchPriority?: "high" | "low" | "auto";
@@ -665,20 +650,20 @@ export type LinkProps = HtmlProps & {
   type?: Expression | undefined;
   charSet?: Expression | undefined;
 };
-export type MapProps = HtmlProps & {
+export type MapProps = TagProps & {
   name?: Expression | undefined;
 };
-export type MenuProps = HtmlProps & {
+export type MenuProps = TagProps & {
   type?: Expression | undefined;
 };
-export type MetaProps = HtmlProps & {
+export type MetaProps = TagProps & {
   charSet?: Expression | undefined;
   content?: Expression | undefined;
   httpEquiv?: Expression | undefined;
   media?: Expression | undefined;
   name?: Expression | undefined;
 };
-export type MeterProps = HtmlProps & {
+export type MeterProps = TagProps & {
   form?: Expression | undefined;
   high?: number | undefined;
   low?: number | undefined;
@@ -687,7 +672,7 @@ export type MeterProps = HtmlProps & {
   optimum?: number | undefined;
   value?: Expression | readonly Expression[] | number | undefined;
 };
-export type ObjectProps = HtmlProps & {
+export type ObjectProps = TagProps & {
   classID?: Expression | undefined;
   data?: Expression | undefined;
   form?: Expression | undefined;
@@ -698,41 +683,41 @@ export type ObjectProps = HtmlProps & {
   width?: number | Expression | undefined;
   wmode?: Expression | undefined;
 };
-export type OlProps = HtmlProps & {
+export type OlProps = TagProps & {
   reversed?: boolean | undefined;
   start?: number | undefined;
   type?: "1" | "a" | "A" | "i" | "I" | undefined;
 };
-export type OptgroupProps = HtmlProps & {
+export type OptgroupProps = TagProps & {
   disabled?: boolean | undefined;
   label?: Expression | undefined;
 };
-export type OptionProps = HtmlProps & {
+export type OptionProps = TagProps & {
   disabled?: boolean | undefined;
   label?: Expression | undefined;
   selected?: boolean | undefined;
   value?: Expression | readonly Expression[] | number | undefined;
 };
-export type OutputProps = HtmlProps & {
+export type OutputProps = TagProps & {
   form?: Expression | undefined;
   htmlFor?: Expression | undefined;
   name?: Expression | undefined;
 };
-export type ParamProps = HtmlProps & {
+export type ParamProps = TagProps & {
   name?: Expression | undefined;
   value?: Expression | readonly Expression[] | number | undefined;
 };
-export type ProgressProps = HtmlProps & {
+export type ProgressProps = TagProps & {
   max?: number | Expression | undefined;
   value?: Expression | readonly Expression[] | number | undefined;
 };
-export type QProps = HtmlProps & {
+export type QProps = TagProps & {
   cite?: Expression | undefined;
 };
-export type SlotProps = HtmlProps & {
+export type SlotProps = TagProps & {
   name?: Expression | undefined;
 };
-export type ScriptProps = HtmlProps & {
+export type ScriptProps = TagProps & {
   async?: boolean | undefined;
   /** @deprecated */
   charSet?: Expression | undefined;
@@ -744,7 +729,7 @@ export type ScriptProps = HtmlProps & {
   src?: Expression | undefined;
   type?: Expression | undefined;
 };
-export type SelectProps = HtmlProps & {
+export type SelectProps = TagProps & {
   autoComplete?: Expression | undefined;
   disabled?: boolean | undefined;
   form?: Expression | undefined;
@@ -754,7 +739,7 @@ export type SelectProps = HtmlProps & {
   size?: number | undefined;
   value?: Expression | readonly Expression[] | number | undefined;
 };
-export type SourceProps = HtmlProps & {
+export type SourceProps = TagProps & {
   height?: number | Expression | undefined;
   media?: Expression | undefined;
   sizes?: Expression | undefined;
@@ -763,12 +748,12 @@ export type SourceProps = HtmlProps & {
   type?: Expression | undefined;
   width?: number | Expression | undefined;
 };
-export type StyleProps = HtmlProps & {
+export type StyleProps = TagProps & {
   media?: Expression | undefined;
   scoped?: boolean | undefined;
   type?: Expression | undefined;
 };
-export type TableProps = HtmlProps & {
+export type TableProps = TagProps & {
   align?: "left" | "center" | "right" | undefined;
   bgcolor?: Expression | undefined;
   border?: number | undefined;
@@ -779,7 +764,7 @@ export type TableProps = HtmlProps & {
   summary?: Expression | undefined;
   width?: number | Expression | undefined;
 };
-export type TdProps = HtmlProps & {
+export type TdProps = TagProps & {
   align?: "left" | "center" | "right" | "justify" | "char" | undefined;
   colSpan?: number | undefined;
   headers?: Expression | undefined;
@@ -790,7 +775,7 @@ export type TdProps = HtmlProps & {
   width?: number | Expression | undefined;
   valign?: "top" | "middle" | "bottom" | "baseline" | undefined;
 };
-export type TextareaProps = HtmlProps & {
+export type TextareaProps = TagProps & {
   autoComplete?: Expression | undefined;
   cols?: number | undefined;
   dirName?: Expression | undefined;
@@ -806,7 +791,7 @@ export type TextareaProps = HtmlProps & {
   value?: Expression | readonly Expression[] | number | undefined;
   wrap?: Expression | undefined;
 };
-export type ThProps = HtmlProps & {
+export type ThProps = TagProps & {
   align?: "left" | "center" | "right" | "justify" | "char" | undefined;
   colSpan?: number | undefined;
   headers?: Expression | undefined;
@@ -814,17 +799,17 @@ export type ThProps = HtmlProps & {
   scope?: Expression | undefined;
   abbr?: Expression | undefined;
 };
-export type TimeProps = HtmlProps & {
+export type TimeProps = TagProps & {
   dateTime?: Expression | undefined;
 };
-export type TrackProps = HtmlProps & {
+export type TrackProps = TagProps & {
   default?: boolean | undefined;
   kind?: Expression | undefined;
   label?: Expression | undefined;
   src?: Expression | undefined;
   srcLang?: Expression | undefined;
 };
-export type VideoProps = HtmlProps & {
+export type VideoProps = TagProps & {
   height?: number | Expression | undefined;
   playsInline?: boolean | undefined;
   poster?: Expression | undefined;
@@ -836,7 +821,7 @@ export type VideoProps = HtmlProps & {
 export type SvgProps = AriaProps & {
   // Attributes which also defined in HTMLAttributes
   // See comment in SVGDOMPropertyConfig.js
-  className?: Expression | undefined;
+  clazz?: Expression | undefined;
   color?: Expression | undefined;
   height?: number | Expression | undefined;
   id?: Expression | undefined;
@@ -1153,5 +1138,197 @@ function EscapeHtml({ children }: { children?: Expressions }): Expression {
     >
       {expressions(children)}
     </map>
+  );
+}
+
+type RenderList = [
+  string, /* tag name */
+  (tag: string, value: any) => Expression | null,
+][];
+
+function renderExpression(tag: string, value: any): Expression | null {
+  return <>{tag}="{<EscapeHtml>{value}</EscapeHtml>}"</>;
+}
+
+function renderBoolean(tag: string, value: any): Expression | null {
+  return (value as boolean) ? tag : null;
+}
+
+function renderNumber(tag: string, value: any): Expression | null {
+  return <>{tag}="{`${value}`}"</>;
+}
+
+function renderEnum(tag: string, value: any): Expression | null {
+  return <>{tag}="{`${value}`}"</>;
+}
+
+function renderBooleanOrEnum(tag: string, value: any): Expression | null {
+  if (typeof value === "boolean") {
+    return renderBoolean(tag, value);
+  } else {
+    return renderEnum(tag, value);
+  }
+}
+
+function renderYesNo(tag: string, value: any): Expression | null {
+  return value === true ? <>{tag}="yes"</> : <>{tag}="no"</>;
+}
+
+function RenderRenderList(
+  { attrs, list }: { attrs: Record<PropertyKey, any>; list: RenderList },
+): Expression {
+  const result: Expression[] = [];
+
+  for (const [attrName, renderFun] of list) {
+    if (attrs[attrName] != undefined) {
+      const rendered = renderFun(attrName, attrs[attrName]);
+      if (rendered !== null) {
+        result.push(" ");
+        result.push(rendered);
+      }
+    }
+  }
+
+  return result;
+}
+
+// "void element" is the official name for "self-closing tags".
+function RenderVoidElement(
+  { name, attrs, list }: {
+    name: string;
+    attrs: Record<PropertyKey, any>;
+    list: RenderList;
+  },
+): Expression {
+  return (
+    <>
+      {"<"}
+      {name}
+      <RenderRenderList attrs={attrs} list={list} /> {"/>"}
+    </>
+  );
+}
+
+function RenderNonVoidElement(
+  { name, attrs, list, children }: {
+    name: string;
+    attrs: Record<PropertyKey, any>;
+    list: RenderList;
+    children: Expressions;
+  },
+): Expression {
+  return (
+    <>
+      {"<"}
+      {name}
+      <RenderRenderList attrs={attrs} list={list} />
+      {">"}
+      <EscapeHtml>{expressions(children)}</EscapeHtml>
+      {"</"}
+      {name}
+      {">"}
+    </>
+  );
+}
+
+const ariaList: RenderList = [
+  ["aria-activedescendant", renderExpression],
+  ["aria-atomic", renderBoolean],
+  ["aria-autocomplete", renderEnum],
+  ["aria-braillelabel", renderExpression],
+  ["aria-brailleroledescription", renderExpression],
+  ["aria-busy", renderBoolean],
+  ["aria-checked", renderBooleanOrEnum],
+  ["aria-colcount", renderNumber],
+  ["aria-colindex", renderNumber],
+  ["aria-colindextext", renderExpression],
+  ["aria-colspan", renderNumber],
+  ["aria-controls", renderExpression],
+  ["aria-current", renderBooleanOrEnum],
+  ["aria-describedby", renderExpression],
+  ["aria-description", renderExpression],
+  ["aria-details", renderExpression],
+  ["aria-disabled", renderBoolean],
+  ["aria-dropeffect", renderEnum],
+  ["aria-errormessage", renderExpression],
+  ["aria-expanded", renderBoolean],
+  ["aria-flowto", renderExpression],
+  ["aria-grabbed", renderBoolean],
+  ["aria-haspopup", renderBooleanOrEnum],
+  ["aria-hidden", renderBoolean],
+  ["aria-invalid", renderBooleanOrEnum],
+  ["aria-keyshortcuts", renderExpression],
+  ["aria-label", renderExpression],
+  ["aria-labelledby", renderExpression],
+  ["aria-level", renderNumber],
+  ["aria-live", renderEnum],
+  ["aria-modal", renderBoolean],
+  ["aria-multiline", renderBoolean],
+  ["aria-multiselectable", renderBoolean],
+  ["aria-orientation", renderEnum],
+  ["aria-owns", renderExpression],
+  ["aria-placeholder", renderExpression],
+  ["aria-posinset", renderNumber],
+  ["aria-pressed", renderBooleanOrEnum],
+  ["aria-readonly", renderBoolean],
+  ["aria-relevant", renderEnum],
+  ["aria-required", renderBoolean],
+  ["aria-roledescription", renderExpression],
+  ["aria-rowcount", renderNumber],
+  ["aria-rowindex", renderNumber],
+  ["aria-rowindextext", renderExpression],
+  ["aria-rowspan", renderNumber],
+  ["aria-selected", renderBoolean],
+  ["aria-setsize", renderNumber],
+  ["aria-sort", renderEnum],
+  ["aria-valuemax", renderNumber],
+  ["aria-valuemin", renderNumber],
+  ["aria-valuenow", renderNumber],
+  ["aria-valuetext", renderExpression],
+];
+
+const tagList: RenderList = [
+  ...ariaList,
+  ["about", renderExpression],
+  ["accesskey", renderExpression],
+  ["autocapitalize", renderExpression],
+  ["autofocus", renderBoolean],
+  ["clazz", renderExpression],
+  ["contenteditable", renderBooleanOrEnum],
+  ["contextmenu", renderExpression],
+  ["dir", renderExpression],
+  ["draggable", renderBoolean],
+  ["enterkeyhint", renderEnum],
+  ["exportparts", renderExpression],
+  ["hidden", renderBoolean],
+  ["id", renderExpression],
+  ["inert", renderBoolean],
+  ["inputmode", renderEnum],
+  ["is", renderExpression],
+  ["itemid", renderExpression],
+  ["itemprop", renderExpression],
+  ["itemref", renderExpression],
+  ["itemscope", renderBoolean],
+  ["itemtype", renderExpression],
+  ["lang", renderExpression],
+  ["nonce", renderExpression],
+  ["part", renderExpression],
+  ["popover", renderEnum],
+  ["role", renderEnum],
+  ["slot", renderExpression],
+  ["spellCheck", renderBoolean],
+  ["style", renderExpression],
+  ["translate", renderYesNo],
+];
+
+export function Br(props: TagProps): Expression {
+  return <RenderVoidElement name="br" attrs={props} list={tagList} />;
+}
+
+export function Div(props: TagProps & { children?: Expressions }): Expression {
+  return (
+    <RenderNonVoidElement name="div" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
   );
 }
