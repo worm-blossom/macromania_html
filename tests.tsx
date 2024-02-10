@@ -1,4 +1,21 @@
-import { Br, Div } from "./mod.tsx";
+import {
+  A,
+  Abbr,
+  Address,
+  Area,
+  Article,
+  Aside,
+  Audio,
+  B,
+  Base,
+  Bdi,
+  Bdo,
+  Blockquote,
+  Body,
+  Br,
+  Div,
+  TagProps,
+} from "./mod.tsx";
 import { Context, Expression, Expressions, expressions } from "./deps.ts";
 import { assertEquals } from "./devDeps.ts";
 
@@ -211,9 +228,179 @@ Deno.test("global attributes", () => {
   );
 });
 
+Deno.test("a", () => {
+  (() => {
+    const ctx = new Context();
+    const got = ctx.evaluate(
+      <A
+        download=""
+        href="bla"
+        hreflang="en-gb"
+        ping="a b"
+        referrerpolicy="origin"
+        rel="z"
+        target="_self"
+        type="txt"
+      >
+      </A>,
+    );
+    assertEquals(
+      got,
+      `<a download="" href="bla" hreflang="en-gb" ping="a b" referrerpolicy="origin" rel="z" target="_self" type="txt"></a>`,
+    );
+  })();
+
+  (() => {
+    const ctx = new Context();
+    const got = ctx.evaluate(<A download="n"></A>);
+    assertEquals(got, `<a download="n"></a>`);
+  })();
+
+  (() => {
+    const ctx = new Context();
+    const got = ctx.evaluate(<A></A>);
+    assertEquals(got, `<a></a>`);
+  })();
+});
+
+Deno.test("abbr", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<Abbr></Abbr>);
+  assertEquals(got, `<abbr></abbr>`);
+});
+
+Deno.test("address", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<Address></Address>);
+  assertEquals(got, `<address></address>`);
+});
+
+Deno.test("area", () => {
+  (() => {
+    const ctx = new Context();
+    const got = ctx.evaluate(
+      <Area
+        alt="f"
+        coords="g"
+        download=""
+        href="bla"
+        ping="a b"
+        referrerpolicy="origin"
+        rel="z"
+        shape="default"
+        target="_self"
+      >
+      </Area>,
+    );
+    assertEquals(
+      got,
+      `<area alt="f" coords="g" download="" href="bla" ping="a b" referrerpolicy="origin" rel="z" shape="default" target="_self"></area>`,
+    );
+  })();
+
+  (() => {
+    const ctx = new Context();
+    const got = ctx.evaluate(<Area download="n"></Area>);
+    assertEquals(got, `<area download="n"></area>`);
+  })();
+
+  (() => {
+    const ctx = new Context();
+    const got = ctx.evaluate(<Area></Area>);
+    assertEquals(got, `<area></area>`);
+  })();
+});
+
+Deno.test("address", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<Article></Article>);
+  assertEquals(got, `<article></article>`);
+});
+
+Deno.test("aside", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<Aside></Aside>);
+  assertEquals(got, `<aside></aside>`);
+});
+
+Deno.test("area", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(
+    <Audio
+      autoplay
+      controls
+      controlslist="nodownload"
+      crossorigin="anonymous"
+      loop
+      muted
+      preload="none"
+      src="f"
+    >
+    </Audio>,
+  );
+  assertEquals(
+    got,
+    `<audio autoplay controls controlslist="nodownload" crossorigin="anonymous" loop muted preload="none" src="f"></audio>`,
+  );
+});
+
+Deno.test("b", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<B></B>);
+  assertEquals(got, `<b></b>`);
+});
+
+Deno.test("base", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(
+    <Base
+      href="f"
+      target="_blank"
+    />,
+  );
+  assertEquals(
+    got,
+    `<base href="f" target="_blank" />`,
+  );
+});
+
+Deno.test("bdi", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<Bdi></Bdi>);
+  assertEquals(got, `<bdi></bdi>`);
+});
+
+Deno.test("bdo", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<Bdo></Bdo>);
+  assertEquals(got, `<bdo></bdo>`);
+});
+
+Deno.test("blockquote", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(
+    <Blockquote cite="f"></Blockquote>,
+  );
+  assertEquals(
+    got,
+    `<blockquote cite="f"></blockquote>`,
+  );
+});
+
+Deno.test("body", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<Body></Body>);
+  assertEquals(got, `<body></body>`);
+});
+
+Deno.test("br", () => {
+  const ctx = new Context();
+  const got = ctx.evaluate(<Br />);
+  assertEquals(got, `<br />`);
+});
+
 /*
 TODO
-event handlers: https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes
 custom macros: uls, ols, href, html5
 readme
 clean up expression type in macromania

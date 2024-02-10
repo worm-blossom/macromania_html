@@ -16,7 +16,7 @@ export type CrossOrigin = "anonymous" | "use-credentials" | "" | undefined;
 
 /**
  * All the WAI-ARIA 1.1 attributes from {@link https://www.w3.org/TR/wai-aria-1.1/}
-*/
+ */
 export type AriaProps = {
   /** Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application. */
   "aria-activedescendant"?: Expression | undefined;
@@ -268,7 +268,7 @@ export type AriaProps = {
 // All the WAI-ARIA 1.1 role attribute values from https://www.w3.org/TR/wai-aria-1.1/#role_definitions
 /**
  * ARIA roles provide semantic meaning to content, allowing screen readers and other tools to present and support interaction with an object in a way that is consistent with user expectations of that type of object. ARIA roles can be used to describe elements that don't natively exist in HTML or exist but don't yet have full browser support.
- * 
+ *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles}
  */
 export type AriaRole =
@@ -345,7 +345,7 @@ export type AriaRole =
 /**
  * Global attributes are attributes common to all HTML elements; they can be
  * used on all elements, though they may have no effect on some elements.
- * 
+ *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes}
  */
 export type TagProps = AriaProps & {
@@ -506,7 +506,7 @@ export type TagProps = AriaProps & {
   /**
    * The `itemid` global attribute provides microdata in the form of a unique,
    * global identifier of an item.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemid}
    */
   itemid?: Expression | undefined;
@@ -518,7 +518,7 @@ export type TagProps = AriaProps & {
    * values are either a string or a URL and can be associated with a very wide
    * range of elements including `<audio>`, `<embed>`, `<iframe>`, `<img>`,
    * `<link>`, `<object>`, `<source>`, `<track>`, and `<video>`.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemprop}
    */
   itemprop?: Expression | undefined;
@@ -526,7 +526,7 @@ export type TagProps = AriaProps & {
    * Properties that are not descendants of an element with the `itemscope`
    * attribute can be associated with an item using the global attribute
    * `itemref`.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemref}
    */
   itemref?: Expression | undefined;
@@ -535,7 +535,7 @@ export type TagProps = AriaProps & {
    * associated metadata. Specifying the `itemscope` attribute for an element
    * creates a new item, which results in a number of name-value pairs that are
    * associated with the element.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemscope}
    */
   itemscope?: boolean | undefined;
@@ -543,7 +543,7 @@ export type TagProps = AriaProps & {
    * The global attribute `itemtype` specifies the URL of the vocabulary that
    * will be used to define `itemprop`'s (item properties) in the data
    * structure.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemtype}
    */
   itemtype?: Expression | undefined;
@@ -553,7 +553,7 @@ export type TagProps = AriaProps & {
    * the editable elements should be written in by the user. The attribute
    * contains a single "language tag" in the format defined in
    * {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang}
    */
   lang?: Expression | undefined;
@@ -562,7 +562,7 @@ export type TagProps = AriaProps & {
    * cryptographic nonce ("number used once") which can be used by Content
    * Security Policy to determine whether or not a given fetch will be allowed
    * to proceed for a given element.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce}
    */
   nonce?: Expression | undefined;
@@ -570,14 +570,14 @@ export type TagProps = AriaProps & {
    * The `part` global attribute contains a space-separated list of the part
    * names of the element. Part names allows CSS to select and style specific
    * elements in a shadow tree via the `::part` pseudo-element.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/part}
    */
   part?: Expression | undefined;
   /**
    * The `popover` global attribute is used to designate an element as a
    * popover element.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/popover}
    */
   popover?: "auto" | "manual" | null;
@@ -587,7 +587,7 @@ export type TagProps = AriaProps & {
    * that is consistent with user expectations of that type of object. ARIA
    * roles can be used to describe elements that don't natively exist in HTML
    * or exist but don't yet have full browser support.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles}
    */
   role?: AriaRole | undefined;
@@ -596,14 +596,14 @@ export type TagProps = AriaProps & {
    * an element: An element with a `slot` attribute is assigned to the slot
    * created by the `<slot>` element whose `name` attribute's value matches
    * that `slot` attribute's value.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/slot}
    */
   slot?: Expression | undefined;
   /**
    * The `spellcheck` global attribute is an enumerated attribute that defines
    * whether the element may be checked for spelling errors.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck}
    */
   spellcheck?: boolean | undefined;
@@ -613,7 +613,7 @@ export type TagProps = AriaProps & {
    * defined in a separate file or files. This attribute and the `<style>`
    * element have mainly the purpose of allowing for quick styling, for
    * example for testing purposes.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/style}
    */
   style?: CssProperties | undefined;
@@ -622,14 +622,14 @@ export type TagProps = AriaProps & {
    * focusable, allow or prevent them from being sequentially focusable
    * (usually with the Tab key, hence the name) and determine their relative
    * ordering for sequential focus navigation.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex}
    */
   tabindex?: number | undefined;
   /**
    * The `title` global attribute contains text representing advisory
    * information related to the element it belongs to.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/title}
    */
   title?: Expression | undefined;
@@ -638,21 +638,167 @@ export type TagProps = AriaProps & {
    * to specify whether an element's *translatable attribute* values and its
    * Text node children should be translated when the page is localized, or
    * whether to leave them unchanged.
-   * 
+   *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/translate}
    */
   translate?: boolean | undefined;
 };
 
+/**
+ * Props for the {@linkcode A} macro.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attributes}
+ */
 export type AProps = TagProps & {
-  download?: Expression | null | undefined;
+  /**
+   * Causes the browser to treat the linked URL as a download. Can be used with
+   * or without a filename value.
+   *
+   * - Without a value, the browser will suggest a filename/extension, generated from various sources:
+   *   - The Content-Disposition HTTP header
+   *   - The final segment in the URL path
+   *   - The media type (from the `Content-Type` header, the start of a `data:` URL, or Blob.type for a `blob:` URL)
+   * - `filename`: defining a value suggests it as the filename. `/` and `\` characters are converted to underscores (`_`). Filesystems may forbid other characters in filenames, so browsers will adjust the suggested name if necessary.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download}
+   */
+  download?: Expression | undefined;
+  /**
+   * The URL that the hyperlink points to. Links are not restricted to
+   * HTTP-based URLs — they can use any URL scheme supported by browsers:
+   *
+   * - Sections of a page with document fragments
+   * - Specific text portions with text fragments
+   * - Pieces of media files with media fragments
+   * - Telephone numbers with `tel:` URLs
+   * - Email addresses with `mailto:` URLs
+   * - SMS text messages with `sms:` URLs
+   * - While web browsers may not support other URL schemes, websites can with `registerProtocolHandler()`
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#href}
+   */
   href?: Expression | undefined;
-  hrefLang?: Expression | undefined;
-  media?: Expression | undefined;
+  /**
+   * Hints at the human language of the linked URL. No built-in functionality.
+   * Allowed values are the same as the global `lang` attribute.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#hreflang}
+   */
+  hreflang?: Expression | undefined;
+  /**
+   * A space-separated list of URLs. When the link is followed, the browser
+   * will send `POST` requests with the body PING to the URLs. Typically for
+   * tracking.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#ping}
+   */
   ping?: Expression | undefined;
+  /**
+   * How much of the referrer to send when following the link.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#referrerpolicy}
+   */
+  referrerpolicy?: HTMLAttributeReferrerPolicy | undefined;
+  /**
+   * For anchors containing the `href` attribute, this attribute specifies the relationship of the target object to the link object. The value is a space-separated list of link types. The values and their semantics will be registered by some authority that might have meaning to the document author. The default relationship, if no other is given, is void. Use this attribute only if the `href` attribute is present.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#rel}
+   */
+  rel?: Expression;
+  /**
+   * Where to display the linked URL, as the name for a browsing context (a
+   * tab, window, or `<iframe>`).
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target}
+   */
   target?: HTMLAttributeAnchorTarget | undefined;
+  /**
+   * Hints at the linked URL's format with a MIME type. No built-in functionality.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#type}
+   */
   type?: Expression | undefined;
-  referrerPolicy?: HTMLAttributeReferrerPolicy | undefined;
+};
+
+/**
+ * Props for the {@linkcode Area} macro.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#attributes}
+ */
+export type AreaProps = TagProps & {
+  /**
+   * A text string alternative to display on browsers that do not display images. The text should be phrased so that it presents the user with the same kind of choice as the image would offer when displayed without the alternative text. This attribute is required only if the `href` attribute is used.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#alt}
+   */
+  alt?: Expression | undefined;
+  /**
+   * The `coords` attribute details the coordinates of the `shape` attribute in size, shape, and placement of an `<area>`. This attribute must not be used if `shape` is set to default.
+   *
+   * - `rect`: the value is `x1,y1,x2,y2`. The value specifies the coordinates of the top-left and bottom-right corner of the rectangle. For example, in `<area shape="rect" coords="0,0,253,27" href="#" target="_blank" alt="Mozilla">` the coordinates are `0,0` and `253,27`, indicating the top-left and bottom-right corners of the rectangle, respectively.
+   * - `circle`: the value is `x,y,radius`. Value specifies the coordinates of the circle center and the radius. For example: `<area shape="circle" coords="130,136,60" href="#" target="_blank" alt="MDN">`.
+   * - `poly`: the value is `x1,y1,x2,y2,..,xn,yn`. Value specifies the coordinates of the edges of the polygon. If the first and last coordinate pairs are not the same, the browser will add the last coordinate pair to close the polygon.
+   *
+   * The values are numbers of CSS pixels.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#alt}
+   */
+  coords?: Expression | undefined;
+  /**
+   * This attribute, if present, indicates that the author intends the hyperlink to be used for downloading a resource.
+   *
+   * Causes the browser to treat the linked URL as a download. Can be used with
+   * or without a filename value.
+   *
+   * - Without a value, the browser will suggest a filename/extension, generated from various sources:
+   *   - The Content-Disposition HTTP header
+   *   - The final segment in the URL path
+   *   - The media type (from the `Content-Type` header, the start of a `data:` URL, or Blob.type for a `blob:` URL)
+   * - `filename`: defining a value suggests it as the filename. `/` and `\` characters are converted to underscores (`_`). Filesystems may forbid other characters in filenames, so browsers will adjust the suggested name if necessary.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#download}
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download}
+   */
+  download?: Expression | undefined;
+  /**
+   * The hyperlink target for the area. Its value is a valid URL. This attribute may be omitted; if so, the `<area>` element does not represent a hyperlink.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#href}
+   */
+  href?: Expression | undefined;
+  /**
+   * A space-separated list of URLs. When the link is followed, the browser
+   * will send `POST` requests with the body PING to the URLs. Typically for
+   * tracking.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#ping}
+   */
+  ping?: Expression | undefined;
+  /**
+   * How much of the referrer to send when following the link.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#referrerpolicy}
+   */
+  referrerpolicy?: HTMLAttributeReferrerPolicy | undefined;
+  /**
+   * For areas containing the `href` attribute, this attribute specifies the relationship of the target object to the link object. The value is a space-separated list of link types. The values and their semantics will be registered by some authority that might have meaning to the document author. The default relationship, if no other is given, is void. Use this attribute only if the `href` attribute is present.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#rel}
+   */
+  rel?: Expression;
+  /**
+   * The shape of the associated hot spot. The specifications for HTML defines the values `rect`, which defines a rectangular region; `circle`, which defines a circular region; `poly`, which defines a polygon; and `default`, which indicates the entire region beyond any defined shapes.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#shape}
+   */
+  shape?: "rect" | "circle" | "poly" | "default";
+  /**
+   * Where to display the linked URL, as the name for a browsing context (a
+   * tab, window, or `<iframe>`).
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#target}
+   */
+  target?: HTMLAttributeAnchorTarget | undefined;
 };
 
 export type HTMLAttributeAnchorTarget =
@@ -672,29 +818,132 @@ export type HTMLAttributeReferrerPolicy =
   | "strict-origin-when-cross-origin"
   | "unsafe-url";
 
-export type MediaHtmlProps = TagProps & {
-  autoPlay?: boolean | undefined;
+/**
+ * Props for the {@linkcode Audio} macro.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#attributes}
+ */
+export type AudioProps = TagProps & {
+  /**
+   * A Boolean attribute: if specified, the audio will automatically begin playback as soon as it can do so, without waiting for the entire audio file to finish downloading.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#autoplay}
+   */
+  autoplay?: boolean | undefined;
+  /**
+   * If this attribute is present, the browser will offer controls to allow the user to control audio playback, including volume, seeking, and pause/resume playback.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#controls}
+   */
   controls?: boolean | undefined;
-  controlsList?: Expression | undefined;
-  crossOrigin?: CrossOrigin;
+  /**
+   * The `controlslist` attribute, when specified, helps the browser select what controls to show for the audio element whenever the browser shows its own set of controls (that is, when the `controls` attribute is specified).
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#controlslist}
+   */
+  controlslist?:
+    | "nodownload"
+    | "nofullscreen"
+    | "noremoteplayback"
+    | "nodownload nofullscreen"
+    | "nodownload noremoteplayback"
+    | "nofullscreen noremoteplayback"
+    | "nodownload nofullscreen noremoteplayback"
+    | undefined;
+  /**
+   * This enumerated attribute indicates whether to use CORS to fetch the related audio file.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#crossorigin}
+   */
+  crossorigin?: CrossOrigin;
+  /**
+   * A Boolean attribute: if specified, the audio player will automatically seek back to the start upon reaching the end of the audio.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#loop}
+   */
   loop?: boolean | undefined;
-  mediaGroup?: Expression | undefined;
+  /**
+   * A Boolean attribute that indicates whether the audio will be initially silenced.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#muted}
+   */
   muted?: boolean | undefined;
-  playsInline?: boolean | undefined;
-  preload?: Expression | undefined;
+  /**
+   * This enumerated attribute is intended to provide a hint to the browser about what the author thinks will lead to the best user experience. It may have one of the following values:
+   *
+   * - `none`: Indicates that the audio should not be preloaded.
+   * - `metadata`: Indicates that only audio metadata (e.g. length) is fetched.
+   * - `auto`: Indicates that the whole audio file can be downloaded, even if the user is not expected to use it.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#preload}
+   */
+  preload?: "none" | "metadata" | "auto" | undefined;
+  /**
+   * The URL of the audio to embed. This is subject to HTTP access controls. This is optional; you may instead use the `<source>` element within the audio block to specify the audio to embed.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#src}
+   */
   src?: Expression | undefined;
 };
+
+/**
+ * Props for the {@linkcode Base} macro.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base#attributes}
+ */
 export type BaseProps = TagProps & {
+  /**
+   * The base URL to be used throughout the document for relative URLs. Absolute and relative URLs are allowed. `data:` and `javascript:` URLs are not allowed.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base#href}
+   */
   href?: Expression | undefined;
-  target?: Expression | undefined;
+  /**
+   * A **keyword** or **author-defined name** of the default browsing context to show the results of navigation from `<a>`, `<area>`, or `<form>` elements without explicit target attributes.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base#target}
+   */
+  target?: HTMLAttributeAnchorTarget | undefined;
 };
+/**
+ * Props for the {@linkcode Blockquote} macro.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote#attributes}
+ */
 export type BlockquoteProps = TagProps & {
+  /**
+   * A URL that designates a source document or message for the information quoted. This attribute is intended to point to information explaining the context or the reference for the quote.
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote#cite}
+   */
   cite?: Expression | undefined;
 };
+/**
+ * Props for the {@linkcode Button} macro.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attributes}
+ */
 export type ButtonProps = TagProps & {
+  /**
+   * This Boolean attribute prevents the user from interacting with the button: it cannot be pressed or focused.
+   * 
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#disabled}
+   */
   disabled?: boolean | undefined;
+  /**
+   * The `<form>` element to associate the button with (its form owner). The value of this attribute must be the `id` of a `<form>` in the same document. (If this attribute is not set, the `<button>` is associated with its ancestor `<form>` element, if any.)
+   * 
+   * This attribute lets you associate `<button>` elements to `<form>`s anywhere in the document, not just inside a `<form>`. It can also override an ancestor `<form>` element.
+   * 
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#form}
+   */
   form?: Expression | undefined;
-  formAction?:
+  /**
+   * The URL that processes the information submitted by the button. Overrides the `action` attribute of the button's form owner. Does nothing if there is no form owner.
+   * 
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#formaction}
+   */
+  formaction?:
     | Expression
     | undefined;
   formEncType?: Expression | undefined;
@@ -751,7 +1000,7 @@ export type FormProps = TagProps & {
   method?: Expression | undefined;
   name?: Expression | undefined;
   noValidate?: boolean | undefined;
-  target?: Expression | undefined;
+  target?: HTMLAttributeAnchorTarget | undefined;
 };
 export type HtmlProps = TagProps & {
   manifest?: Expression | undefined;
@@ -1075,7 +1324,7 @@ export type SvgProps = AriaProps & {
   min?: number | Expression | undefined;
   name?: Expression | undefined;
   style?: CssProperties | undefined;
-  target?: Expression | undefined;
+  target?: HTMLAttributeAnchorTarget | undefined;
   type?: Expression | undefined;
   width?: number | Expression | undefined;
 
@@ -1386,39 +1635,39 @@ function EscapeHtml({ children }: { children?: Expressions }): Expression {
 
 type RenderList = [
   string, /* tag name */
-  (tag: string, value: any) => Expression | null,
+  (attr: string, value: any) => Expression | null,
 ][];
 
-function renderExpression(tag: string, value: any): Expression | null {
-  return <>{tag}="{<EscapeHtml>{value}</EscapeHtml>}"</>;
+function renderExpression(attr: string, value: any): Expression | null {
+  return <>{attr}="{<EscapeHtml>{value}</EscapeHtml>}"</>;
 }
 
-function renderBoolean(tag: string, value: any): Expression | null {
-  return (value as boolean) ? tag : null;
+function renderBoolean(attr: string, value: any): Expression | null {
+  return (value as boolean) ? attr : null;
 }
 
-function renderNumber(tag: string, value: any): Expression | null {
-  return <>{tag}="{`${value}`}"</>;
+function renderNumber(attr: string, value: any): Expression | null {
+  return <>{attr}="{`${value}`}"</>;
 }
 
-function renderEnum(tag: string, value: any): Expression | null {
-  return <>{tag}="{`${value}`}"</>;
+function renderEnum(attr: string, value: any): Expression | null {
+  return <>{attr}="{`${value}`}"</>;
 }
 
-function renderBooleanOrEnum(tag: string, value: any): Expression | null {
+function renderBooleanOrEnum(attr: string, value: any): Expression | null {
   if (typeof value === "boolean") {
-    return renderBoolean(tag, value);
+    return renderBoolean(attr, value);
   } else {
-    return renderEnum(tag, value);
+    return renderEnum(attr, value);
   }
 }
 
-function renderYesNo(tag: string, value: any): Expression | null {
-  return value === true ? <>{tag}="yes"</> : <>{tag}="no"</>;
+function renderYesNo(attr: string, value: any): Expression | null {
+  return value === true ? <>{attr}="yes"</> : <>{attr}="no"</>;
 }
 
-function renderTrueFalse(tag: string, value: any): Expression | null {
-  return value === true ? <>{tag}="true"</> : <>{tag}="false"</>;
+function renderTrueFalse(attr: string, value: any): Expression | null {
+  return value === true ? <>{attr}="true"</> : <>{attr}="false"</>;
 }
 
 function RenderRenderList(
@@ -1585,8 +1834,301 @@ const tagList: RenderList = [
   ["translate", renderYesNo],
 ];
 
+const aList: RenderList = [
+  ...tagList,
+  [
+    "download",
+    (attr, value) =>
+      value === null ? `download=""` : renderExpression(attr, value),
+  ],
+  ["href", renderExpression],
+  ["hreflang", renderExpression],
+  ["ping", renderExpression],
+  ["referrerpolicy", renderEnum],
+  ["rel", renderExpression],
+  ["target", renderEnum],
+  ["type", renderExpression],
+];
+
+/**
+ * The `<a>` HTML element (or anchor element), with its `href` attribute,
+ * creates a hyperlink to web pages, files, email addresses, locations in the
+ * same page, or anything else a URL can address.
+ *
+ * Content within each `<a>` should indicate the link's destination. If the
+ * `href` attribute is present, pressing the enter key while focused on the
+ * `<a>` element will activate it.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a}
+ */
+export function A(props: AProps & { children?: Expressions }): Expression {
+  return (
+    <RenderNonVoidElement name="a" attrs={props} list={aList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+/**
+ * The `<abbr>` HTML element represents an abbreviation or acronym.
+ *
+ * When including an abbreviation or acronym, provide a full expansion of the
+ * term in plain text on first use, along with the `<abbr>` to mark up the
+ * abbreviation. This informs the user what the abbreviation or acronym means.
+ *
+ * The optional `title` attribute can provide an expansion for the abbreviation
+ * or acronym when a full expansion is not present. This provides a hint to
+ * user agents on how to announce/display the content while informing all users
+ * what the abbreviation means. If present, `title` must contain this full
+ * description and nothing else.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/abbr}
+ */
+export function Abbr(props: TagProps & { children?: Expressions }): Expression {
+  return (
+    <RenderNonVoidElement name="abbr" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+/**
+ * The `<address>` HTML element indicates that the enclosed HTML provides
+ * contact information for a person or people, or for an organization.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/address}
+ */
+export function Address(
+  props: TagProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="address" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+const areaList: RenderList = [
+  ...tagList,
+  ["alt", renderExpression],
+  ["coords", renderExpression],
+  [
+    "download",
+    (attr, value) =>
+      value === null ? `download=""` : renderExpression(attr, value),
+  ],
+  ["href", renderExpression],
+  ["ping", renderExpression],
+  ["referrerpolicy", renderEnum],
+  ["rel", renderExpression],
+  ["shape", renderEnum],
+  ["target", renderEnum],
+];
+
+/**
+ * The `<area>` HTML element defines an area inside an image map that has
+ * predefined clickable areas. An image map allows geometric areas on an image
+ * to be associated with hypertext links.
+ *
+ * This element is used only within a `<map>` element.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area}
+ */
+export function Area(
+  props: AreaProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="area" attrs={props} list={areaList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+/**
+ * The `<article>` HTML element represents a self-contained composition in a document, page, application, or site, which is intended to be independently distributable or reusable (e.g., in syndication). Examples include: a forum post, a magazine or newspaper article, or a blog entry, a product card, a user-submitted comment, an interactive widget or gadget, or any other independent item of content.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article}
+ */
+export function Article(
+  props: TagProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="article" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+/**
+ * The `<aside>` HTML element represents a portion of a document whose content is only indirectly related to the document's main content. Asides are frequently presented as sidebars or call-out boxes.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/aside}
+ */
+export function Aside(
+  props: TagProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="aside" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+const audioList: RenderList = [
+  ...tagList,
+  ["autoplay", renderBoolean],
+  ["controls", renderBoolean],
+  ["controlslist", renderEnum],
+  ["crossorigin", renderEnum],
+  ["loop", renderBoolean],
+  ["muted", renderBoolean],
+  ["preload", renderEnum],
+  ["src", renderExpression],
+];
+
+/**
+ * The `<audio>` HTML element is used to embed sound content in documents. It may contain one or more audio sources, represented using the src attribute or the `<source>` element: the browser will choose the most suitable one. It can also be the destination for streamed media, using a `MediaStream`.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio}
+ */
+export function Audio(
+  props: AudioProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="audio" attrs={props} list={audioList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+/**
+ * The `b` HTML element is used to draw the reader's attention to the element's contents, which are not otherwise granted special importance. This was formerly known as the Boldface element, and most browsers still draw the text in boldface. However, you should not use `<b>` for styling text or granting importance. If you wish to create boldface text, you should use the CSS font-weight property. If you wish to indicate an element is of special importance, you should use the `<strong>` element.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/b}
+ */
+export function B(
+  props: TagProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="b" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+const baseList: RenderList = [
+  ...tagList,
+  ["href", renderExpression],
+  ["target", renderEnum],
+];
+
+/**
+ * The `<base>` HTML element specifies the base URL to use for all relative URLs in a document. There can be only one `<base>` element in a document.
+ *
+ * A document's used base URL can be accessed by scripts with `Node.baseURI`. If the document has no `<base>` elements, then `baseURI` defaults to `location.href`.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base}
+ */
+export function Base(
+  props: BaseProps,
+): Expression {
+  return <RenderVoidElement name="base" attrs={props} list={baseList} />;
+}
+
+/**
+ * The `<bdi>` HTML element tells the browser's bidirectional algorithm to treat the text it contains in isolation from its surrounding text. It's particularly useful when a website dynamically inserts some text and doesn't know the directionality of the text being inserted.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/bdi}
+ */
+export function Bdi(
+  props: TagProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="bdi" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+/**
+ * The `<bdo>` HTML element overrides the current directionality of text, so that the text within is rendered in a different direction.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/bdo}
+ */
+export function Bdo(
+  props: TagProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="bdo" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+const blockquoteList: RenderList = [
+  ...tagList,
+  ["cite", renderExpression],
+];
+
+/**
+ * The `<blockquote>` HTML element indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation. A URL for the source of the quotation may be given using the `cite` attribute, while a text representation of the source can be given using the `<cite>` element.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote}
+ */
+export function Blockquote(
+  props: BlockquoteProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="blockquote" attrs={props} list={blockquoteList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+/**
+ * The `<body>` HTML element represents the content of an HTML document. There can be only one `<body>` element in a document.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body}
+ */
+export function Body(
+  props: TagProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="body" attrs={props} list={tagList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
+}
+
+/**
+ * The `<br>` HTML element produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br}
+ */
 export function Br(props: TagProps): Expression {
   return <RenderVoidElement name="br" attrs={props} list={tagList} />;
+}
+
+const blockquoteList: RenderList = [
+  ...tagList,
+  ["cite", renderExpression],
+];
+
+/**
+ * The `<button>` HTML element is an interactive element activated by a user with a mouse, keyboard, finger, voice command, or other assistive technology. Once activated, it then performs an action, such as submitting a form or opening a dialog.
+ * 
+ * By default, HTML buttons are presented in a style resembling the platform the user agent runs on, but you can change buttons' appearance with CSS.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button}
+ */
+export function Button(
+  props: ButtonProps & { children?: Expressions },
+): Expression {
+  return (
+    <RenderNonVoidElement name="button" attrs={props} list={buttonList}>
+      {props.children}
+    </RenderNonVoidElement>
+  );
 }
 
 export function Div(props: TagProps & { children?: Expressions }): Expression {
