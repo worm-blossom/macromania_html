@@ -2258,7 +2258,7 @@ export type OlProps = TagProps & {
   type?: "1" | "a" | "A" | "i" | "I" | undefined;
 };
 
-const formList: RenderList = [
+const olList: RenderList = [
   ...tagList,
   ["reversed", renderBoolean],
   ["start", renderNumber],
@@ -2935,7 +2935,7 @@ export type TimeProps = TagProps & {
   datetime?: Expression | undefined;
 };
 
-const timeAllList: RenderList = [
+const timeList: RenderList = [
   ...tagList,
   ["datetime", renderExpression],
 ];

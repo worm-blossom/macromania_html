@@ -398,10 +398,3 @@ Deno.test("br", () => {
   const got = ctx.evaluate(<Br />);
   assertEquals(got, `<br />`);
 });
-
-/*
-TODO
-custom macros: uls, ols, href, html5
-readme
-clean up expression type in macromania
-*/
