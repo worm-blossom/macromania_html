@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 /*
 Macros for generating html.
 
@@ -2021,7 +2022,7 @@ export function Legend(
 }
 
 export type LiProps = TagProps & {
-  value?: Number | undefined;
+  value?: number | undefined;
 };
 
 const liList: RenderList = [
