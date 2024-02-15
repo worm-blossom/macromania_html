@@ -15,111 +15,111 @@ import {
   Br,
   Div,
   TagProps,
-} from "./mod.tsx";
-import { Context, Expression, Expressions, expressions } from "./deps.ts";
-import { assertEquals } from "./devDeps.ts";
+} from "../mod.tsx";
+import { Context, Expression, Expressions, expressions } from "../deps.ts";
+import { assertEquals } from "../devDeps.ts";
 
-Deno.test("basic void tag", () => {
+Deno.test("basic void tag", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Br />);
+  const got = await ctx.evaluate(<Br />);
   assertEquals(got, `<br />`);
 });
 
-Deno.test("basic non-void tag", () => {
+Deno.test("basic non-void tag", async () => {
   const ctx1 = new Context();
-  const got1 = ctx1.evaluate(<Div></Div>);
+  const got1 = await ctx1.evaluate(<Div></Div>);
   assertEquals(got1, `<div></div>`);
 
   const ctx2 = new Context();
-  const got2 = ctx2.evaluate(<Div>foo</Div>);
+  const got2 = await ctx2.evaluate(<Div>foo</Div>);
   assertEquals(got2, `<div>foo</div>`);
 
   const ctx3 = new Context();
-  const got3 = ctx3.evaluate(<Div>foo{"bar"}</Div>);
+  const got3 = await ctx3.evaluate(<Div>foo{"bar"}</Div>);
   assertEquals(got3, `<div>foobar</div>`);
 });
 
-Deno.test("escaping", () => {
+Deno.test("escaping", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Div accesskey={`&<>"'`}>{`&<>"'`}</Div>);
+  const got = await ctx.evaluate(<Div id={`&<>"'`}>{`&<>"'`}</Div>);
   assertEquals(
     got,
-    `<div accesskey="&amp;&lt;&gt;&quot;&#39;">&amp;&lt;&gt;&quot;&#39;</div>`,
+    `<div id="&amp;&lt;&gt;&quot;&#39;">&amp;&lt;&gt;&quot;&#39;</div>`,
   );
 });
 
-Deno.test("boolean attribute rendering", () => {
-  (() => {
+Deno.test("boolean attribute rendering", async () => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Br inert />);
+    const got = await ctx.evaluate(<Br inert />);
     assertEquals(got, `<br inert />`);
   })();
 
-  (() => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Br inert={false} />);
+    const got = await ctx.evaluate(<Br inert={false} />);
     assertEquals(got, `<br />`);
   })();
 });
 
-Deno.test("boolean-or-enum attribute rendering", () => {
-  (() => {
+Deno.test("boolean-or-enum attribute rendering", async () => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Br aria-haspopup />);
+    const got = await ctx.evaluate(<Br aria-haspopup />);
     assertEquals(got, `<br aria-haspopup />`);
   })();
 
-  (() => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Br aria-haspopup={false} />);
+    const got = await ctx.evaluate(<Br aria-haspopup={false} />);
     assertEquals(got, `<br />`);
   })();
 
-  (() => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Br aria-haspopup="menu" />);
+    const got = await ctx.evaluate(<Br aria-haspopup="menu" />);
     assertEquals(got, `<br aria-haspopup="menu" />`);
   })();
 });
 
-Deno.test("not boolean but true-false-enum rendering", () => {
-  (() => {
+Deno.test("not boolean but true-false-enum rendering", async () => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Br draggable />);
+    const got = await ctx.evaluate(<Br draggable />);
     assertEquals(got, `<br draggable="true" />`);
   })();
 
-  (() => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Br draggable={false} />);
+    const got = await ctx.evaluate(<Br draggable={false} />);
     assertEquals(got, `<br draggable="false" />`);
   })();
 });
 
-Deno.test("expression props", () => {
+Deno.test("expression props", async () => {
   function A() {
     return <impure fun={(_) => "A"} />;
   }
   const ctx = new Context();
-  const got = ctx.evaluate(<Br accesskey={<A />} />);
-  assertEquals(got, `<br accesskey="A" />`);
+  const got = await ctx.evaluate(<Br id={<A />} />);
+  assertEquals(got, `<br id="A" />`);
 });
 
-Deno.test("inline expression props", () => {
+Deno.test("inline expression props", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Br accesskey={<impure fun={(_) => "A"} />} />);
-  assertEquals(got, `<br accesskey="A" />`);
+  const got = await ctx.evaluate(<Br id={<impure fun={(_) => "A"} />} />);
+  assertEquals(got, `<br id="A" />`);
 });
 
-Deno.test("number props", () => {
+Deno.test("number props", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Br aria-colcount={42} />);
+  const got = await ctx.evaluate(<Br aria-colcount={42} />);
   assertEquals(got, `<br aria-colcount="42" />`);
 });
 
-Deno.test("aria", () => {
+Deno.test("aria", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(
+  const got = await ctx.evaluate(
     <Br
       aria-activedescendant="f"
       aria-atomic
@@ -182,14 +182,13 @@ Deno.test("aria", () => {
   );
 });
 
-Deno.test("global attributes", () => {
+Deno.test("global attributes", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(
+  const got = await ctx.evaluate(
     <Br
-      accesskey="f"
-      autocapitalize="on"
+      autocapitalize="sentences"
       autofocus
-      clazz="a b"
+      clazz={["a", "b"]}
       contenteditable
       data={{
         foo: "42",
@@ -198,20 +197,20 @@ Deno.test("global attributes", () => {
       dir="rtl"
       draggable
       enterkeyhint="go"
-      exportparts="f"
+      exportparts={["f"]}
       hidden="hidden"
       id="f"
       inert
       inputmode="url"
       is="f"
       itemid="f"
-      itemprop="g"
-      itemref="f"
+      itemprop={["g"]}
+      itemref={["f"]}
       itemscope
-      itemtype="f"
+      itemtype={["f"]}
       lang="f"
       nonce="f"
-      part="f"
+      part={["f"]}
       popover="auto"
       role="feed"
       slot="f"
@@ -224,14 +223,14 @@ Deno.test("global attributes", () => {
   );
   assertEquals(
     got,
-    `<br class="a b" data-foo="42" data-bar-baz="&lt;br /&gt;" accesskey="f" autocapitalize="on" autofocus contenteditable dir="rtl" draggable="true" enterkeyhint="go" exportparts="f" hidden="hidden" id="f" inert inputmode="url" is="f" itemid="f" itemprop="g" itemref="f" itemscope itemtype="f" lang="f" nonce="f" part="f" popover="auto" role="feed" slot="f" spellcheck="true" style="f" tabindex="2" title="f" translate="yes" />`,
+    `<br data-foo="42" data-bar-baz="&lt;br /&gt;" autocapitalize="sentences" autofocus class="a b" contenteditable dir="rtl" draggable="true" enterkeyhint="go" exportparts="f" hidden="hidden" id="f" inert inputmode="url" is="f" itemid="f" itemprop="g" itemref="f" itemscope itemtype="f" lang="f" nonce="f" part="f" popover="auto" role="feed" slot="f" spellcheck="true" style="f" tabindex="2" title="f" translate="yes" />`,
   );
 });
 
-Deno.test("a", () => {
-  (() => {
+Deno.test("a", async () => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(
+    const got = await ctx.evaluate(
       <A
         download=""
         href="bla"
@@ -250,35 +249,35 @@ Deno.test("a", () => {
     );
   })();
 
-  (() => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<A download="n"></A>);
+    const got = await ctx.evaluate(<A download="n"></A>);
     assertEquals(got, `<a download="n"></a>`);
   })();
 
-  (() => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<A></A>);
+    const got = await ctx.evaluate(<A></A>);
     assertEquals(got, `<a></a>`);
   })();
 });
 
-Deno.test("abbr", () => {
+Deno.test("abbr", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Abbr></Abbr>);
+  const got = await ctx.evaluate(<Abbr></Abbr>);
   assertEquals(got, `<abbr></abbr>`);
 });
 
-Deno.test("address", () => {
+Deno.test("address", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Address></Address>);
+  const got = await ctx.evaluate(<Address></Address>);
   assertEquals(got, `<address></address>`);
 });
 
-Deno.test("area", () => {
-  (() => {
+Deno.test("area", async () => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(
+    const got = await ctx.evaluate(
       <Area
         alt="f"
         coords="g"
@@ -298,34 +297,34 @@ Deno.test("area", () => {
     );
   })();
 
-  (() => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Area download="n"></Area>);
+    const got = await ctx.evaluate(<Area download="n"></Area>);
     assertEquals(got, `<area download="n"></area>`);
   })();
 
-  (() => {
+  await (async () => {
     const ctx = new Context();
-    const got = ctx.evaluate(<Area></Area>);
+    const got = await ctx.evaluate(<Area></Area>);
     assertEquals(got, `<area></area>`);
   })();
 });
 
-Deno.test("address", () => {
+Deno.test("address", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Article></Article>);
+  const got = await ctx.evaluate(<Article></Article>);
   assertEquals(got, `<article></article>`);
 });
 
-Deno.test("aside", () => {
+Deno.test("aside", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Aside></Aside>);
+  const got = await ctx.evaluate(<Aside></Aside>);
   assertEquals(got, `<aside></aside>`);
 });
 
-Deno.test("area", () => {
+Deno.test("area", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(
+  const got = await ctx.evaluate(
     <Audio
       autoplay
       controls
@@ -344,15 +343,15 @@ Deno.test("area", () => {
   );
 });
 
-Deno.test("b", () => {
+Deno.test("b", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<B></B>);
+  const got = await ctx.evaluate(<B></B>);
   assertEquals(got, `<b></b>`);
 });
 
-Deno.test("base", () => {
+Deno.test("base", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(
+  const got = await ctx.evaluate(
     <Base
       href="f"
       target="_blank"
@@ -364,21 +363,21 @@ Deno.test("base", () => {
   );
 });
 
-Deno.test("bdi", () => {
+Deno.test("bdi", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Bdi></Bdi>);
+  const got = await ctx.evaluate(<Bdi></Bdi>);
   assertEquals(got, `<bdi></bdi>`);
 });
 
-Deno.test("bdo", () => {
+Deno.test("bdo", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Bdo></Bdo>);
+  const got = await ctx.evaluate(<Bdo></Bdo>);
   assertEquals(got, `<bdo></bdo>`);
 });
 
-Deno.test("blockquote", () => {
+Deno.test("blockquote", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(
+  const got = await ctx.evaluate(
     <Blockquote cite="f"></Blockquote>,
   );
   assertEquals(
@@ -387,14 +386,14 @@ Deno.test("blockquote", () => {
   );
 });
 
-Deno.test("body", () => {
+Deno.test("body", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Body></Body>);
+  const got = await ctx.evaluate(<Body></Body>);
   assertEquals(got, `<body></body>`);
 });
 
-Deno.test("br", () => {
+Deno.test("br", async () => {
   const ctx = new Context();
-  const got = ctx.evaluate(<Br />);
+  const got = await ctx.evaluate(<Br />);
   assertEquals(got, `<br />`);
 });

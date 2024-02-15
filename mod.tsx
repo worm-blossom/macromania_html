@@ -13,63 +13,63 @@ export type CssProperties = Expression;
 /**
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin MDN}
  */
-export type CrossOrigin = "anonymous" | "use-credentials" | "" | undefined;
+export type CrossOrigin = "anonymous" | "use-credentials" | "";
 
 /**
  * All the WAI-ARIA 1.1 attributes from {@link https://www.w3.org/TR/wai-aria-1.1/}
  */
 export type AriaProps = {
   /** Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application. */
-  "aria-activedescendant"?: Expression | undefined;
+  "aria-activedescendant"?: Expression;
   /** Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute. */
-  "aria-atomic"?: boolean | undefined;
+  "aria-atomic"?: boolean;
   /**
    * Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be
    * presented if they are made.
    */
-  "aria-autocomplete"?: "none" | "inline" | "list" | "both" | undefined;
+  "aria-autocomplete"?: "none" | "inline" | "list" | "both";
   /** Indicates an element is being modified and that assistive technologies MAY want to wait until the modifications are complete before exposing them to the user. */
   /**
    * Defines a string value that labels the current element, which is intended to be converted into Braille.
    * @see aria-label.
    */
-  "aria-braillelabel"?: Expression | undefined;
+  "aria-braillelabel"?: Expression;
   /**
    * Defines a human-readable, author-localized abbreviated description for the role of an element, which is intended to be converted into Braille.
    * @see aria-roledescription.
    */
-  "aria-brailleroledescription"?: Expression | undefined;
-  "aria-busy"?: boolean | undefined;
+  "aria-brailleroledescription"?: Expression;
+  "aria-busy"?: boolean;
   /**
    * Indicates the current "checked" state of checkboxes, radio buttons, and other widgets.
    * @see aria-pressed @see aria-selected.
    */
-  "aria-checked"?: boolean | "mixed" | undefined;
+  "aria-checked"?: boolean | "mixed";
   /**
    * Defines the total number of columns in a table, grid, or treegrid.
    * @see aria-colindex.
    */
-  "aria-colcount"?: number | undefined;
+  "aria-colcount"?: number;
   /**
    * Defines an element's column index or position with respect to the total number of columns within a table, grid, or treegrid.
    * @see aria-colcount @see aria-colspan.
    */
-  "aria-colindex"?: number | undefined;
+  "aria-colindex"?: number;
   /**
    * Defines a human readable text alternative of aria-colindex.
    * @see aria-rowindextext.
    */
-  "aria-colindextext"?: Expression | undefined;
+  "aria-colindextext"?: Expression;
   /**
    * Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid.
    * @see aria-colindex @see aria-rowspan.
    */
-  "aria-colspan"?: number | undefined;
+  "aria-colspan"?: number;
   /**
    * Identifies the element (or elements) whose contents or presence are controlled by the current element.
    * @see aria-owns.
    */
-  "aria-controls"?: Expression | undefined;
+  "aria-controls"?: Expression;
   /** Indicates the element that represents the current item within a container or set of related elements. */
   "aria-current"?:
     | boolean
@@ -78,27 +78,27 @@ export type AriaProps = {
     | "location"
     | "date"
     | "time"
-    | undefined;
+   ;
   /**
    * Identifies the element (or elements) that describes the object.
    * @see aria-labelledby
    */
-  "aria-describedby"?: Expression | undefined;
+  "aria-describedby"?: Expression;
   /**
    * Defines a string value that describes or annotates the current element.
    * @see related aria-describedby.
    */
-  "aria-description"?: Expression | undefined;
+  "aria-description"?: Expression;
   /**
    * Identifies the element that provides a detailed, extended description for the object.
    * @see aria-describedby.
    */
-  "aria-details"?: Expression | undefined;
+  "aria-details"?: Expression;
   /**
    * Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
    * @see aria-hidden @see aria-readonly.
    */
-  "aria-disabled"?: boolean | undefined;
+  "aria-disabled"?: boolean;
   /**
    * Indicates what functions can be performed when a dragged object is released on the drop target.
    * @deprecated in ARIA 1.1
@@ -110,24 +110,24 @@ export type AriaProps = {
     | "link"
     | "move"
     | "popup"
-    | undefined;
+   ;
   /**
    * Identifies the element that provides an error message for the object.
    * @see aria-invalid @see aria-describedby.
    */
-  "aria-errormessage"?: Expression | undefined;
+  "aria-errormessage"?: Expression;
   /** Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed. */
-  "aria-expanded"?: boolean | undefined;
+  "aria-expanded"?: boolean;
   /**
    * Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion,
    * allows assistive technology to override the general default of reading in document source order.
    */
-  "aria-flowto"?: Expression | undefined;
+  "aria-flowto"?: Expression;
   /**
    * Indicates an element's "grabbed" state in a drag-and-drop operation.
    * @deprecated in ARIA 1.1
    */
-  "aria-grabbed"?: boolean | undefined;
+  "aria-grabbed"?: boolean;
   /** Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element. */
   "aria-haspopup"?:
     | boolean
@@ -136,12 +136,12 @@ export type AriaProps = {
     | "tree"
     | "grid"
     | "dialog"
-    | undefined;
+   ;
   /**
    * Indicates whether the element is exposed to an accessibility API.
    * @see aria-disabled.
    */
-  "aria-hidden"?: boolean | undefined;
+  "aria-hidden"?: boolean;
   /**
    * Indicates the entered value does not conform to the format expected by the application.
    * @see aria-errormessage.
@@ -150,57 +150,57 @@ export type AriaProps = {
     | boolean
     | "grammar"
     | "spelling"
-    | undefined;
+   ;
   /** Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element. */
-  "aria-keyshortcuts"?: Expression | undefined;
+  "aria-keyshortcuts"?: Expression;
   /**
    * Defines a string value that labels the current element.
    * @see aria-labelledby.
    */
-  "aria-label"?: Expression | undefined;
+  "aria-label"?: Expression;
   /**
    * Identifies the element (or elements) that labels the current element.
    * @see aria-describedby.
    */
-  "aria-labelledby"?: Expression | undefined;
+  "aria-labelledby"?: Expression;
   /** Defines the hierarchical level of an element within a structure. */
-  "aria-level"?: number | undefined;
+  "aria-level"?: number;
   /** Indicates that an element will be updated, and describes the types of updates the user agents, assistive technologies, and user can expect from the live region. */
-  "aria-live"?: "off" | "assertive" | "polite" | undefined;
+  "aria-live"?: "off" | "assertive" | "polite";
   /** Indicates whether an element is modal when displayed. */
-  "aria-modal"?: boolean | undefined;
+  "aria-modal"?: boolean;
   /** Indicates whether a text box accepts multiple lines of input or only a single line. */
-  "aria-multiline"?: boolean | undefined;
+  "aria-multiline"?: boolean;
   /** Indicates that the user may select more than one item from the current selectable descendants. */
-  "aria-multiselectable"?: boolean | undefined;
+  "aria-multiselectable"?: boolean;
   /** Indicates whether the element's orientation is horizontal, vertical, or unknown/ambiguous. */
-  "aria-orientation"?: "horizontal" | "vertical" | undefined;
+  "aria-orientation"?: "horizontal" | "vertical";
   /**
    * Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship
    * between DOM elements where the DOM hierarchy cannot be used to represent the relationship.
    * @see aria-controls.
    */
-  "aria-owns"?: Expression | undefined;
+  "aria-owns"?: Expression;
   /**
    * Defines a short hint (a word or short phrase) intended to aid the user with data entry when the control has no value.
    * A hint could be a sample value or a brief description of the expected format.
    */
-  "aria-placeholder"?: Expression | undefined;
+  "aria-placeholder"?: Expression;
   /**
    * Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
    * @see aria-setsize.
    */
-  "aria-posinset"?: number | undefined;
+  "aria-posinset"?: number;
   /**
    * Indicates the current "pressed" state of toggle buttons.
    * @see aria-checked @see aria-selected.
    */
-  "aria-pressed"?: boolean | "mixed" | undefined;
+  "aria-pressed"?: boolean | "mixed";
   /**
    * Indicates that the element is not editable, but is otherwise operable.
    * @see aria-disabled.
    */
-  "aria-readonly"?: boolean | undefined;
+  "aria-readonly"?: boolean;
   /**
    * Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
    * @see aria-atomic.
@@ -216,54 +216,54 @@ export type AriaProps = {
     | "text"
     | "text additions"
     | "text removals"
-    | undefined;
+   ;
   /** Indicates that user input is required on the element before a form may be submitted. */
-  "aria-required"?: boolean | undefined;
+  "aria-required"?: boolean;
   /** Defines a human-readable, author-localized description for the role of an element. */
-  "aria-roledescription"?: Expression | undefined;
+  "aria-roledescription"?: Expression;
   /**
    * Defines the total number of rows in a table, grid, or treegrid.
    * @see aria-rowindex.
    */
-  "aria-rowcount"?: number | undefined;
+  "aria-rowcount"?: number;
   /**
    * Defines an element's row index or position with respect to the total number of rows within a table, grid, or treegrid.
    * @see aria-rowcount @see aria-rowspan.
    */
-  "aria-rowindex"?: number | undefined;
+  "aria-rowindex"?: number;
   /**
    * Defines a human readable text alternative of aria-rowindex.
    * @see aria-colindextext.
    */
-  "aria-rowindextext"?: Expression | undefined;
+  "aria-rowindextext"?: Expression;
   /**
    * Defines the number of rows spanned by a cell or gridcell within a table, grid, or treegrid.
    * @see aria-rowindex @see aria-colspan.
    */
-  "aria-rowspan"?: number | undefined;
+  "aria-rowspan"?: number;
   /**
    * Indicates the current "selected" state of various widgets.
    * @see aria-checked @see aria-pressed.
    */
-  "aria-selected"?: boolean | undefined;
+  "aria-selected"?: boolean;
   /**
    * Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
    * @see aria-posinset.
    */
-  "aria-setsize"?: number | undefined;
+  "aria-setsize"?: number;
   /** Indicates if items in a table or grid are sorted in ascending or descending order. */
-  "aria-sort"?: "none" | "ascending" | "descending" | "other" | undefined;
+  "aria-sort"?: "none" | "ascending" | "descending" | "other";
   /** Defines the maximum allowed value for a range widget. */
-  "aria-valuemax"?: number | undefined;
+  "aria-valuemax"?: number;
   /** Defines the minimum allowed value for a range widget. */
-  "aria-valuemin"?: number | undefined;
+  "aria-valuemin"?: number;
   /**
    * Defines the current value for a range widget.
    * @see aria-valuetext.
    */
-  "aria-valuenow"?: number | undefined;
+  "aria-valuenow"?: number;
   /** Defines the human readable text alternative of aria-valuenow for a range widget. */
-  "aria-valuetext"?: Expression | undefined;
+  "aria-valuetext"?: Expression;
 };
 
 const ariaList: RenderList = [
@@ -398,53 +398,58 @@ export type AriaRole =
   | "treeitem";
 
 /**
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes}
+ * The global attributes are common to and may be specified on all HTML elements.
+ *
+ * https://html.spec.whatwg.org/multipage/dom.html#global-attributes
  */
 export type TagProps = AriaProps & {
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/accesskey}
+   * The [accesskey attribute](https://html.spec.whatwg.org/multipage/interaction.html#the-accesskey-attribute)'s value is used by the user agent as a guide for creating a keyboard shortcut that activates or focuses the element.
+   *
+   * Each string must be exactly one [unicode code point](https://www.unicode.org/versions/Unicode15.1.0/) in length; this code point must not be [ASCII whitespace](https://infra.spec.whatwg.org/#ascii-whitespace). Each string must be unique in the list.
    */
-  accesskey?: Expression | undefined;
+  accesskey?: Expression[];
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autocapitalize}
+   * The [autocapitalize attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-autocapitalize) is an enumerated attribute whose states are the possible [autocapitalization hints](https://html.spec.whatwg.org/multipage/interaction.html#autocapitalization-hint).
+   *
+   * Primarily used with `input` and `textarea` elements, but also applies to arbitrary {@linkcode contenteditable https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable} elements.
+   *
+   * `off` is synonymous with `none` and `on` is synonymous with `sentences`, hence we omit them from this type.
    */
   autocapitalize?:
     | "none"
-    | "off"
     | "sentences"
-    | "on"
     | "words"
-    | "characters"
-    | undefined;
+    | "characters";
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus}
+   * The [autofocus attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-fe-autofocus) allows the author to indicate that an element is to be focused as soon as the page is loaded, allowing the user to just start typing without having to manually focus the main element.
    */
-  autofocus?: boolean | undefined;
+  autofocus?: boolean;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class}
+   * The [class attribute](https://html.spec.whatwg.org/multipage/dom.html#classes) is a space-separated list of class names for the element.
    */
-  clazz?: Expression | undefined;
+  clazz?: Expression[];
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable}
+   * The [contenteditable attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable).
    */
-  contenteditable?: boolean | "plaintext-only" | undefined;
+  contenteditable?: boolean | "plaintext-only";
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/data-*}
+   * [Custom data attributes](https://html.spec.whatwg.org/multipage/dom.html#attr-data-*) are intended to store custom data, state, annotations, and similar, private to the page or application, for which there are no more appropriate attributes or elements.
    *
    * The macro emits an attribute `data-<key>="<value>"` for each
    * entry `<key>: <value>` in this record.
    */
   data?: Record<string, Expression>;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir}
+   * The [dir attribute](https://html.spec.whatwg.org/multipage/dom.html#attr-dir).
    */
-  dir?: "ltr" | "rtl" | "auto" | undefined;
+  dir?: "ltr" | "rtl" | "auto";
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/draggable}
+   * The [draggable attribute](https://html.spec.whatwg.org/multipage/dnd.html#attr-draggable).
    */
-  draggable?: boolean | undefined;
+  draggable?: boolean;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/enterkeyhint}
+   * The [enterkeyhint attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint) is an enumerated attribute that specifies what action label (or icon) to present for the enter key on virtual keyboards. This allows authors to customize the presentation of the enter key in order to make it more helpful for users.
    */
   enterkeyhint?:
     | "enter"
@@ -453,26 +458,25 @@ export type TagProps = AriaProps & {
     | "next"
     | "previous"
     | "search"
-    | "send"
-    | undefined;
+    | "send";
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/exportparts}
+   * Any element in a shadow tree can have an [exportparts attribute](https://drafts.csswg.org/css-shadow-parts/#element-attrdef-html-global-exportparts). If the element is a shadow host, this is used to allow styling of parts from hosts inside the shadow tree by rules outside this the shadow tree (as if they were elements in the same tree as the host, named by a part attribute).
    */
-  exportparts?: Expression | undefined;
+  exportparts?: (Expression | [Expression, Expression])[];
   /**
-   *  @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden}
+   *  The [hidden attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-hidden).
    */
-  hidden?: "hidden" | "until-found" | undefined;
+  hidden?: "hidden" | "until-found";
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id}
+   * The [id attribute](https://html.spec.whatwg.org/multipage/dom.html#the-id-attribute).
    */
-  id?: Expression | undefined;
+  id?: Expression;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert}
+   * The [inert attribute](https://html.spec.whatwg.org/multipage/interaction.html#the-inert-attribute) indicates, by its presence, that the element and all its flat tree descendants which don't otherwise escape inertness (such as modal dialogs) are to be made inert by the user agent.
    */
-  inert?: boolean | undefined;
+  inert?: boolean;
   /**
-   * @see {@link https://html.spec.whatwg.org/multipage/interaction.html#input-modalities:-the-inputmode-attribute}
+   * The [inputmode attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-inputmode) specifies what kind of input mechanism would be most helpful for users entering content.
    */
   inputmode?:
     | "none"
@@ -483,102 +487,103 @@ export type TagProps = AriaProps & {
     | "numeric"
     | "decimal"
     | "search"
-    | undefined;
+   ;
   /**
-   * @see {@link https://html.spec.whatwg.org/multipage/custom-elements.html#attr-is}
+   * The [is attribute](https://html.spec.whatwg.org/multipage/custom-elements.html#attr-is).
    */
-  is?: Expression | undefined;
+  is?: Expression;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemid}
+   * The [itemid attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemid), if specified, must have a value that is a valid URL potentially surrounded by spaces.
    */
-  itemid?: Expression | undefined;
+  itemid?: Expression;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemprop}
+   * Every HTML element may have an [itemprop attribute](https://html.spec.whatwg.org/multipage/microdata.html#names:-the-itemprop-attribute) specified, if doing so [adds one or more properties](https://html.spec.whatwg.org/multipage/microdata.html#the-properties-of-an-item) to one or more [items](https://html.spec.whatwg.org/multipage/microdata.html#concept-item).
    */
-  itemprop?: Expression | undefined;
+  itemprop?: Expression[];
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemref}
+   * Elements with an [itemscope attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemscope) may have an [itemref attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemref) specified, to give a list of additional elements to crawl to find the name-value pairs of the [item](https://html.spec.whatwg.org/multipage/microdata.html#concept-item).
    */
-  itemref?: Expression | undefined;
+  itemref?: Expression[];
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemscope}
+   * An element with the [itemscope attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemscope) specified creates a new item, a group of name-value pairs.
    */
-  itemscope?: boolean | undefined;
+  itemscope?: boolean;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/itemtype}
+   * Elements with an [itemscope attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemscope) may have an [itemtype attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemtype) specified, to give the [item types](https://html.spec.whatwg.org/multipage/microdata.html#item-types) of the [item](https://html.spec.whatwg.org/multipage/microdata.html#concept-item).
    */
-  itemtype?: Expression | undefined;
+  itemtype?: Expression[];
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang}
+   * The [lang attribute](https://html.spec.whatwg.org/multipage/dom.html#attr-lang) specifies the primary language for the element's contents and for any of the element's attributes that contain text. Its value must be a valid [BCP 47 language tag](https://www.rfc-editor.org/info/bcp47), or the empty string. Setting the attribute to the empty string indicates that the primary language is unknown.
    */
-  lang?: Expression | undefined;
+  lang?: Expression;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce}
+   * A [nonce attribute](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#attr-nonce) represents a cryptographic nonce ("number used once") which can be used by Content Security Policy to determine whether or not a given fetch will be allowed to proceed.
    */
-  nonce?: Expression | undefined;
+  nonce?: Expression;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/part}
+   * Any element in a shadow tree can have a [part attribute](https://drafts.csswg.org/css-shadow-parts/#part-attr). This is used to expose the element outside of the shadow tree.
    */
-  part?: Expression | undefined;
+  part?: Expression[];
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/popover}
+   * All HTML elements may have the [popover attribute](https://html.spec.whatwg.org/multipage/popover.html#attr-popover) set. When specified, the element won't be rendered until it becomes shown, at which point it will be rendered on top of other page content.
    */
-  popover?: "auto" | "manual" | null;
+  popover?: "auto" | "manual";
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles}
    */
-  role?: AriaRole | undefined;
+  role?: AriaRole;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/slot}
+   * The [slot attribute](https://html.spec.whatwg.org/multipage/dom.html#attr-slot).
    */
-  slot?: Expression | undefined;
+  slot?: Expression;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck}
+   * The [spellcheck attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-spellcheck).
    */
-  spellcheck?: boolean | undefined;
+  spellcheck?: boolean;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/style}
+   * The [style attribute](https://html.spec.whatwg.org/multipage/dom.html#attr-style).
    */
-  style?: CssProperties | undefined;
+  style?: CssProperties;
   /**
-   *  @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex}
+   * The [tabindex attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex) allows authors to make an element and regions that have the element as its [DOM anchor](https://html.spec.whatwg.org/multipage/interaction.html#dom-anchor) be [focusable areas](https://html.spec.whatwg.org/multipage/interaction.html#focusable-area), allow or prevent them from being [sequentially focusable](https://html.spec.whatwg.org/multipage/interaction.html#sequentially-focusable), and determine their relative ordering for [sequential focus navigation](https://html.spec.whatwg.org/multipage/interaction.html#sequential-focus-navigation).
    */
-  tabindex?: number | undefined;
+  tabindex?: number;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/title}
+   * The [title attribute]() represents advisory information for the element, such as would be appropriate for a tooltip. On a link, this could be the title or a description of the target resource; on an image, it could be the image credit or a description of the image; on a paragraph, it could be a footnote or commentary on the text; on a citation, it could be further information about the source; on interactive content, it could be a label for, or instructions for, use of the element; and so forth.
    */
-  title?: Expression | undefined;
+  title?: Expression;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/translate}
+   * The [translate attribute](https://html.spec.whatwg.org/multipage/dom.html#attr-translate) is used to specify whether an element's attribute values and the values of its [Text](https://dom.spec.whatwg.org/#interface-text) node children are to be translated when the page is localized, or whether to leave them unchanged.
    */
-  translate?: boolean | undefined;
+  translate?: boolean;
 };
 
 const tagList: RenderList = [
   ...ariaList,
-  ["about", renderExpression],
-  ["accesskey", renderExpression],
-  ["autocapitalize", renderExpression],
+  ["accessKey", renderSpaceSeparatedList],
+  ["autocapitalize", renderEnum],
   ["autofocus", renderBoolean],
+  ["clazz", renderClass],
   ["contenteditable", renderBooleanOrEnum],
   ["contextmenu", renderExpression],
+  // custom data attributes are handled in the function for rendering RenderLists
   ["dir", renderExpression],
   ["draggable", renderTrueFalse],
   ["enterkeyhint", renderEnum],
-  ["exportparts", renderExpression],
+  ["exportparts", renderExportparts],
   ["hidden", renderEnum],
   ["id", renderExpression],
   ["inert", renderBoolean],
   ["inputmode", renderEnum],
   ["is", renderExpression],
   ["itemid", renderExpression],
-  ["itemprop", renderExpression],
-  ["itemref", renderExpression],
+  ["itemprop", renderSpaceSeparatedList],
+  ["itemref", renderSpaceSeparatedList],
   ["itemscope", renderBoolean],
-  ["itemtype", renderExpression],
+  ["itemtype", renderSpaceSeparatedList],
   ["lang", renderExpression],
   ["nonce", renderExpression],
-  ["part", renderExpression],
+  ["part", renderSpaceSeparatedList],
   ["popover", renderEnum],
   ["role", renderEnum],
   ["slot", renderExpression],
@@ -598,23 +603,23 @@ export type AProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download}
    */
-  download?: Expression | undefined;
+  download?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#href}
    */
-  href?: Expression | undefined;
+  href?: Expression;
   /**
    *  @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#hreflang}
    */
-  hreflang?: Expression | undefined;
+  hreflang?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#ping}
    */
-  ping?: Expression | undefined;
+  ping?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#referrerpolicy}
    */
-  referrerpolicy?: HTMLAttributeReferrerPolicy | undefined;
+  referrerpolicy?: HTMLAttributeReferrerPolicy;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#rel}
    */
@@ -622,11 +627,11 @@ export type AProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target}
    */
-  target?: HTMLAttributeAnchorTarget | undefined;
+  target?: HTMLAttributeAnchorTarget;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#type}
    */
-  type?: Expression | undefined;
+  type?: Expression;
 };
 
 const aList: RenderList = [
@@ -689,27 +694,27 @@ export type AreaProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#alt}
    */
-  alt?: Expression | undefined;
+  alt?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#alt}
    */
-  coords?: Expression | undefined;
+  coords?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#download}
    */
-  download?: Expression | undefined;
+  download?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#href}
    */
-  href?: Expression | undefined;
+  href?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#ping}
    */
-  ping?: Expression | undefined;
+  ping?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#referrerpolicy}
    */
-  referrerpolicy?: HTMLAttributeReferrerPolicy | undefined;
+  referrerpolicy?: HTMLAttributeReferrerPolicy;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#rel}
    */
@@ -721,7 +726,7 @@ export type AreaProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#target}
    */
-  target?: HTMLAttributeAnchorTarget | undefined;
+  target?: HTMLAttributeAnchorTarget;
 };
 
 export type HTMLAttributeAnchorTarget =
@@ -806,11 +811,11 @@ export type AudioProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#autoplay}
    */
-  autoplay?: boolean | undefined;
+  autoplay?: boolean;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#controls}
    */
-  controls?: boolean | undefined;
+  controls?: boolean;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#controlslist}
    */
@@ -822,7 +827,7 @@ export type AudioProps = TagProps & {
     | "nodownload noremoteplayback"
     | "nofullscreen noremoteplayback"
     | "nodownload nofullscreen noremoteplayback"
-    | undefined;
+   ;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#crossorigin}
    */
@@ -830,19 +835,19 @@ export type AudioProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#loop}
    */
-  loop?: boolean | undefined;
+  loop?: boolean;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#muted}
    */
-  muted?: boolean | undefined;
+  muted?: boolean;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#preload}
    */
-  preload?: "none" | "metadata" | "auto" | undefined;
+  preload?: "none" | "metadata" | "auto";
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#src}
    */
-  src?: Expression | undefined;
+  src?: Expression;
 };
 
 const audioList: RenderList = [
@@ -892,11 +897,11 @@ export type BaseProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base#href}
    */
-  href?: Expression | undefined;
+  href?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base#target}
    */
-  target?: HTMLAttributeAnchorTarget | undefined;
+  target?: HTMLAttributeAnchorTarget;
 };
 
 const baseList: RenderList = [
@@ -949,7 +954,7 @@ export type BlockquoteProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote#cite}
    */
-  cite?: Expression | undefined;
+  cite?: Expression;
 };
 
 const blockquoteList: RenderList = [
@@ -999,45 +1004,45 @@ export type ButtonProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#disabled}
    */
-  disabled?: boolean | undefined;
+  disabled?: boolean;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#form}
    */
-  form?: Expression | undefined;
+  form?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#formaction}
    */
   formaction?:
     | Expression
-    | undefined;
+   ;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#formenctype}
    */
-  formenctype?: Expression | undefined;
+  formenctype?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#formmethod}
    */
-  formmethod?: Expression | undefined;
+  formmethod?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#formnovalidate}
    */
-  formnovalidate?: boolean | undefined;
+  formnovalidate?: boolean;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#formtarget}
    */
-  formtarget?: Expression | undefined;
+  formtarget?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#name}
    */
-  name?: Expression | undefined;
+  name?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#type}
    */
-  type?: "submit" | "reset" | "button" | undefined;
+  type?: "submit" | "reset" | "button";
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#value}
    */
-  value?: Expression | undefined;
+  value?: Expression;
 };
 
 const buttonList: RenderList = [
@@ -1076,11 +1081,11 @@ export type CanvasProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas#height}
    */
-  height?: number | undefined;
+  height?: number;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas#width}
    */
-  width?: number | undefined;
+  width?: number;
 };
 
 const canvasList: RenderList = [
@@ -1150,11 +1155,11 @@ export type ColProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/col#span}
    */
-  span?: number | undefined;
+  span?: number;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/col#width}
    */
-  width?: number | undefined;
+  width?: number;
 };
 
 const colList: RenderList = [
@@ -1181,7 +1186,7 @@ export type ColgroupProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/colgroup#span}
    */
-  span?: number | undefined;
+  span?: number;
 };
 
 const colgroupList: RenderList = [
@@ -1211,7 +1216,7 @@ export type DataProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/data#value}
    */
-  value?: Expression | undefined;
+  value?: Expression;
 };
 
 const dataList: RenderList = [
@@ -1267,11 +1272,11 @@ export type DelProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del#cite}
    */
-  cite?: Expression | undefined;
+  cite?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del#datetime}
    */
-  datetime?: Expression | undefined;
+  datetime?: Expression;
 };
 
 const delList: RenderList = [
@@ -1302,7 +1307,7 @@ export type DetailsProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details#open}
    */
-  open?: boolean | undefined;
+  open?: boolean;
 };
 
 const detailsList: RenderList = [
@@ -1345,7 +1350,7 @@ export type DialogProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog#open}
    */
-  open?: boolean | undefined;
+  open?: boolean;
 };
 
 const dialogList: RenderList = [
@@ -1427,15 +1432,15 @@ export type FieldsetProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset#disabled}
    */
-  disabled?: boolean | undefined;
+  disabled?: boolean;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset#form}
    */
-  form?: Expression | undefined;
+  form?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset#name}
    */
-  name?: Expression | undefined;
+  name?: Expression;
 };
 
 const fieldsetList: RenderList = [
@@ -1506,37 +1511,37 @@ export type FormProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#acceptcharset}
    */
-  acceptcharset?: Expression | undefined;
+  acceptcharset?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action}
    */
   action?:
     | Expression
-    | undefined;
+   ;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#autocomplete}
    */
-  autocomplete?: Expression | undefined;
+  autocomplete?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#enctype}
    */
-  enctype?: Expression | undefined;
+  enctype?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method}
    */
-  method?: Expression | undefined;
+  method?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#name}
    */
-  name?: Expression | undefined;
+  name?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#novalidate}
    */
-  novalidate?: boolean | undefined;
+  novalidate?: boolean;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#target}
    */
-  target?: HTMLAttributeAnchorTarget | undefined;
+  target?: HTMLAttributeAnchorTarget;
 };
 
 const formList: RenderList = [
@@ -1710,39 +1715,39 @@ export type IframeProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#allow}
    */
-  allow?: Expression | undefined;
+  allow?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#height}
    */
-  height?: number | undefined;
+  height?: number;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#loading}
    */
-  loading?: "eager" | "lazy" | undefined;
+  loading?: "eager" | "lazy";
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#name}
    */
-  name?: Expression | undefined;
+  name?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#referrerpolicy}
    */
-  referrerpolicy?: HTMLAttributeReferrerPolicy | undefined;
+  referrerpolicy?: HTMLAttributeReferrerPolicy;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox}
    */
-  sandbox?: Expression | undefined;
+  sandbox?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#src}
    */
-  src?: Expression | undefined;
+  src?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#srcdoc}
    */
-  srcdoc?: Expression | undefined;
+  srcdoc?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#width}
    */
-  width?: number | undefined;
+  width?: number;
 };
 
 const iframeList: RenderList = [
@@ -1780,7 +1785,7 @@ export type ImgProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#alt}
    */
-  alt?: Expression | undefined;
+  alt?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#crossorigin}
    */
@@ -1788,39 +1793,39 @@ export type ImgProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#decoding}
    */
-  decoding?: "async" | "auto" | "sync" | undefined;
+  decoding?: "async" | "auto" | "sync";
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#height}
    */
-  height?: number | undefined;
+  height?: number;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading}
    */
-  loading?: "eager" | "lazy" | undefined;
+  loading?: "eager" | "lazy";
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#referrerpolicy}
    */
-  referrerpolicy?: HTMLAttributeReferrerPolicy | undefined;
+  referrerpolicy?: HTMLAttributeReferrerPolicy;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes}
    */
-  sizes?: Expression | undefined;
+  sizes?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#src}
    */
-  src?: Expression | undefined;
+  src?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#srcset}
    */
-  srcset?: Expression | undefined;
+  srcset?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#usemap}
    */
-  usemap?: Expression | undefined;
+  usemap?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#width}
    */
-  width?: number | undefined;
+  width?: number;
 };
 
 const imgList: RenderList = [
@@ -1848,38 +1853,38 @@ export function Img(
 }
 
 export type InputProps = TagProps & {
-  accept?: Expression | undefined;
-  alt?: Expression | undefined;
-  autocomplete?: Expression | undefined;
-  capture?: boolean | "user" | "environment" | undefined; // https://www.w3.org/TR/html-media-capture/#the-capture-attribute
-  checked?: boolean | undefined;
-  disabled?: boolean | undefined;
-  form?: Expression | undefined;
+  accept?: Expression;
+  alt?: Expression;
+  autocomplete?: Expression;
+  capture?: boolean | "user" | "environment"; // https://www.w3.org/TR/html-media-capture/#the-capture-attribute
+  checked?: boolean;
+  disabled?: boolean;
+  form?: Expression;
   formaction?:
     | Expression
-    | undefined;
-  formenctype?: Expression | undefined;
-  formmethod?: Expression | undefined;
-  formnovalidate?: boolean | undefined;
-  formtarget?: Expression | undefined;
-  height?: number | undefined;
-  list?: Expression | undefined;
-  max?: number | undefined;
-  maxlength?: number | undefined;
-  min?: number | undefined;
-  minlength?: number | undefined;
-  multiple?: boolean | undefined;
-  name?: Expression | undefined;
-  pattern?: Expression | undefined;
-  placeholder?: Expression | undefined;
-  readonly?: boolean | undefined;
-  required?: boolean | undefined;
-  size?: number | undefined;
-  src?: Expression | undefined;
-  step?: number | undefined;
-  type?: HTMLInputTypeAttribute | undefined;
-  value?: Expression | undefined;
-  width?: number | undefined;
+   ;
+  formenctype?: Expression;
+  formmethod?: Expression;
+  formnovalidate?: boolean;
+  formtarget?: Expression;
+  height?: number;
+  list?: Expression;
+  max?: number;
+  maxlength?: number;
+  min?: number;
+  minlength?: number;
+  multiple?: boolean;
+  name?: Expression;
+  pattern?: Expression;
+  placeholder?: Expression;
+  readonly?: boolean;
+  required?: boolean;
+  size?: number;
+  src?: Expression;
+  step?: number;
+  type?: HTMLInputTypeAttribute;
+  value?: Expression;
+  width?: number;
 };
 
 const inputList: RenderList = [
@@ -1950,8 +1955,8 @@ export type HTMLInputTypeAttribute =
   | "week";
 
 export type InsProps = TagProps & {
-  cite?: Expression | undefined;
-  datetime?: Expression | undefined;
+  cite?: Expression;
+  datetime?: Expression;
 };
 
 const insList: RenderList = [
@@ -1987,7 +1992,7 @@ export function Kbd(
 }
 
 export type LabelProps = TagProps & {
-  htmlfor?: Expression | undefined;
+  htmlfor?: Expression;
 };
 
 const labelList: RenderList = [
@@ -2022,7 +2027,7 @@ export function Legend(
 }
 
 export type LiProps = TagProps & {
-  value?: number | undefined;
+  value?: number;
 };
 
 const liList: RenderList = [
@@ -2044,19 +2049,19 @@ export function Li(
 }
 
 export type LinkProps = TagProps & {
-  as?: Expression | undefined;
+  as?: Expression;
   crossorigin?: CrossOrigin;
   fetchpriority?: "high" | "low" | "auto";
-  href?: Expression | undefined;
-  hreflang?: Expression | undefined;
-  integrity?: Expression | undefined;
-  media?: Expression | undefined;
-  imagesrcset?: Expression | undefined;
-  imagesizes?: Expression | undefined;
-  referrerpolicy?: HTMLAttributeReferrerPolicy | undefined;
-  sizes?: Expression | undefined;
-  type?: Expression | undefined;
-  charset?: Expression | undefined;
+  href?: Expression;
+  hreflang?: Expression;
+  integrity?: Expression;
+  media?: Expression;
+  imagesrcset?: Expression;
+  imagesizes?: Expression;
+  referrerpolicy?: HTMLAttributeReferrerPolicy;
+  sizes?: Expression;
+  type?: Expression;
+  charset?: Expression;
 };
 
 const linkList: RenderList = [
@@ -2099,7 +2104,7 @@ export function Main(
 }
 
 export type MapProps = TagProps & {
-  name?: Expression | undefined;
+  name?: Expression;
 };
 
 const mapList: RenderList = [
@@ -2134,11 +2139,11 @@ export function Mark(
 }
 
 export type MetaProps = TagProps & {
-  charset?: Expression | undefined;
-  content?: Expression | undefined;
-  httpequiv?: Expression | undefined;
-  media?: Expression | undefined;
-  name?: Expression | undefined;
+  charset?: Expression;
+  content?: Expression;
+  httpequiv?: Expression;
+  media?: Expression;
+  name?: Expression;
 };
 
 const metaList: RenderList = [
@@ -2160,13 +2165,13 @@ export function Meta(
 }
 
 export type MeterProps = TagProps & {
-  form?: Expression | undefined;
-  high?: number | undefined;
-  low?: number | undefined;
-  max?: number | undefined;
-  min?: number | undefined;
-  optimum?: number | undefined;
-  value?: number | undefined;
+  form?: Expression;
+  high?: number;
+  low?: number;
+  max?: number;
+  min?: number;
+  optimum?: number;
+  value?: number;
 };
 
 const meterList: RenderList = [
@@ -2220,13 +2225,13 @@ export function Noscript(
 }
 
 export type ObjectProps = TagProps & {
-  data?: Expression | undefined;
-  form?: Expression | undefined;
-  height?: number | undefined;
-  name?: Expression | undefined;
-  type?: Expression | undefined;
-  usemap?: Expression | undefined;
-  width?: number | undefined;
+  data?: Expression;
+  form?: Expression;
+  height?: number;
+  name?: Expression;
+  type?: Expression;
+  usemap?: Expression;
+  width?: number;
 };
 
 const objectList: RenderList = [
@@ -2254,9 +2259,9 @@ export function Object(
 }
 
 export type OlProps = TagProps & {
-  reversed?: boolean | undefined;
-  start?: number | undefined;
-  type?: "1" | "a" | "A" | "i" | "I" | undefined;
+  reversed?: boolean;
+  start?: number;
+  type?: "1" | "a" | "A" | "i" | "I";
 };
 
 const olList: RenderList = [
@@ -2280,8 +2285,8 @@ export function Ol(
 }
 
 export type OptgroupProps = TagProps & {
-  disabled?: boolean | undefined;
-  label?: Expression | undefined;
+  disabled?: boolean;
+  label?: Expression;
 };
 
 const optgroupList: RenderList = [
@@ -2304,10 +2309,10 @@ export function Optgroup(
 }
 
 export type OptionProps = TagProps & {
-  disabled?: boolean | undefined;
-  label?: Expression | undefined;
-  selected?: boolean | undefined;
-  value?: Expression | undefined;
+  disabled?: boolean;
+  label?: Expression;
+  selected?: boolean;
+  value?: Expression;
 };
 
 const optionList: RenderList = [
@@ -2332,9 +2337,9 @@ export function Option(
 }
 
 export type OutputProps = TagProps & {
-  for_?: Expression | undefined;
-  form?: Expression | undefined;
-  name?: Expression | undefined;
+  for_?: Expression;
+  form?: Expression;
+  name?: Expression;
 };
 
 const outputList: RenderList = [
@@ -2397,8 +2402,8 @@ export function Pre(
 }
 
 export type ProgressProps = TagProps & {
-  max?: number | undefined;
-  value?: number | undefined;
+  max?: number;
+  value?: number;
 };
 
 const progressList: RenderList = [
@@ -2421,7 +2426,7 @@ export function Progress(
 }
 
 export type QProps = TagProps & {
-  cite?: Expression | undefined;
+  cite?: Expression;
 };
 
 const qList: RenderList = [
@@ -2508,14 +2513,14 @@ export function Samp(
 }
 
 export type ScriptProps = TagProps & {
-  async?: boolean | undefined;
+  async?: boolean;
   crossorigin?: CrossOrigin;
-  defer?: boolean | undefined;
-  integrity?: Expression | undefined;
-  nomodule?: boolean | undefined;
-  referrerpolicy?: HTMLAttributeReferrerPolicy | undefined;
-  src?: Expression | undefined;
-  type?: Expression | undefined;
+  defer?: boolean;
+  integrity?: Expression;
+  nomodule?: boolean;
+  referrerpolicy?: HTMLAttributeReferrerPolicy;
+  src?: Expression;
+  type?: Expression;
 };
 
 const scriptList: RenderList = [
@@ -2570,14 +2575,14 @@ export function Section(
 }
 
 export type SelectProps = TagProps & {
-  autocomplete?: Expression | undefined;
-  disabled?: boolean | undefined;
-  form?: Expression | undefined;
-  multiple?: boolean | undefined;
-  name?: Expression | undefined;
-  required?: boolean | undefined;
-  size?: number | undefined;
-  value?: Expression | undefined;
+  autocomplete?: Expression;
+  disabled?: boolean;
+  form?: Expression;
+  multiple?: boolean;
+  name?: Expression;
+  required?: boolean;
+  size?: number;
+  value?: Expression;
 };
 
 const selectList: RenderList = [
@@ -2606,7 +2611,7 @@ export function Select(
 }
 
 export type SlotProps = TagProps & {
-  name?: Expression | undefined;
+  name?: Expression;
 };
 
 const slotList: RenderList = [
@@ -2641,13 +2646,13 @@ export function Small(
 }
 
 export type SourceProps = TagProps & {
-  height?: number | undefined;
-  media?: Expression | undefined;
-  sizes?: Expression | undefined;
-  src?: Expression | undefined;
-  srcset?: Expression | undefined;
-  type?: Expression | undefined;
-  width?: number | undefined;
+  height?: number;
+  media?: Expression;
+  sizes?: Expression;
+  src?: Expression;
+  srcset?: Expression;
+  type?: Expression;
+  width?: number;
 };
 
 const sourceList: RenderList = [
@@ -2697,9 +2702,9 @@ export function Strong(
 }
 
 export type StyleProps = TagProps & {
-  media?: Expression | undefined;
-  scoped?: boolean | undefined;
-  type?: Expression | undefined;
+  media?: Expression;
+  scoped?: boolean;
+  type?: Expression;
 };
 
 const styleList: RenderList = [
@@ -2788,9 +2793,9 @@ export function Tbody(
 }
 
 export type TdProps = TagProps & {
-  colspan?: number | undefined;
-  headers?: Expression | undefined;
-  rowspan?: number | undefined;
+  colspan?: number;
+  headers?: Expression;
+  rowspan?: number;
 };
 
 const tdList: RenderList = [
@@ -2827,20 +2832,20 @@ export function Template(
 }
 
 export type TextareaProps = TagProps & {
-  autocomplete?: Expression | undefined;
-  cols?: number | undefined;
-  dirname?: Expression | undefined;
-  disabled?: boolean | undefined;
-  form?: Expression | undefined;
-  maxlength?: number | undefined;
-  minlength?: number | undefined;
-  name?: Expression | undefined;
-  placeholder?: Expression | undefined;
-  readonly?: boolean | undefined;
-  required?: boolean | undefined;
-  rows?: number | undefined;
-  value?: Expression | readonly Expression[] | number | undefined;
-  wrap?: Expression | undefined;
+  autocomplete?: Expression;
+  cols?: number;
+  dirname?: Expression;
+  disabled?: boolean;
+  form?: Expression;
+  maxlength?: number;
+  minlength?: number;
+  name?: Expression;
+  placeholder?: Expression;
+  readonly?: boolean;
+  required?: boolean;
+  rows?: number;
+  value?: Expression | readonly Expression[] | number;
+  wrap?: Expression;
 };
 
 const textareaList: RenderList = [
@@ -2888,12 +2893,12 @@ export function Tfoot(
 }
 
 export type ThProps = TagProps & {
-  abbr?: Expression | undefined;
-  align?: "left" | "center" | "right" | "justify" | "char" | undefined;
-  colspan?: number | undefined;
-  headers?: Expression | undefined;
-  rowspan?: number | undefined;
-  scope?: Expression | undefined;
+  abbr?: Expression;
+  align?: "left" | "center" | "right" | "justify" | "char";
+  colspan?: number;
+  headers?: Expression;
+  rowspan?: number;
+  scope?: Expression;
 };
 
 const thList: RenderList = [
@@ -2933,7 +2938,7 @@ export function Thead(
 }
 
 export type TimeProps = TagProps & {
-  datetime?: Expression | undefined;
+  datetime?: Expression;
 };
 
 const timeList: RenderList = [
@@ -2981,11 +2986,11 @@ export function Tr(
 }
 
 export type TrackProps = TagProps & {
-  default?: boolean | undefined;
-  kind?: Expression | undefined;
-  label?: Expression | undefined;
-  src?: Expression | undefined;
-  srclang?: Expression | undefined;
+  default?: boolean;
+  kind?: Expression;
+  label?: Expression;
+  src?: Expression;
+  srclang?: Expression;
 };
 
 const trackList: RenderList = [
@@ -3003,9 +3008,7 @@ const trackList: RenderList = [
 export function Track(
   props: TrackProps,
 ): Expression {
-  return (
-    <RenderVoidElement name="track" attrs={props} list={trackList}/>
-  );
+  return <RenderVoidElement name="track" attrs={props} list={trackList} />;
 }
 
 /**
@@ -3048,12 +3051,12 @@ export function Var(
 }
 
 export type VideoProps = TagProps & {
-  disablepictureinpicture?: boolean | undefined;
-  disableremoteplayback?: boolean | undefined;
-  height?: number | undefined;
-  playsinline?: boolean | undefined;
-  poster?: Expression | undefined;
-  width?: number | undefined;
+  disablepictureinpicture?: boolean;
+  disableremoteplayback?: boolean;
+  height?: number;
+  playsinline?: boolean;
+  poster?: Expression;
+  width?: number;
 };
 
 const videoList: RenderList = [
@@ -3089,30 +3092,30 @@ export function Wbr(props: TagProps): Expression {
 // export type SvgProps = AriaProps & {
 //   // Attributes which also defined in HTMLAttributes
 //   // See comment in SVGDOMPropertyConfig.js
-//   clazz?: Expression | undefined;
-//   color?: Expression | undefined;
-//   height?: number | undefined;
-//   id?: Expression | undefined;
-//   lang?: Expression | undefined;
-//   max?: number | undefined;
-//   media?: Expression | undefined;
-//   method?: Expression | undefined;
-//   min?: number | undefined;
-//   name?: Expression | undefined;
-//   style?: CssProperties | undefined;
-//   target?: HTMLAttributeAnchorTarget | undefined;
-//   type?: Expression | undefined;
-//   width?: number | undefined;
+//   clazz?: Expression;
+//   color?: Expression;
+//   height?: number;
+//   id?: Expression;
+//   lang?: Expression;
+//   max?: number;
+//   media?: Expression;
+//   method?: Expression;
+//   min?: number;
+//   name?: Expression;
+//   style?: CssProperties;
+//   target?: HTMLAttributeAnchorTarget;
+//   type?: Expression;
+//   width?: number;
 
 //   // Other HTML properties supported by SVG elements in browsers
-//   role?: AriaRole | undefined;
-//   tabindex?: number | undefined;
+//   role?: AriaRole;
+//   tabindex?: number;
 //   crossOrigin?: CrossOrigin;
 
 //   // SVG Specific attributes
-//   accentHeight?: number | Expression | undefined;
-//   accumulate?: "none" | "sum" | undefined;
-//   additive?: "replace" | "sum" | undefined;
+//   accentHeight?: number | Expression;
+//   accumulate?: "none" | "sum";
+//   additive?: "replace" | "sum";
 //   alignmentBaseline?:
 //     | "auto"
 //     | "baseline"
@@ -3127,250 +3130,250 @@ export function Wbr(props: TagProps): Expression {
 //     | "hanging"
 //     | "mathematical"
 //     | "inherit"
-//     | undefined;
-//   allowReorder?: "no" | "yes" | undefined;
-//   alphabetic?: number | Expression | undefined;
-//   amplitude?: number | Expression | undefined;
-//   arabicForm?: "initial" | "medial" | "terminal" | "isolated" | undefined;
-//   ascent?: number | Expression | undefined;
-//   attributeName?: Expression | undefined;
-//   attributeType?: Expression | undefined;
-//   autoReverse?: boolean | undefined;
-//   azimuth?: number | Expression | undefined;
-//   baseFrequency?: number | Expression | undefined;
-//   baselineShift?: number | Expression | undefined;
-//   baseProfile?: number | Expression | undefined;
-//   bbox?: number | Expression | undefined;
-//   begin?: number | Expression | undefined;
-//   bias?: number | Expression | undefined;
-//   by?: number | Expression | undefined;
-//   calcMode?: number | Expression | undefined;
-//   capHeight?: number | Expression | undefined;
-//   clip?: number | Expression | undefined;
-//   clipPath?: Expression | undefined;
-//   clipPathUnits?: number | Expression | undefined;
-//   clipRule?: number | Expression | undefined;
-//   colorInterpolation?: number | Expression | undefined;
+//    ;
+//   allowReorder?: "no" | "yes";
+//   alphabetic?: number | Expression;
+//   amplitude?: number | Expression;
+//   arabicForm?: "initial" | "medial" | "terminal" | "isolated";
+//   ascent?: number | Expression;
+//   attributeName?: Expression;
+//   attributeType?: Expression;
+//   autoReverse?: boolean;
+//   azimuth?: number | Expression;
+//   baseFrequency?: number | Expression;
+//   baselineShift?: number | Expression;
+//   baseProfile?: number | Expression;
+//   bbox?: number | Expression;
+//   begin?: number | Expression;
+//   bias?: number | Expression;
+//   by?: number | Expression;
+//   calcMode?: number | Expression;
+//   capHeight?: number | Expression;
+//   clip?: number | Expression;
+//   clipPath?: Expression;
+//   clipPathUnits?: number | Expression;
+//   clipRule?: number | Expression;
+//   colorInterpolation?: number | Expression;
 //   colorInterpolationFilters?:
 //     | "auto"
 //     | "sRGB"
 //     | "linearRGB"
 //     | "inherit"
-//     | undefined;
-//   colorProfile?: number | Expression | undefined;
-//   colorRendering?: number | Expression | undefined;
-//   contentScriptType?: number | Expression | undefined;
-//   contentStyleType?: number | Expression | undefined;
-//   cursor?: number | Expression | undefined;
-//   cx?: number | Expression | undefined;
-//   cy?: number | Expression | undefined;
-//   d?: Expression | undefined;
-//   decelerate?: number | Expression | undefined;
-//   descent?: number | Expression | undefined;
-//   diffuseConstant?: number | Expression | undefined;
-//   direction?: number | Expression | undefined;
-//   display?: number | Expression | undefined;
-//   divisor?: number | Expression | undefined;
-//   dominantBaseline?: number | Expression | undefined;
-//   dur?: number | Expression | undefined;
-//   dx?: number | Expression | undefined;
-//   dy?: number | Expression | undefined;
-//   edgeMode?: number | Expression | undefined;
-//   elevation?: number | Expression | undefined;
-//   enableBackground?: number | Expression | undefined;
-//   end?: number | Expression | undefined;
-//   exponent?: number | Expression | undefined;
-//   externalResourcesRequired?: boolean | undefined;
-//   fill?: Expression | undefined;
-//   fillOpacity?: number | Expression | undefined;
-//   fillRule?: "nonzero" | "evenodd" | "inherit" | undefined;
-//   filter?: Expression | undefined;
-//   filterRes?: number | Expression | undefined;
-//   filterUnits?: number | Expression | undefined;
-//   floodColor?: number | Expression | undefined;
-//   floodOpacity?: number | Expression | undefined;
-//   focusable?: boolean | "auto" | undefined;
-//   fontFamily?: Expression | undefined;
-//   fontSize?: number | Expression | undefined;
-//   fontSizeAdjust?: number | Expression | undefined;
-//   fontStretch?: number | Expression | undefined;
-//   fontStyle?: number | Expression | undefined;
-//   fontVariant?: number | Expression | undefined;
-//   fontWeight?: number | Expression | undefined;
-//   format?: number | Expression | undefined;
-//   fr?: number | Expression | undefined;
-//   from?: number | Expression | undefined;
-//   fx?: number | Expression | undefined;
-//   fy?: number | Expression | undefined;
-//   g1?: number | Expression | undefined;
-//   g2?: number | Expression | undefined;
-//   glyphName?: number | Expression | undefined;
-//   glyphOrientationHorizontal?: number | Expression | undefined;
-//   glyphOrientationVertical?: number | Expression | undefined;
-//   glyphRef?: number | Expression | undefined;
-//   gradientTransform?: Expression | undefined;
-//   gradientUnits?: Expression | undefined;
-//   hanging?: number | Expression | undefined;
-//   horizAdvX?: number | Expression | undefined;
-//   horizOriginX?: number | Expression | undefined;
-//   href?: Expression | undefined;
-//   ideographic?: number | Expression | undefined;
-//   imageRendering?: number | Expression | undefined;
-//   in2?: number | Expression | undefined;
-//   in?: Expression | undefined;
-//   intercept?: number | Expression | undefined;
-//   k1?: number | Expression | undefined;
-//   k2?: number | Expression | undefined;
-//   k3?: number | Expression | undefined;
-//   k4?: number | Expression | undefined;
-//   k?: number | Expression | undefined;
-//   kernelMatrix?: number | Expression | undefined;
-//   kernelUnitLength?: number | Expression | undefined;
-//   kerning?: number | Expression | undefined;
-//   keyPoints?: number | Expression | undefined;
-//   keySplines?: number | Expression | undefined;
-//   keyTimes?: number | Expression | undefined;
-//   lengthAdjust?: number | Expression | undefined;
-//   letterSpacing?: number | Expression | undefined;
-//   lightingColor?: number | Expression | undefined;
-//   limitingConeAngle?: number | Expression | undefined;
-//   local?: number | Expression | undefined;
-//   markerEnd?: Expression | undefined;
-//   markerHeight?: number | Expression | undefined;
-//   markerMid?: Expression | undefined;
-//   markerStart?: Expression | undefined;
-//   markerUnits?: number | Expression | undefined;
-//   markerWidth?: number | Expression | undefined;
-//   mask?: Expression | undefined;
-//   maskContentUnits?: number | Expression | undefined;
-//   maskUnits?: number | Expression | undefined;
-//   mathematical?: number | Expression | undefined;
-//   mode?: number | Expression | undefined;
-//   numOctaves?: number | Expression | undefined;
-//   offset?: number | Expression | undefined;
-//   opacity?: number | Expression | undefined;
-//   operator?: number | Expression | undefined;
-//   order?: number | Expression | undefined;
-//   orient?: number | Expression | undefined;
-//   orientation?: number | Expression | undefined;
-//   origin?: number | Expression | undefined;
-//   overflow?: number | Expression | undefined;
-//   overlinePosition?: number | Expression | undefined;
-//   overlineThickness?: number | Expression | undefined;
-//   paintOrder?: number | Expression | undefined;
-//   panose1?: number | Expression | undefined;
-//   path?: Expression | undefined;
-//   pathLength?: number | Expression | undefined;
-//   patternContentUnits?: Expression | undefined;
-//   patternTransform?: number | Expression | undefined;
-//   patternUnits?: Expression | undefined;
-//   pointerEvents?: number | Expression | undefined;
-//   points?: Expression | undefined;
-//   pointsAtX?: number | Expression | undefined;
-//   pointsAtY?: number | Expression | undefined;
-//   pointsAtZ?: number | Expression | undefined;
-//   preserveAlpha?: boolean | undefined;
-//   preserveAspectRatio?: Expression | undefined;
-//   primitiveUnits?: number | Expression | undefined;
-//   r?: number | Expression | undefined;
-//   radius?: number | Expression | undefined;
-//   refX?: number | Expression | undefined;
-//   refY?: number | Expression | undefined;
-//   renderingIntent?: number | Expression | undefined;
-//   repeatCount?: number | Expression | undefined;
-//   repeatDur?: number | Expression | undefined;
-//   requiredExtensions?: number | Expression | undefined;
-//   requiredFeatures?: number | Expression | undefined;
-//   restart?: number | Expression | undefined;
-//   result?: Expression | undefined;
-//   rotate?: number | Expression | undefined;
-//   rx?: number | Expression | undefined;
-//   ry?: number | Expression | undefined;
-//   scale?: number | Expression | undefined;
-//   seed?: number | Expression | undefined;
-//   shapeRendering?: number | Expression | undefined;
-//   slope?: number | Expression | undefined;
-//   spacing?: number | Expression | undefined;
-//   specularConstant?: number | Expression | undefined;
-//   specularExponent?: number | Expression | undefined;
-//   speed?: number | Expression | undefined;
-//   spreadMethod?: Expression | undefined;
-//   startOffset?: number | Expression | undefined;
-//   stdDeviation?: number | Expression | undefined;
-//   stemh?: number | Expression | undefined;
-//   stemv?: number | Expression | undefined;
-//   stitchTiles?: number | Expression | undefined;
-//   stopColor?: Expression | undefined;
-//   stopOpacity?: number | Expression | undefined;
-//   strikethroughPosition?: number | Expression | undefined;
-//   strikethroughThickness?: number | Expression | undefined;
-//   Expression?: number | Expression | undefined;
-//   stroke?: Expression | undefined;
-//   strokeDasharray?: Expression | number | undefined;
-//   strokeDashoffset?: Expression | number | undefined;
-//   strokeLinecap?: "butt" | "round" | "square" | "inherit" | undefined;
-//   strokeLinejoin?: "miter" | "round" | "bevel" | "inherit" | undefined;
-//   strokeMiterlimit?: number | Expression | undefined;
-//   strokeOpacity?: number | Expression | undefined;
-//   strokeWidth?: number | Expression | undefined;
-//   surfaceScale?: number | Expression | undefined;
-//   systemLanguage?: number | Expression | undefined;
-//   tableValues?: number | Expression | undefined;
-//   targetX?: number | Expression | undefined;
-//   targetY?: number | Expression | undefined;
-//   textAnchor?: Expression | undefined;
-//   textDecoration?: number | Expression | undefined;
-//   textLength?: number | Expression | undefined;
-//   textRendering?: number | Expression | undefined;
-//   to?: number | Expression | undefined;
-//   transform?: Expression | undefined;
-//   u1?: number | Expression | undefined;
-//   u2?: number | Expression | undefined;
-//   underlinePosition?: number | Expression | undefined;
-//   underlineThickness?: number | Expression | undefined;
-//   unicode?: number | Expression | undefined;
-//   unicodeBidi?: number | Expression | undefined;
-//   unicodeRange?: number | Expression | undefined;
-//   unitsPerEm?: number | Expression | undefined;
-//   vAlphabetic?: number | Expression | undefined;
-//   values?: Expression | undefined;
-//   vectorEffect?: number | Expression | undefined;
-//   version?: Expression | undefined;
-//   vertAdvY?: number | Expression | undefined;
-//   vertOriginX?: number | Expression | undefined;
-//   vertOriginY?: number | Expression | undefined;
-//   vHanging?: number | Expression | undefined;
-//   vIdeographic?: number | Expression | undefined;
-//   viewBox?: Expression | undefined;
-//   viewTarget?: number | Expression | undefined;
-//   visibility?: number | Expression | undefined;
-//   vMathematical?: number | Expression | undefined;
-//   widths?: number | Expression | undefined;
-//   wordSpacing?: number | Expression | undefined;
-//   writingMode?: number | Expression | undefined;
-//   x1?: number | Expression | undefined;
-//   x2?: number | Expression | undefined;
-//   x?: number | Expression | undefined;
-//   xChannelSelector?: Expression | undefined;
-//   xHeight?: number | Expression | undefined;
-//   xlinkActuate?: Expression | undefined;
-//   xlinkArcrole?: Expression | undefined;
-//   xlinkHref?: Expression | undefined;
-//   xlinkRole?: Expression | undefined;
-//   xlinkShow?: Expression | undefined;
-//   xlinkTitle?: Expression | undefined;
-//   xlinkType?: Expression | undefined;
-//   xmlBase?: Expression | undefined;
-//   xmlLang?: Expression | undefined;
-//   xmlns?: Expression | undefined;
-//   xmlnsXlink?: Expression | undefined;
-//   xmlSpace?: Expression | undefined;
-//   y1?: number | Expression | undefined;
-//   y2?: number | Expression | undefined;
-//   y?: number | Expression | undefined;
-//   yChannelSelector?: Expression | undefined;
-//   z?: number | Expression | undefined;
-//   zoomAndPan?: Expression | undefined;
+//    ;
+//   colorProfile?: number | Expression;
+//   colorRendering?: number | Expression;
+//   contentScriptType?: number | Expression;
+//   contentStyleType?: number | Expression;
+//   cursor?: number | Expression;
+//   cx?: number | Expression;
+//   cy?: number | Expression;
+//   d?: Expression;
+//   decelerate?: number | Expression;
+//   descent?: number | Expression;
+//   diffuseConstant?: number | Expression;
+//   direction?: number | Expression;
+//   display?: number | Expression;
+//   divisor?: number | Expression;
+//   dominantBaseline?: number | Expression;
+//   dur?: number | Expression;
+//   dx?: number | Expression;
+//   dy?: number | Expression;
+//   edgeMode?: number | Expression;
+//   elevation?: number | Expression;
+//   enableBackground?: number | Expression;
+//   end?: number | Expression;
+//   exponent?: number | Expression;
+//   externalResourcesRequired?: boolean;
+//   fill?: Expression;
+//   fillOpacity?: number | Expression;
+//   fillRule?: "nonzero" | "evenodd" | "inherit";
+//   filter?: Expression;
+//   filterRes?: number | Expression;
+//   filterUnits?: number | Expression;
+//   floodColor?: number | Expression;
+//   floodOpacity?: number | Expression;
+//   focusable?: boolean | "auto";
+//   fontFamily?: Expression;
+//   fontSize?: number | Expression;
+//   fontSizeAdjust?: number | Expression;
+//   fontStretch?: number | Expression;
+//   fontStyle?: number | Expression;
+//   fontVariant?: number | Expression;
+//   fontWeight?: number | Expression;
+//   format?: number | Expression;
+//   fr?: number | Expression;
+//   from?: number | Expression;
+//   fx?: number | Expression;
+//   fy?: number | Expression;
+//   g1?: number | Expression;
+//   g2?: number | Expression;
+//   glyphName?: number | Expression;
+//   glyphOrientationHorizontal?: number | Expression;
+//   glyphOrientationVertical?: number | Expression;
+//   glyphRef?: number | Expression;
+//   gradientTransform?: Expression;
+//   gradientUnits?: Expression;
+//   hanging?: number | Expression;
+//   horizAdvX?: number | Expression;
+//   horizOriginX?: number | Expression;
+//   href?: Expression;
+//   ideographic?: number | Expression;
+//   imageRendering?: number | Expression;
+//   in2?: number | Expression;
+//   in?: Expression;
+//   intercept?: number | Expression;
+//   k1?: number | Expression;
+//   k2?: number | Expression;
+//   k3?: number | Expression;
+//   k4?: number | Expression;
+//   k?: number | Expression;
+//   kernelMatrix?: number | Expression;
+//   kernelUnitLength?: number | Expression;
+//   kerning?: number | Expression;
+//   keyPoints?: number | Expression;
+//   keySplines?: number | Expression;
+//   keyTimes?: number | Expression;
+//   lengthAdjust?: number | Expression;
+//   letterSpacing?: number | Expression;
+//   lightingColor?: number | Expression;
+//   limitingConeAngle?: number | Expression;
+//   local?: number | Expression;
+//   markerEnd?: Expression;
+//   markerHeight?: number | Expression;
+//   markerMid?: Expression;
+//   markerStart?: Expression;
+//   markerUnits?: number | Expression;
+//   markerWidth?: number | Expression;
+//   mask?: Expression;
+//   maskContentUnits?: number | Expression;
+//   maskUnits?: number | Expression;
+//   mathematical?: number | Expression;
+//   mode?: number | Expression;
+//   numOctaves?: number | Expression;
+//   offset?: number | Expression;
+//   opacity?: number | Expression;
+//   operator?: number | Expression;
+//   order?: number | Expression;
+//   orient?: number | Expression;
+//   orientation?: number | Expression;
+//   origin?: number | Expression;
+//   overflow?: number | Expression;
+//   overlinePosition?: number | Expression;
+//   overlineThickness?: number | Expression;
+//   paintOrder?: number | Expression;
+//   panose1?: number | Expression;
+//   path?: Expression;
+//   pathLength?: number | Expression;
+//   patternContentUnits?: Expression;
+//   patternTransform?: number | Expression;
+//   patternUnits?: Expression;
+//   pointerEvents?: number | Expression;
+//   points?: Expression;
+//   pointsAtX?: number | Expression;
+//   pointsAtY?: number | Expression;
+//   pointsAtZ?: number | Expression;
+//   preserveAlpha?: boolean;
+//   preserveAspectRatio?: Expression;
+//   primitiveUnits?: number | Expression;
+//   r?: number | Expression;
+//   radius?: number | Expression;
+//   refX?: number | Expression;
+//   refY?: number | Expression;
+//   renderingIntent?: number | Expression;
+//   repeatCount?: number | Expression;
+//   repeatDur?: number | Expression;
+//   requiredExtensions?: number | Expression;
+//   requiredFeatures?: number | Expression;
+//   restart?: number | Expression;
+//   result?: Expression;
+//   rotate?: number | Expression;
+//   rx?: number | Expression;
+//   ry?: number | Expression;
+//   scale?: number | Expression;
+//   seed?: number | Expression;
+//   shapeRendering?: number | Expression;
+//   slope?: number | Expression;
+//   spacing?: number | Expression;
+//   specularConstant?: number | Expression;
+//   specularExponent?: number | Expression;
+//   speed?: number | Expression;
+//   spreadMethod?: Expression;
+//   startOffset?: number | Expression;
+//   stdDeviation?: number | Expression;
+//   stemh?: number | Expression;
+//   stemv?: number | Expression;
+//   stitchTiles?: number | Expression;
+//   stopColor?: Expression;
+//   stopOpacity?: number | Expression;
+//   strikethroughPosition?: number | Expression;
+//   strikethroughThickness?: number | Expression;
+//   Expression?: number | Expression;
+//   stroke?: Expression;
+//   strokeDasharray?: Expression | number;
+//   strokeDashoffset?: Expression | number;
+//   strokeLinecap?: "butt" | "round" | "square" | "inherit";
+//   strokeLinejoin?: "miter" | "round" | "bevel" | "inherit";
+//   strokeMiterlimit?: number | Expression;
+//   strokeOpacity?: number | Expression;
+//   strokeWidth?: number | Expression;
+//   surfaceScale?: number | Expression;
+//   systemLanguage?: number | Expression;
+//   tableValues?: number | Expression;
+//   targetX?: number | Expression;
+//   targetY?: number | Expression;
+//   textAnchor?: Expression;
+//   textDecoration?: number | Expression;
+//   textLength?: number | Expression;
+//   textRendering?: number | Expression;
+//   to?: number | Expression;
+//   transform?: Expression;
+//   u1?: number | Expression;
+//   u2?: number | Expression;
+//   underlinePosition?: number | Expression;
+//   underlineThickness?: number | Expression;
+//   unicode?: number | Expression;
+//   unicodeBidi?: number | Expression;
+//   unicodeRange?: number | Expression;
+//   unitsPerEm?: number | Expression;
+//   vAlphabetic?: number | Expression;
+//   values?: Expression;
+//   vectorEffect?: number | Expression;
+//   version?: Expression;
+//   vertAdvY?: number | Expression;
+//   vertOriginX?: number | Expression;
+//   vertOriginY?: number | Expression;
+//   vHanging?: number | Expression;
+//   vIdeographic?: number | Expression;
+//   viewBox?: Expression;
+//   viewTarget?: number | Expression;
+//   visibility?: number | Expression;
+//   vMathematical?: number | Expression;
+//   widths?: number | Expression;
+//   wordSpacing?: number | Expression;
+//   writingMode?: number | Expression;
+//   x1?: number | Expression;
+//   x2?: number | Expression;
+//   x?: number | Expression;
+//   xChannelSelector?: Expression;
+//   xHeight?: number | Expression;
+//   xlinkActuate?: Expression;
+//   xlinkArcrole?: Expression;
+//   xlinkHref?: Expression;
+//   xlinkRole?: Expression;
+//   xlinkShow?: Expression;
+//   xlinkTitle?: Expression;
+//   xlinkType?: Expression;
+//   xmlBase?: Expression;
+//   xmlLang?: Expression;
+//   xmlns?: Expression;
+//   xmlnsXlink?: Expression;
+//   xmlSpace?: Expression;
+//   y1?: number | Expression;
+//   y2?: number | Expression;
+//   y?: number | Expression;
+//   yChannelSelector?: Expression;
+//   z?: number | Expression;
+//   zoomAndPan?: Expression;
 // };
 
 /////////////////////////////
@@ -3414,8 +3417,35 @@ type RenderList = [
   (attr: string, value: any) => Expression | null,
 ][];
 
-function renderExpression(attr: string, value: any): Expression | null {
+function renderExpression(attr: string, value: Expression): Expression | null {
   return <>{attr}="{<EscapeHtml>{value}</EscapeHtml>}"</>;
+}
+
+function renderSpaceSeparatedList(
+  attr: string,
+  list: Expression[],
+): Expression | null {
+  const actualExps: Expression[] = [];
+
+  let first = true;
+  for (const exp of list) {
+    if (!first) {
+      actualExps.push(" ");
+    }
+
+    actualExps.push(exp);
+
+    first = false;
+  }
+  return (
+    <>
+      {attr}="{
+        <EscapeHtml>
+          <fragment exps={actualExps} />
+        </EscapeHtml>
+      }"
+    </>
+  );
 }
 
 function renderBoolean(attr: string, value: any): Expression | null {
@@ -3438,14 +3468,6 @@ function renderBooleanOrEnum(attr: string, value: any): Expression | null {
   }
 }
 
-// function renderNumberOrExpression(attr: string, value: any): Expression | null {
-//   if (typeof value === "number") {
-//     return renderNumber(attr, value);
-//   } else {
-//     return renderExpression(attr, value);
-//   }
-// }
-
 function renderYesNo(attr: string, value: any): Expression | null {
   return value === true ? <>{attr}="yes"</> : <>{attr}="no"</>;
 }
@@ -3458,15 +3480,38 @@ function renderFor(_attr: string, value: any): Expression | null {
   return <>for="{<EscapeHtml>{value}</EscapeHtml>}"</>;
 }
 
+function renderClass(_attr: string, exps: any): Expression | null {
+  return renderSpaceSeparatedList("class", exps);
+}
+
+function renderExportparts(_attr: string, parts_: any): Expression | null {
+  const parts: (Expression | [Expression, Expression])[] = parts_;
+  const exps: Expression[] = [];
+
+  let first = true;
+  for (const part of parts) {
+    if (Array.isArray(part)) {
+      exps.push(part[0]);
+      exps.push(": ");
+      exps.push(part[1]);
+    } else {
+      exps.push(part);
+    }
+
+    if (!first) {
+      exps.push(",");
+    }
+
+    first = false;
+  }
+
+  return <>exportparts="{<fragment exps={exps} />}"</>;
+}
+
 function RenderRenderList(
   { attrs, list }: { attrs: Record<PropertyKey, any>; list: RenderList },
 ): Expression {
   const result: Expression[] = [];
-
-  if (attrs.clazz !== undefined) {
-    result.push(" ");
-    result.push(<>class="{attrs.clazz}"</>);
-  }
 
   if (attrs.data !== undefined) {
     const data = attrs.data as Record<string, Expression>;
@@ -3489,7 +3534,7 @@ function RenderRenderList(
     }
   }
 
-  return result;
+  return <fragment exps={result} />;
 }
 
 // "void element" is the official name for "self-closing tags".

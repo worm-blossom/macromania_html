@@ -4,7 +4,7 @@
   
     "imports": {
       "macromaniajsx/jsx-dev-runtime": "../macromania/mod.ts",
-      "macromaniajsx/jsx-runtime": "../macromania/mos.ts",
+      "macromaniajsx/jsx-runtime": "../macromania/mod.ts",
     },
   
     "compilerOptions": {
@@ -12,6 +12,10 @@
       "jsxImportSource": "macromaniajsx",
       "lib": ["deno.ns", "dom"],
       "strict": true
+    },
+
+    "tasks": {
+      "test": "deno test test/tests.tsx"
     }
   }
   
