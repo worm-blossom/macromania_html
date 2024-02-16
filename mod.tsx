@@ -1,8 +1,5 @@
-// deno-lint-ignore-file no-explicit-any
 /*
-Macros for generating html.
-
-Heavily based off the definitely-typed react typings for html (MIT-licensed): https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/index.d.ts
+Macros for generating HTML, and their props.
 */
 
 import { Expression, Expressions, expressions } from "./deps.ts";
@@ -16,254 +13,249 @@ export type CssProperties = Expression;
 export type CrossOrigin = "anonymous" | "use-credentials" | "";
 
 /**
- * All the WAI-ARIA 1.1 attributes from {@link https://www.w3.org/TR/wai-aria-1.1/}
+ * All the [WAI-ARIA 1.2](https://www.w3.org/TR/wai-aria-1.2/) attributes.
  */
 export type AriaProps = {
-  /** Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application. */
-  "aria-activedescendant"?: Expression;
-  /** Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute. */
-  "aria-atomic"?: boolean;
-  /**
-   * Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be
-   * presented if they are made.
-   */
-  "aria-autocomplete"?: "none" | "inline" | "list" | "both";
-  /** Indicates an element is being modified and that assistive technologies MAY want to wait until the modifications are complete before exposing them to the user. */
-  /**
-   * Defines a string value that labels the current element, which is intended to be converted into Braille.
-   * @see aria-label.
-   */
-  "aria-braillelabel"?: Expression;
-  /**
-   * Defines a human-readable, author-localized abbreviated description for the role of an element, which is intended to be converted into Braille.
-   * @see aria-roledescription.
-   */
-  "aria-brailleroledescription"?: Expression;
-  "aria-busy"?: boolean;
-  /**
-   * Indicates the current "checked" state of checkboxes, radio buttons, and other widgets.
-   * @see aria-pressed @see aria-selected.
-   */
-  "aria-checked"?: boolean | "mixed";
-  /**
-   * Defines the total number of columns in a table, grid, or treegrid.
-   * @see aria-colindex.
-   */
-  "aria-colcount"?: number;
-  /**
-   * Defines an element's column index or position with respect to the total number of columns within a table, grid, or treegrid.
-   * @see aria-colcount @see aria-colspan.
-   */
-  "aria-colindex"?: number;
-  /**
-   * Defines a human readable text alternative of aria-colindex.
-   * @see aria-rowindextext.
-   */
-  "aria-colindextext"?: Expression;
-  /**
-   * Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid.
-   * @see aria-colindex @see aria-rowspan.
-   */
-  "aria-colspan"?: number;
-  /**
-   * Identifies the element (or elements) whose contents or presence are controlled by the current element.
-   * @see aria-owns.
-   */
-  "aria-controls"?: Expression;
-  /** Indicates the element that represents the current item within a container or set of related elements. */
-  "aria-current"?:
-    | boolean
-    | "page"
-    | "step"
-    | "location"
-    | "date"
-    | "time"
-   ;
-  /**
-   * Identifies the element (or elements) that describes the object.
-   * @see aria-labelledby
-   */
-  "aria-describedby"?: Expression;
-  /**
-   * Defines a string value that describes or annotates the current element.
-   * @see related aria-describedby.
-   */
-  "aria-description"?: Expression;
-  /**
-   * Identifies the element that provides a detailed, extended description for the object.
-   * @see aria-describedby.
-   */
-  "aria-details"?: Expression;
-  /**
-   * Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
-   * @see aria-hidden @see aria-readonly.
-   */
-  "aria-disabled"?: boolean;
-  /**
-   * Indicates what functions can be performed when a dragged object is released on the drop target.
-   * @deprecated in ARIA 1.1
-   */
-  "aria-dropeffect"?:
-    | "none"
-    | "copy"
-    | "execute"
-    | "link"
-    | "move"
-    | "popup"
-   ;
-  /**
-   * Identifies the element that provides an error message for the object.
-   * @see aria-invalid @see aria-describedby.
-   */
-  "aria-errormessage"?: Expression;
-  /** Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed. */
-  "aria-expanded"?: boolean;
-  /**
-   * Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion,
-   * allows assistive technology to override the general default of reading in document source order.
-   */
-  "aria-flowto"?: Expression;
-  /**
-   * Indicates an element's "grabbed" state in a drag-and-drop operation.
-   * @deprecated in ARIA 1.1
-   */
-  "aria-grabbed"?: boolean;
-  /** Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element. */
-  "aria-haspopup"?:
-    | boolean
-    | "menu"
-    | "listbox"
-    | "tree"
-    | "grid"
-    | "dialog"
-   ;
-  /**
-   * Indicates whether the element is exposed to an accessibility API.
-   * @see aria-disabled.
-   */
-  "aria-hidden"?: boolean;
-  /**
-   * Indicates the entered value does not conform to the format expected by the application.
-   * @see aria-errormessage.
-   */
-  "aria-invalid"?:
-    | boolean
-    | "grammar"
-    | "spelling"
-   ;
-  /** Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element. */
-  "aria-keyshortcuts"?: Expression;
-  /**
-   * Defines a string value that labels the current element.
-   * @see aria-labelledby.
-   */
-  "aria-label"?: Expression;
-  /**
-   * Identifies the element (or elements) that labels the current element.
-   * @see aria-describedby.
-   */
-  "aria-labelledby"?: Expression;
-  /** Defines the hierarchical level of an element within a structure. */
-  "aria-level"?: number;
-  /** Indicates that an element will be updated, and describes the types of updates the user agents, assistive technologies, and user can expect from the live region. */
-  "aria-live"?: "off" | "assertive" | "polite";
-  /** Indicates whether an element is modal when displayed. */
-  "aria-modal"?: boolean;
-  /** Indicates whether a text box accepts multiple lines of input or only a single line. */
-  "aria-multiline"?: boolean;
-  /** Indicates that the user may select more than one item from the current selectable descendants. */
-  "aria-multiselectable"?: boolean;
-  /** Indicates whether the element's orientation is horizontal, vertical, or unknown/ambiguous. */
-  "aria-orientation"?: "horizontal" | "vertical";
-  /**
-   * Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship
-   * between DOM elements where the DOM hierarchy cannot be used to represent the relationship.
-   * @see aria-controls.
-   */
-  "aria-owns"?: Expression;
-  /**
-   * Defines a short hint (a word or short phrase) intended to aid the user with data entry when the control has no value.
-   * A hint could be a sample value or a brief description of the expected format.
-   */
-  "aria-placeholder"?: Expression;
-  /**
-   * Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
-   * @see aria-setsize.
-   */
-  "aria-posinset"?: number;
-  /**
-   * Indicates the current "pressed" state of toggle buttons.
-   * @see aria-checked @see aria-selected.
-   */
-  "aria-pressed"?: boolean | "mixed";
-  /**
-   * Indicates that the element is not editable, but is otherwise operable.
-   * @see aria-disabled.
-   */
-  "aria-readonly"?: boolean;
-  /**
-   * Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
-   * @see aria-atomic.
-   */
-  "aria-relevant"?:
-    | "additions"
-    | "additions removals"
-    | "additions text"
-    | "all"
-    | "removals"
-    | "removals additions"
-    | "removals text"
-    | "text"
-    | "text additions"
-    | "text removals"
-   ;
-  /** Indicates that user input is required on the element before a form may be submitted. */
-  "aria-required"?: boolean;
-  /** Defines a human-readable, author-localized description for the role of an element. */
-  "aria-roledescription"?: Expression;
-  /**
-   * Defines the total number of rows in a table, grid, or treegrid.
-   * @see aria-rowindex.
-   */
-  "aria-rowcount"?: number;
-  /**
-   * Defines an element's row index or position with respect to the total number of rows within a table, grid, or treegrid.
-   * @see aria-rowcount @see aria-rowspan.
-   */
-  "aria-rowindex"?: number;
-  /**
-   * Defines a human readable text alternative of aria-rowindex.
-   * @see aria-colindextext.
-   */
-  "aria-rowindextext"?: Expression;
-  /**
-   * Defines the number of rows spanned by a cell or gridcell within a table, grid, or treegrid.
-   * @see aria-rowindex @see aria-colspan.
-   */
-  "aria-rowspan"?: number;
-  /**
-   * Indicates the current "selected" state of various widgets.
-   * @see aria-checked @see aria-pressed.
-   */
-  "aria-selected"?: boolean;
-  /**
-   * Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
-   * @see aria-posinset.
-   */
-  "aria-setsize"?: number;
-  /** Indicates if items in a table or grid are sorted in ascending or descending order. */
-  "aria-sort"?: "none" | "ascending" | "descending" | "other";
-  /** Defines the maximum allowed value for a range widget. */
-  "aria-valuemax"?: number;
-  /** Defines the minimum allowed value for a range widget. */
-  "aria-valuemin"?: number;
-  /**
-   * Defines the current value for a range widget.
-   * @see aria-valuetext.
-   */
-  "aria-valuenow"?: number;
-  /** Defines the human readable text alternative of aria-valuenow for a range widget. */
-  "aria-valuetext"?: Expression;
+  // /** Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application. */
+  // "aria-activedescendant"?: Expression;
+  // /** Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute. */
+  // "aria-atomic"?: boolean;
+  // /**
+  //  * Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be
+  //  * presented if they are made.
+  //  */
+  // "aria-autocomplete"?: "none" | "inline" | "list" | "both";
+  // /** Indicates an element is being modified and that assistive technologies MAY want to wait until the modifications are complete before exposing them to the user. */
+  // /**
+  //  * Defines a string value that labels the current element, which is intended to be converted into Braille.
+  //  * @see aria-label.
+  //  */
+  // "aria-braillelabel"?: Expression;
+  // /**
+  //  * Defines a human-readable, author-localized abbreviated description for the role of an element, which is intended to be converted into Braille.
+  //  * @see aria-roledescription.
+  //  */
+  // "aria-brailleroledescription"?: Expression;
+  // "aria-busy"?: boolean;
+  // /**
+  //  * Indicates the current "checked" state of checkboxes, radio buttons, and other widgets.
+  //  * @see aria-pressed @see aria-selected.
+  //  */
+  // "aria-checked"?: boolean | "mixed";
+  // /**
+  //  * Defines the total number of columns in a table, grid, or treegrid.
+  //  * @see aria-colindex.
+  //  */
+  // "aria-colcount"?: number;
+  // /**
+  //  * Defines an element's column index or position with respect to the total number of columns within a table, grid, or treegrid.
+  //  * @see aria-colcount @see aria-colspan.
+  //  */
+  // "aria-colindex"?: number;
+  // /**
+  //  * Defines a human readable text alternative of aria-colindex.
+  //  * @see aria-rowindextext.
+  //  */
+  // "aria-colindextext"?: Expression;
+  // /**
+  //  * Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid.
+  //  * @see aria-colindex @see aria-rowspan.
+  //  */
+  // "aria-colspan"?: number;
+  // /**
+  //  * Identifies the element (or elements) whose contents or presence are controlled by the current element.
+  //  * @see aria-owns.
+  //  */
+  // "aria-controls"?: Expression;
+  // /** Indicates the element that represents the current item within a container or set of related elements. */
+  // "aria-current"?:
+  //   | boolean
+  //   | "page"
+  //   | "step"
+  //   | "location"
+  //   | "date"
+  //   | "time";
+  // /**
+  //  * Identifies the element (or elements) that describes the object.
+  //  * @see aria-labelledby
+  //  */
+  // "aria-describedby"?: Expression;
+  // /**
+  //  * Defines a string value that describes or annotates the current element.
+  //  * @see related aria-describedby.
+  //  */
+  // "aria-description"?: Expression;
+  // /**
+  //  * Identifies the element that provides a detailed, extended description for the object.
+  //  * @see aria-describedby.
+  //  */
+  // "aria-details"?: Expression;
+  // /**
+  //  * Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
+  //  * @see aria-hidden @see aria-readonly.
+  //  */
+  // "aria-disabled"?: boolean;
+  // /**
+  //  * Indicates what functions can be performed when a dragged object is released on the drop target.
+  //  * @deprecated in ARIA 1.1
+  //  */
+  // "aria-dropeffect"?:
+  //   | "none"
+  //   | "copy"
+  //   | "execute"
+  //   | "link"
+  //   | "move"
+  //   | "popup";
+  // /**
+  //  * Identifies the element that provides an error message for the object.
+  //  * @see aria-invalid @see aria-describedby.
+  //  */
+  // "aria-errormessage"?: Expression;
+  // /** Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed. */
+  // "aria-expanded"?: boolean;
+  // /**
+  //  * Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion,
+  //  * allows assistive technology to override the general default of reading in document source order.
+  //  */
+  // "aria-flowto"?: Expression;
+  // /**
+  //  * Indicates an element's "grabbed" state in a drag-and-drop operation.
+  //  * @deprecated in ARIA 1.1
+  //  */
+  // "aria-grabbed"?: boolean;
+  // /** Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element. */
+  // "aria-haspopup"?:
+  //   | boolean
+  //   | "menu"
+  //   | "listbox"
+  //   | "tree"
+  //   | "grid"
+  //   | "dialog";
+  // /**
+  //  * Indicates whether the element is exposed to an accessibility API.
+  //  * @see aria-disabled.
+  //  */
+  // "aria-hidden"?: boolean;
+  // /**
+  //  * Indicates the entered value does not conform to the format expected by the application.
+  //  * @see aria-errormessage.
+  //  */
+  // "aria-invalid"?:
+  //   | boolean
+  //   | "grammar"
+  //   | "spelling";
+  // /** Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element. */
+  // "aria-keyshortcuts"?: Expression;
+  // /**
+  //  * Defines a string value that labels the current element.
+  //  * @see aria-labelledby.
+  //  */
+  // "aria-label"?: Expression;
+  // /**
+  //  * Identifies the element (or elements) that labels the current element.
+  //  * @see aria-describedby.
+  //  */
+  // "aria-labelledby"?: Expression;
+  // /** Defines the hierarchical level of an element within a structure. */
+  // "aria-level"?: number;
+  // /** Indicates that an element will be updated, and describes the types of updates the user agents, assistive technologies, and user can expect from the live region. */
+  // "aria-live"?: "off" | "assertive" | "polite";
+  // /** Indicates whether an element is modal when displayed. */
+  // "aria-modal"?: boolean;
+  // /** Indicates whether a text box accepts multiple lines of input or only a single line. */
+  // "aria-multiline"?: boolean;
+  // /** Indicates that the user may select more than one item from the current selectable descendants. */
+  // "aria-multiselectable"?: boolean;
+  // /** Indicates whether the element's orientation is horizontal, vertical, or unknown/ambiguous. */
+  // "aria-orientation"?: "horizontal" | "vertical";
+  // /**
+  //  * Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship
+  //  * between DOM elements where the DOM hierarchy cannot be used to represent the relationship.
+  //  * @see aria-controls.
+  //  */
+  // "aria-owns"?: Expression;
+  // /**
+  //  * Defines a short hint (a word or short phrase) intended to aid the user with data entry when the control has no value.
+  //  * A hint could be a sample value or a brief description of the expected format.
+  //  */
+  // "aria-placeholder"?: Expression;
+  // /**
+  //  * Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
+  //  * @see aria-setsize.
+  //  */
+  // "aria-posinset"?: number;
+  // /**
+  //  * Indicates the current "pressed" state of toggle buttons.
+  //  * @see aria-checked @see aria-selected.
+  //  */
+  // "aria-pressed"?: boolean | "mixed";
+  // /**
+  //  * Indicates that the element is not editable, but is otherwise operable.
+  //  * @see aria-disabled.
+  //  */
+  // "aria-readonly"?: boolean;
+  // /**
+  //  * Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
+  //  * @see aria-atomic.
+  //  */
+  // "aria-relevant"?:
+  //   | "additions"
+  //   | "additions removals"
+  //   | "additions text"
+  //   | "all"
+  //   | "removals"
+  //   | "removals additions"
+  //   | "removals text"
+  //   | "text"
+  //   | "text additions"
+  //   | "text removals";
+  // /** Indicates that user input is required on the element before a form may be submitted. */
+  // "aria-required"?: boolean;
+  // /** Defines a human-readable, author-localized description for the role of an element. */
+  // "aria-roledescription"?: Expression;
+  // /**
+  //  * Defines the total number of rows in a table, grid, or treegrid.
+  //  * @see aria-rowindex.
+  //  */
+  // "aria-rowcount"?: number;
+  // /**
+  //  * Defines an element's row index or position with respect to the total number of rows within a table, grid, or treegrid.
+  //  * @see aria-rowcount @see aria-rowspan.
+  //  */
+  // "aria-rowindex"?: number;
+  // /**
+  //  * Defines a human readable text alternative of aria-rowindex.
+  //  * @see aria-colindextext.
+  //  */
+  // "aria-rowindextext"?: Expression;
+  // /**
+  //  * Defines the number of rows spanned by a cell or gridcell within a table, grid, or treegrid.
+  //  * @see aria-rowindex @see aria-colspan.
+  //  */
+  // "aria-rowspan"?: number;
+  // /**
+  //  * Indicates the current "selected" state of various widgets.
+  //  * @see aria-checked @see aria-pressed.
+  //  */
+  // "aria-selected"?: boolean;
+  // /**
+  //  * Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
+  //  * @see aria-posinset.
+  //  */
+  // "aria-setsize"?: number;
+  // /** Indicates if items in a table or grid are sorted in ascending or descending order. */
+  // "aria-sort"?: "none" | "ascending" | "descending" | "other";
+  // /** Defines the maximum allowed value for a range widget. */
+  // "aria-valuemax"?: number;
+  // /** Defines the minimum allowed value for a range widget. */
+  // "aria-valuemin"?: number;
+  // /**
+  //  * Defines the current value for a range widget.
+  //  * @see aria-valuetext.
+  //  */
+  // "aria-valuenow"?: number;
+  // /** Defines the human readable text alternative of aria-valuenow for a range widget. */
+  // "aria-valuetext"?: Expression;
 };
 
 const ariaList: RenderList = [
@@ -332,25 +324,32 @@ export type AriaRole =
   | "application"
   | "article"
   | "banner"
+  | "blockquote"
   | "button"
+  | "caption"
   | "cell"
   | "checkbox"
+  | "code"
   | "columnheader"
   | "combobox"
   | "complementary"
   | "contentinfo"
   | "definition"
+  | "deletion"
   | "dialog"
-  | "directory"
+  // | "directory" (deprecated in ARIA 1.2)
   | "document"
+  | "emphasis"
   | "feed"
   | "figure"
   | "form"
+  | "generic"
   | "grid"
   | "gridcell"
   | "group"
   | "heading"
   | "img"
+  | "insertion"
   | "link"
   | "list"
   | "listbox"
@@ -359,6 +358,7 @@ export type AriaRole =
   | "main"
   | "marquee"
   | "math"
+  | "meter"
   | "menu"
   | "menubar"
   | "menuitem"
@@ -368,6 +368,7 @@ export type AriaRole =
   | "none"
   | "note"
   | "option"
+  | "paragraph"
   | "presentation"
   | "progressbar"
   | "radio"
@@ -383,6 +384,9 @@ export type AriaRole =
   | "slider"
   | "spinbutton"
   | "status"
+  | "strong"
+  | "subscript"
+  | "superscript"
   | "switch"
   | "tab"
   | "table"
@@ -390,6 +394,7 @@ export type AriaRole =
   | "tabpanel"
   | "term"
   | "textbox"
+  | "time"
   | "timer"
   | "toolbar"
   | "tooltip"
@@ -408,7 +413,7 @@ export type TagProps = AriaProps & {
    *
    * Each string must be exactly one [unicode code point](https://www.unicode.org/versions/Unicode15.1.0/) in length; this code point must not be [ASCII whitespace](https://infra.spec.whatwg.org/#ascii-whitespace). Each string must be unique in the list.
    */
-  accesskey?: Expression[];
+  accesskey?: Expression[] | Expression;
   /**
    * The [autocapitalize attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-autocapitalize) is an enumerated attribute whose states are the possible [autocapitalization hints](https://html.spec.whatwg.org/multipage/interaction.html#autocapitalization-hint).
    *
@@ -428,7 +433,7 @@ export type TagProps = AriaProps & {
   /**
    * The [class attribute](https://html.spec.whatwg.org/multipage/dom.html#classes) is a space-separated list of class names for the element.
    */
-  clazz?: Expression[];
+  clazz?: Expression[] | Expression;
   /**
    * The [contenteditable attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable).
    */
@@ -486,8 +491,7 @@ export type TagProps = AriaProps & {
     | "email"
     | "numeric"
     | "decimal"
-    | "search"
-   ;
+    | "search";
   /**
    * The [is attribute](https://html.spec.whatwg.org/multipage/custom-elements.html#attr-is).
    */
@@ -499,11 +503,11 @@ export type TagProps = AriaProps & {
   /**
    * Every HTML element may have an [itemprop attribute](https://html.spec.whatwg.org/multipage/microdata.html#names:-the-itemprop-attribute) specified, if doing so [adds one or more properties](https://html.spec.whatwg.org/multipage/microdata.html#the-properties-of-an-item) to one or more [items](https://html.spec.whatwg.org/multipage/microdata.html#concept-item).
    */
-  itemprop?: Expression[];
+  itemprop?: Expression[] | Expression;
   /**
    * Elements with an [itemscope attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemscope) may have an [itemref attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemref) specified, to give a list of additional elements to crawl to find the name-value pairs of the [item](https://html.spec.whatwg.org/multipage/microdata.html#concept-item).
    */
-  itemref?: Expression[];
+  itemref?: Expression[] | Expression;
   /**
    * An element with the [itemscope attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemscope) specified creates a new item, a group of name-value pairs.
    */
@@ -511,7 +515,7 @@ export type TagProps = AriaProps & {
   /**
    * Elements with an [itemscope attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemscope) may have an [itemtype attribute](https://html.spec.whatwg.org/multipage/microdata.html#attr-itemtype) specified, to give the [item types](https://html.spec.whatwg.org/multipage/microdata.html#item-types) of the [item](https://html.spec.whatwg.org/multipage/microdata.html#concept-item).
    */
-  itemtype?: Expression[];
+  itemtype?: Expression[] | Expression;
   /**
    * The [lang attribute](https://html.spec.whatwg.org/multipage/dom.html#attr-lang) specifies the primary language for the element's contents and for any of the element's attributes that contain text. Its value must be a valid [BCP 47 language tag](https://www.rfc-editor.org/info/bcp47), or the empty string. Setting the attribute to the empty string indicates that the primary language is unknown.
    */
@@ -523,7 +527,7 @@ export type TagProps = AriaProps & {
   /**
    * Any element in a shadow tree can have a [part attribute](https://drafts.csswg.org/css-shadow-parts/#part-attr). This is used to expose the element outside of the shadow tree.
    */
-  part?: Expression[];
+  part?: Expression[] | Expression;
   /**
    * All HTML elements may have the [popover attribute](https://html.spec.whatwg.org/multipage/popover.html#attr-popover) set. When specified, the element won't be rendered until it becomes shown, at which point it will be rendered on top of other page content.
    */
@@ -595,41 +599,80 @@ const tagList: RenderList = [
 ];
 
 /**
+ * A [valid navigable target name or keyword](https://html.spec.whatwg.org/multipage/document-sequences.html#valid-navigable-target-name-or-keyword) is any string that is either a [valid navigable target name](https://html.spec.whatwg.org/multipage/document-sequences.html#valid-navigable-target-name) or that is an ASCII case-insensitive match for one of: `_blank`, `_self`, `_parent`, or `_top`.
+ */
+export type NavigableTargetNameOrKeyword =
+  | "_blank"
+  | "_self"
+  | "_parent"
+  | "_top"
+  | { name: Expression };
+
+/**
+ * A [link type](https://html.spec.whatwg.org/multipage/links.html#linkTypes) that is allowed on [a](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element) and [area](https://html.spec.whatwg.org/multipage/image-maps.html#the-area-element) elements.
+ */
+export type AOrAreaLinkType =
+  | "alternate"
+  | "author"
+  | "bookmark"
+  | "external"
+  | "help"
+  | "license"
+  | "next"
+  | "nofollow"
+  | "noopener"
+  | "noreferrer"
+  | "opener"
+  | "prev"
+  | "privacy-policy"
+  | "search"
+  | "tag"
+  | "terms-of-service";
+
+/**
+ * Link-related props for both `<a>` and `<area>` elements, see https://html.spec.whatwg.org/multipage/links.html#links-created-by-a-and-area-elements
+ *
+ * Note: this does not include the [hreflang attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-hreflang) (as it is not used with `<area>` elements), nor the [type attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-type) (same reason).
+ */
+export type AOrAreaLinkProps = {
+  /**
+   * The [href attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-href).
+   */
+  href?: Expression;
+  /**
+   * The [target attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-target), if present, gives the name of the [navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#navigable) that will be used. User agents use this name when [following hyperlinks](https://html.spec.whatwg.org/multipage/links.html#following-hyperlinks-2).
+   */
+  target?: NavigableTargetNameOrKeyword;
+  /**
+   * The [download attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-download), if present, indicates that the author intends the hyperlink to be used for [downloading a resource](https://html.spec.whatwg.org/multipage/links.html#downloading-hyperlinks). The attribute may have a value; the value, if any, specifies the default filename that the author recommends for use in labeling the resource in a local file system. There are no restrictions on allowed values, but authors are cautioned that most file systems have limitations with regard to what punctuation is supported in filenames, and user agents are likely to adjust filenames accordingly.
+   */
+  download?: Expression;
+  /**
+   * The [ping attribute](https://html.spec.whatwg.org/multipage/links.html#ping), if present, gives the URLs of the resources that are interested in being notified if the user follows the hyperlink. The value must be a set of space-separated tokens, each of which must be a valid non-empty URL whose scheme is an HTTP(S) scheme. The value is used by the user agent for [hyperlink auditing](https://html.spec.whatwg.org/multipage/links.html#hyperlink-auditing).
+   */
+  ping?: Expression[];
+  /**
+   * The [rel attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-rel) on [a](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element) and [area](https://html.spec.whatwg.org/multipage/image-maps.html#the-area-element) elements controls what kinds of links the elements create.
+   */
+  rel?: AOrAreaLinkType;
+  /**
+   * The [referrerpolicy attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-referrerpolicy) sets the [referrer policy](https://w3c.github.io/webappsec-referrer-policy/#referrer-policy) used when [following hyperlinks](https://html.spec.whatwg.org/multipage/links.html#following-hyperlinks-2).
+   */
+  referrerpolicy?: ReferrerPolicy;
+};
+
+/**
  * Props for the {@linkcode A} macro.
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attributes}
  */
-export type AProps = TagProps & {
+export type AProps = AOrAreaLinkProps & {
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download}
-   */
-  download?: Expression;
-  /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#href}
-   */
-  href?: Expression;
-  /**
-   *  @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#hreflang}
+   *  The [hreflang attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-hreflang) on [a](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element) elements that create [hyperlinks](https://html.spec.whatwg.org/multipage/links.html#hyperlink), if present, gives the language of the linked resource. It is purely advisory. The value must be a valid [BCP 47 language tag](https://www.rfc-editor.org/info/bcp47). User agents must not consider this attribute authoritative — upon fetching the resource, user agents must use only language information associated with the resource to determine its language, not metadata included in the link to the resource.
    */
   hreflang?: Expression;
   /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#ping}
-   */
-  ping?: Expression;
-  /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#referrerpolicy}
-   */
-  referrerpolicy?: HTMLAttributeReferrerPolicy;
-  /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#rel}
-   */
-  rel?: Expression;
-  /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target}
-   */
-  target?: HTMLAttributeAnchorTarget;
-  /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#type}
+   * The [type attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-type), if present, gives the [MIME type](https://mimesniff.spec.whatwg.org/#mime-type) of the linked resource. It is purely advisory. The value must be a [valid MIME type string](https://mimesniff.spec.whatwg.org/#valid-mime-type). User agents must not consider the type attribute authoritative — upon fetching the resource, user agents must not use metadata included in the link to the resource to determine its type.
    */
   type?: Expression;
 };
@@ -714,7 +757,7 @@ export type AreaProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#referrerpolicy}
    */
-  referrerpolicy?: HTMLAttributeReferrerPolicy;
+  referrerpolicy?: ReferrerPolicy;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area#rel}
    */
@@ -729,14 +772,12 @@ export type AreaProps = TagProps & {
   target?: HTMLAttributeAnchorTarget;
 };
 
-export type HTMLAttributeAnchorTarget =
-  | "_self"
-  | "_blank"
-  | "_parent"
-  | "_top";
-
-export type HTMLAttributeReferrerPolicy =
-  | ""
+/**
+ * A [referrer policy](https://w3c.github.io/webappsec-referrer-policy/#referrer-policy).
+ *
+ * The empty string is equivalent to not giving a referrer policy at all, so we don't allow it in the first place.
+ */
+export type ReferrerPolicy =
   | "no-referrer"
   | "no-referrer-when-downgrade"
   | "origin"
@@ -826,8 +867,7 @@ export type AudioProps = TagProps & {
     | "nodownload nofullscreen"
     | "nodownload noremoteplayback"
     | "nofullscreen noremoteplayback"
-    | "nodownload nofullscreen noremoteplayback"
-   ;
+    | "nodownload nofullscreen noremoteplayback";
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#crossorigin}
    */
@@ -1012,9 +1052,7 @@ export type ButtonProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#formaction}
    */
-  formaction?:
-    | Expression
-   ;
+  formaction?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#formenctype}
    */
@@ -1515,9 +1553,7 @@ export type FormProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#action}
    */
-  action?:
-    | Expression
-   ;
+  action?: Expression;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#autocomplete}
    */
@@ -1731,7 +1767,7 @@ export type IframeProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#referrerpolicy}
    */
-  referrerpolicy?: HTMLAttributeReferrerPolicy;
+  referrerpolicy?: ReferrerPolicy;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox}
    */
@@ -1805,7 +1841,7 @@ export type ImgProps = TagProps & {
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#referrerpolicy}
    */
-  referrerpolicy?: HTMLAttributeReferrerPolicy;
+  referrerpolicy?: ReferrerPolicy;
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes}
    */
@@ -1860,9 +1896,7 @@ export type InputProps = TagProps & {
   checked?: boolean;
   disabled?: boolean;
   form?: Expression;
-  formaction?:
-    | Expression
-   ;
+  formaction?: Expression;
   formenctype?: Expression;
   formmethod?: Expression;
   formnovalidate?: boolean;
@@ -2058,7 +2092,7 @@ export type LinkProps = TagProps & {
   media?: Expression;
   imagesrcset?: Expression;
   imagesizes?: Expression;
-  referrerpolicy?: HTMLAttributeReferrerPolicy;
+  referrerpolicy?: ReferrerPolicy;
   sizes?: Expression;
   type?: Expression;
   charset?: Expression;
@@ -2518,7 +2552,7 @@ export type ScriptProps = TagProps & {
   defer?: boolean;
   integrity?: Expression;
   nomodule?: boolean;
-  referrerpolicy?: HTMLAttributeReferrerPolicy;
+  referrerpolicy?: ReferrerPolicy;
   src?: Expression;
   type?: Expression;
 };
