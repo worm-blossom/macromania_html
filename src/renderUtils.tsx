@@ -27,7 +27,7 @@ export function EscapeHtml(
         return escapeHtmlString(evaled);
       }}
     >
-      {expressions(children)}
+      <fragment exps={expressions(children)} />
     </map>
   );
 }
@@ -159,10 +159,71 @@ export function RenderNonVoidElement(
       {name}
       {attrs}
       {">"}
-      <EscapeHtml>{expressions(children)}</EscapeHtml>
+      <EscapeHtml>{children}</EscapeHtml>
       {"</"}
       {name}
       {">"}
     </>
   );
+}
+
+export function RenderDynamicAttributes(
+  { attrs }: { attrs: DynamicAttributes },
+): Expression {
+  const exps: Expression[] = [];
+
+  for (const key in attrs) {
+    exps.push(" ");
+    exps.push(key);
+    exps.push(`="`);
+    exps.push(
+      <EscapeHtml>
+        {attrs[key]}
+      </EscapeHtml>,
+    );
+    exps.push(`"`);
+  }
+
+  return <fragment exps={exps} />;
+}
+
+/**
+ * Dynamically described html attributes.
+ */
+export type DynamicAttributes = Record<string, Expression>;
+
+/**
+ * Render a dynamically crafted HTML tag.
+ */
+export function H(
+  { name, attrs, isVoid, children }: {
+    name: Expression;
+    attrs: DynamicAttributes;
+    isVoid: boolean;
+    children?: Expressions;
+  },
+): Expression {
+  if (isVoid) {
+    return (
+      <>
+        {"<"}
+        {name}
+        <RenderDynamicAttributes attrs={attrs} />
+        {"/>"}
+      </>
+    );
+  } else {
+    return (
+      <>
+        {"<"}
+        {name}
+        <RenderDynamicAttributes attrs={attrs} />
+        {">"}
+        <EscapeHtml>{children}</EscapeHtml>
+        {"</"}
+        {name}
+        {">"}
+      </>
+    );
+  }
 }
