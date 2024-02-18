@@ -77,7 +77,7 @@ export function RenderSpaceSeparatedList(
 export function RenderBoolean(
   { attr, value }: { attr: string; value: boolean },
 ): Expression {
-  return <>{" "}{value ? attr : ""}</>;
+  return value ? ` ${attr}` : "";
 }
 
 export function RenderNumber(
@@ -141,7 +141,7 @@ export function RenderVoidElement(
       {"<"}
       {name}
       {attrs}
-      {"/>"}
+      {" />"}
     </>
   );
 }
@@ -168,8 +168,12 @@ export function RenderNonVoidElement(
 }
 
 export function RenderDynamicAttributes(
-  { attrs }: { attrs: DynamicAttributes },
+  { attrs }: { attrs?: DynamicAttributes },
 ): Expression {
+  if (attrs === undefined) {
+    return "";
+  }
+
   const exps: Expression[] = [];
 
   for (const key in attrs) {
@@ -198,8 +202,8 @@ export type DynamicAttributes = Record<string, Expression>;
 export function H(
   { name, attrs, isVoid, children }: {
     name: Expression;
-    attrs: DynamicAttributes;
-    isVoid: boolean;
+    attrs?: DynamicAttributes;
+    isVoid?: boolean;
     children?: Expressions;
   },
 ): Expression {
@@ -209,7 +213,7 @@ export function H(
         {"<"}
         {name}
         <RenderDynamicAttributes attrs={attrs} />
-        {"/>"}
+        {" />"}
       </>
     );
   } else {

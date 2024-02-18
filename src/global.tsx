@@ -3,6 +3,7 @@
  */
 
 import { Expression } from "../deps.ts";
+import { RenderYesNo } from "./renderUtils.tsx";
 import { RenderDynamicAttributes } from "./renderUtils.tsx";
 import { EscapeHtml, RenderNumber } from "./renderUtils.tsx";
 import {
@@ -176,8 +177,12 @@ export type TagProps = {
 };
 
 export function RenderGlobalAttributes(
-  { attrs }: { attrs: TagProps },
+  { attrs }: { attrs?: TagProps },
 ): Expression {
+  if (attrs === undefined) {
+    return "";
+  }
+
   return (
     <>
       {attrs.accesskey !== undefined
@@ -205,7 +210,7 @@ export function RenderGlobalAttributes(
         ? <RenderEnum attr="dir" value={attrs.dir} />
         : ""}
       {attrs.draggable !== undefined
-        ? <RenderBoolean attr="draggable" value={attrs.draggable} />
+        ? <RenderTrueFalse attr="draggable" value={attrs.draggable} />
         : ""}
       {attrs.enterkeyhint !== undefined
         ? <RenderEnum attr="enterkeyhint" value={attrs.enterkeyhint} />
@@ -259,7 +264,7 @@ export function RenderGlobalAttributes(
         ? <RenderExpression attr="slot" value={attrs.slot} />
         : ""}
       {attrs.spellcheck !== undefined
-        ? <RenderBoolean attr="spellcheck" value={attrs.spellcheck} />
+        ? <RenderTrueFalse attr="spellcheck" value={attrs.spellcheck} />
         : ""}
       {attrs.style !== undefined
         ? <RenderExpression attr="style" value={attrs.style} />
@@ -271,7 +276,7 @@ export function RenderGlobalAttributes(
         ? <RenderExpression attr="title" value={attrs.title} />
         : ""}
       {attrs.translate !== undefined
-        ? <RenderBoolean attr="translate" value={attrs.translate} />
+        ? <RenderYesNo attr="translate" value={attrs.translate} />
         : ""}
       {attrs.dynamicAttributes !== undefined
         ? <RenderDynamicAttributes attrs={attrs.dynamicAttributes} />
@@ -287,7 +292,6 @@ function RenderData(
 
   if (data !== undefined) {
     for (const key in data) {
-      dataAttrs.push(" ");
       dataAttrs.push(
         <RenderExpression attr={`data-${key}`} value={data[key]} />,
       );
@@ -304,20 +308,20 @@ function RenderExportparts(
 
   let first = true;
   for (const part of parts) {
-    if (Array.isArray(part)) {
-      exps.push(<EscapeHtml>part[0]</EscapeHtml>);
-      exps.push(": ");
-      exps.push(<EscapeHtml>part[1]</EscapeHtml>);
-    } else {
-      exps.push(<EscapeHtml>part</EscapeHtml>);
+    if (!first) {
+      exps.push(", ");
     }
 
-    if (!first) {
-      exps.push(",");
+    if (Array.isArray(part)) {
+      exps.push(<EscapeHtml>{part[0]}</EscapeHtml>);
+      exps.push(": ");
+      exps.push(<EscapeHtml>{part[1]}</EscapeHtml>);
+    } else {
+      exps.push(<EscapeHtml>{part}</EscapeHtml>);
     }
 
     first = false;
   }
 
-  return <>exportparts="{<fragment exps={exps} />}"</>;
+  return <>{" "}exportparts="{<fragment exps={exps} />}"</>;
 }
