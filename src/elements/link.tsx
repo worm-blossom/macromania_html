@@ -1,10 +1,12 @@
 import { Expression, Expressions } from "../../deps.ts";
-import { RenderExpression, RenderVoidElement } from "../renderUtils.tsx";
 import {
-  NavigableTargetNameOrKeyword,
-  ReferrerPolicy,
-  RenderNavigableTargetNameOrKeyword,
-} from "../aOrArea.tsx";
+  EscapeHtml,
+  RenderBoolean,
+  RenderExpression,
+  RenderNonVoidElement,
+  RenderSpaceSeparatedList,
+} from "../renderUtils.tsx";
+import { ReferrerPolicy } from "../aOrArea.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
 import { CrossOrigin } from "../shared.tsx";
@@ -52,41 +54,46 @@ export type LinkProps = {
   /**
    * The [sizes attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-sizes) gives the sizes of icons for visual media. Its value, if present, is merely advisory. User agents may use the value to decide which icon(s) to use if multiple icons are available. The attribute must only be specified on [link elements](https://html.spec.whatwg.org/multipage/semantics.html#the-link-element) that have a [rel attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-rel) that specifies the [icon](https://html.spec.whatwg.org/multipage/links.html#rel-icon) keyword or the `apple-touch-icon` keyword (which is registered as an extension but not part of html proper).
    */
-  sizes?: ("any" | { width: number; height: number })[];
+  sizes?: SizeEntry[] | SizeEntry;
   /**
    * The [imagesrcset attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-imagesrcset) indicates the images to use in different situations, e.g., high-resolution displays, small monitors, etc. (for [rel](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-rel)="[preload](https://html.spec.whatwg.org/multipage/links.html#link-type-preload)"). It is a [srcset attribute](https://html.spec.whatwg.org/multipage/images.html#srcset-attribute).
    */
   imagesrcset?: Expression;
   /**
+   * If the [imagesrcset attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-imagesrcset) is present and has any [image candidate strings](https://html.spec.whatwg.org/multipage/images.html#image-candidate-string) using a [width descriptor](https://html.spec.whatwg.org/multipage/images.html#width-descriptor), the [imagesizes attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-imagesizes) must also be present, and is a [sizes attribute](https://html.spec.whatwg.org/multipage/images.html#sizes-attribute). The [imagesizes attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-imagesizes) contributes the [source size](https://html.spec.whatwg.org/multipage/images.html#source-size-2) to the [source set](https://html.spec.whatwg.org/multipage/images.html#source-set).
+   */
+  imagesizes?: Expression;
+  /**
    * The [as attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-as) specifies the [potential destination](https://fetch.spec.whatwg.org/#concept-potential-destination) for a preload request for the resource given by the [href attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-href). It is an enumerated attribute. The attribute must be specified on [link elements](https://html.spec.whatwg.org/multipage/semantics.html#the-link-element) that have a [rel attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-rel) that contains the [preload](https://html.spec.whatwg.org/multipage/links.html#link-type-preload) keyword. It may be specified on [link elements](https://html.spec.whatwg.org/multipage/semantics.html#the-link-element) that have a [rel attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-rel) attribute that contains the [modulepreload](https://html.spec.whatwg.org/multipage/links.html#link-type-modulepreload) keyword; in such cases it must have a value which is a [script-like destination]. For other [link elements](https://html.spec.whatwg.org/multipage/semantics.html#the-link-element), it must not be specified.
    */
-  as: PotentialDestination;
+  as?: PotentialDestination;
   /**
    * The [blocking attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-blocking) is used by link type [stylesheet](https://html.spec.whatwg.org/multipage/links.html#link-type-stylesheet), and it must only be specified on link elements that have a [rel attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-rel) containing that keyword.
    *
    * See https://html.spec.whatwg.org/multipage/urls-and-fetching.html#blocking-attribute
    */
-  blocking: PossiblyBlockingToken[];
+  blocking?: PossiblyBlockingToken[] | PossiblyBlockingToken;
   /**
    * The [disabled attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-disabled) is a boolean attribute that is used with the [stylesheet](https://html.spec.whatwg.org/multipage/links.html#link-type-stylesheet) link type.
    */
-  disabled: boolean;
+  disabled?: boolean;
   /**
    * The [fetchpriority attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-fetchpriority) is intended for use with [external resource links](https://html.spec.whatwg.org/multipage/links.html#external-resource-link), where it is used to set the [priority](https://fetch.spec.whatwg.org/#request-priority) used when [fetching and processing the linked resource](https://html.spec.whatwg.org/multipage/semantics.html#fetch-and-process-the-linked-resource).
    */
-  fetchpriority: FetchPriority;
+  fetchpriority?: FetchPriority;
 } & TagProps;
 
 /**
  * The [link element](https://html.spec.whatwg.org/multipage/semantics.html#the-link-element) allows authors to link their document to other resources.
  */
 export function Link(
-  props: LinkProps,
+  props: LinkProps & { children?: Expressions },
 ): Expression {
   return (
-    <RenderVoidElement
+    <RenderNonVoidElement
       name="link"
       attrs={<RenderLinkAttributes attrs={props} />}
+      children={props.children}
     />
   );
 }
@@ -103,9 +110,6 @@ function RenderLinkAttributes(
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.href !== undefined
         ? <RenderExpression attr="href" value={attrs.href} />
-        : ""}
-      {attrs.crossorigin !== undefined
-        ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
         : ""}
       {attrs.rel !== undefined
         ? <RenderEnum attr="rel" value={attrs.rel} />
@@ -124,6 +128,26 @@ function RenderLinkAttributes(
         : ""}
       {attrs.referrerpolicy !== undefined
         ? <RenderEnum attr="referrerpolicy" value={attrs.referrerpolicy} />
+        : ""}
+      {attrs.crossorigin !== undefined
+        ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
+        : ""}
+      {attrs.sizes !== undefined ? <RenderSizes sizes={attrs.sizes} /> : ""}
+      {attrs.imagesrcset !== undefined
+        ? <RenderExpression attr="imagesrcset" value={attrs.imagesrcset} />
+        : ""}
+      {attrs.imagesizes !== undefined
+        ? <RenderExpression attr="imagesizes" value={attrs.imagesizes} />
+        : ""}
+      {attrs.as !== undefined ? <RenderEnum attr="as" value={attrs.as} /> : ""}
+      {attrs.blocking !== undefined
+        ? <RenderSpaceSeparatedList attr="blocking" value={attrs.blocking} />
+        : ""}
+      {attrs.disabled !== undefined
+        ? <RenderBoolean attr="disabled" value={attrs.disabled} />
+        : ""}
+      {attrs.fetchpriority !== undefined
+        ? <RenderEnum attr="fetchpriority" value={attrs.fetchpriority} />
         : ""}
     </>
   );
@@ -185,3 +209,59 @@ export type FetchPriority =
    * Signals automatic determination of fetch priority relative to other resources with the same destination.
    */
   | "auto";
+
+/**
+ * See https://html.spec.whatwg.org/multipage/semantics.html#attr-link-sizes
+ */
+export type SizeEntry = "any" | { width: number; height: number };
+
+function RenderSizes(
+  { sizes }: { sizes: SizeEntry[] | SizeEntry },
+): Expression {
+  const exps: Expression[] = [];
+
+  const sizes_ = Array.isArray(sizes) ? sizes : [sizes];
+
+  let first = true;
+  for (const part of sizes_) {
+    if (!first) {
+      exps.push(" ");
+    }
+
+    if (typeof part === "string") {
+      exps.push(<EscapeHtml>{part}</EscapeHtml>);
+    } else {
+      exps.push(<EscapeHtml>{`${part.width}`}</EscapeHtml>);
+      exps.push("x");
+      exps.push(<EscapeHtml>{`${part.height}`}</EscapeHtml>);
+    }
+
+    first = false;
+  }
+
+  return <>{" "}sizes="{<fragment exps={exps} />}"</>;
+}
+
+/**
+ * A [link type](https://html.spec.whatwg.org/multipage/links.html#linkTypes) that is allowed on [link elements](https://html.spec.whatwg.org/multipage/semantics.html#the-link-element).
+ */
+export type LinkLinkType =
+  | "alternate"
+  | "canonical"
+  | "author"
+  | "dns-prefetch"
+  | "help"
+  | "icon"
+  | "manifest"
+  | "modulepreload"
+  | "license"
+  | "next"
+  | "pingback"
+  | "preconnect"
+  | "prefetch"
+  | "preload"
+  | "prev"
+  | "privacy-policy"
+  | "search"
+  | "stylesheet"
+  | "terms-of-service";

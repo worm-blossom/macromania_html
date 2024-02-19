@@ -6,6 +6,7 @@ import {
   H,
   Head,
   Html,
+  Link,
   Title,
 } from "../src/mod.tsx";
 import { TagProps } from "../src/global.tsx";
@@ -376,6 +377,197 @@ Deno.test("head", async () => {
 
 Deno.test("html", async () => {
   await testGlobalNonVoid(Html, "html")();
+});
+
+Deno.test("link", async () => {
+  await testGlobalNonVoid(Link, "link")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link href="bla"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link href="bla"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link crossorigin="anonymous"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link crossorigin="anonymous"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link rel="alternate"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link rel="alternate"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link media="foo"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link media="foo"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link integrity="foo"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link integrity="foo"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link hreflang="foo"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link hreflang="foo"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link type="foo"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link type="foo"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link referrerpolicy="origin"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link referrerpolicy="origin"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link sizes="any"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link sizes="any"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link sizes={["any", "any"]}></Link>,
+    );
+    assertEquals(
+      got,
+      `<link sizes="any any"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link sizes={{ width: 42, height: 17 }}></Link>,
+    );
+    assertEquals(
+      got,
+      `<link sizes="42x17"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link sizes={[{ width: 42, height: 17 }, { width: 1, height: 2 }, "any"]}>
+      </Link>,
+    );
+    assertEquals(
+      got,
+      `<link sizes="42x17 1x2 any"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link imagesrcset="foo"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link imagesrcset="foo"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link imagesizes="foo"></Link>,
+    );
+    assertEquals(
+      got,
+      `<link imagesizes="foo"></link>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link as="audio"></Link>,
+    );
+    assertEquals(got, `<link as="audio"></link>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link blocking="render"></Link>,
+    );
+    assertEquals(got, `<link blocking="render"></link>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link disabled></Link>,
+    );
+    assertEquals(got, `<link disabled></link>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link fetchpriority="low"></Link>,
+    );
+    assertEquals(got, `<link fetchpriority="low"></link>`);
+  })();
 });
 
 Deno.test("title", async () => {

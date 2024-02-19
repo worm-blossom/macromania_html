@@ -150,7 +150,7 @@ export function RenderNonVoidElement(
   { name, attrs, children }: {
     name: string;
     attrs: Expression;
-    children: Expressions;
+    children?: Expressions;
   },
 ): Expression {
   return (
