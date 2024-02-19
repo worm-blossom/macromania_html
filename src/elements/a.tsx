@@ -5,7 +5,7 @@ import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 /**
  * Props for the {@linkcode A} macro.
  *
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attributes}
+ * https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element
  */
 export type AProps = AOrAreaLinkProps & {
   /**
@@ -18,6 +18,9 @@ export type AProps = AOrAreaLinkProps & {
   type?: Expression;
 };
 
+/**
+ * The [a element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element).
+ */
 export function A(
   props: AProps & { children?: Expressions },
 ): Expression {

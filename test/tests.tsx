@@ -1,6 +1,17 @@
-import { A, Br, Div, DynamicAttributes, H } from "../src/mod.tsx";
+import {
+  A,
+  Br,
+  Div,
+  DynamicAttributes,
+  H,
+  Head,
+  Html,
+  Title,
+} from "../src/mod.tsx";
+import { TagProps } from "../src/global.tsx";
 import { Context, Expression, Expressions, expressions } from "../deps.ts";
 import { assertEquals } from "../devDeps.ts";
+import { Base } from "../src/mod.tsx";
 
 Deno.test("basic dynamic tags", async () => {
   await (async () => {
@@ -290,6 +301,8 @@ Deno.test("exportparts attribute", async () => {
 });
 
 Deno.test("a", async () => {
+  await testGlobalNonVoid(A, "a")();
+
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(
@@ -324,138 +337,79 @@ Deno.test("a", async () => {
   })();
 });
 
-// Deno.test("abbr", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<Abbr></Abbr>);
-//   assertEquals(got, `<abbr></abbr>`);
-// });
+Deno.test("base", async () => {
+  await testGlobalNonVoid(Base, "base")();
 
-// Deno.test("address", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<Address></Address>);
-//   assertEquals(got, `<address></address>`);
-// });
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Base
+        href="bla"
+        target="_self"
+      >
+      </Base>,
+    );
+    assertEquals(
+      got,
+      `<base href="bla" target="_self"></base>`,
+    );
+  })();
 
-// Deno.test("area", async () => {
-//   await (async () => {
-//     const ctx = new Context();
-//     const got = await ctx.evaluate(
-//       <Area
-//         alt="f"
-//         coords="g"
-//         download=""
-//         href="bla"
-//         ping="a b"
-//         referrerpolicy="origin"
-//         rel="z"
-//         shape="default"
-//         target="_self"
-//       >
-//       </Area>,
-//     );
-//     assertEquals(
-//       got,
-//       `<area alt="f" coords="g" download="" href="bla" ping="a b" referrerpolicy="origin" rel="z" shape="default" target="_self"></area>`,
-//     );
-//   })();
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Base target={{ name: "abc" }}></Base>);
+    assertEquals(got, `<base target="abc"></base>`);
+  })();
+});
 
-//   await (async () => {
-//     const ctx = new Context();
-//     const got = await ctx.evaluate(<Area download="n"></Area>);
-//     assertEquals(got, `<area download="n"></area>`);
-//   })();
+Deno.test("br", async () => {
+  await testGlobalVoid(Br, "br")();
+});
 
-//   await (async () => {
-//     const ctx = new Context();
-//     const got = await ctx.evaluate(<Area></Area>);
-//     assertEquals(got, `<area></area>`);
-//   })();
-// });
+Deno.test("head", async () => {
+  await testGlobalNonVoid(Div, "div")();
+});
 
-// Deno.test("address", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<Article></Article>);
-//   assertEquals(got, `<article></article>`);
-// });
+Deno.test("head", async () => {
+  await testGlobalNonVoid(Head, "head")();
+});
 
-// Deno.test("aside", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<Aside></Aside>);
-//   assertEquals(got, `<aside></aside>`);
-// });
+Deno.test("html", async () => {
+  await testGlobalNonVoid(Html, "html")();
+});
 
-// Deno.test("area", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(
-//     <Audio
-//       autoplay
-//       controls
-//       controlslist="nodownload"
-//       crossorigin="anonymous"
-//       loop
-//       muted
-//       preload="none"
-//       src="f"
-//     >
-//     </Audio>,
-//   );
-//   assertEquals(
-//     got,
-//     `<audio autoplay controls controlslist="nodownload" crossorigin="anonymous" loop muted preload="none" src="f"></audio>`,
-//   );
-// });
+Deno.test("title", async () => {
+  await testGlobalNonVoid(Title, "title")();
+});
 
-// Deno.test("b", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<B></B>);
-//   assertEquals(got, `<b></b>`);
-// });
+function testGlobalNonVoid(
+  Macro: (props: TagProps & { children?: Expressions }) => Expression,
+  name: string,
+) {
+  return async () => {
+    await (async () => {
+      const ctx = new Context();
+      const got = await ctx.evaluate(<Macro></Macro>);
+      assertEquals(got, `<${name}></${name}>`);
+    })();
 
-// Deno.test("base", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(
-//     <Base
-//       href="f"
-//       target="_blank"
-//     />,
-//   );
-//   assertEquals(
-//     got,
-//     `<base href="f" target="_blank" />`,
-//   );
-// });
+    await (async () => {
+      const ctx = new Context();
+      const got = await ctx.evaluate(<Macro>uzuzu</Macro>);
+      assertEquals(got, `<${name}>uzuzu</${name}>`);
+    })();
+  };
+}
 
-// Deno.test("bdi", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<Bdi></Bdi>);
-//   assertEquals(got, `<bdi></bdi>`);
-// });
-
-// Deno.test("bdo", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<Bdo></Bdo>);
-//   assertEquals(got, `<bdo></bdo>`);
-// });
-
-// Deno.test("blockquote", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(
-//     <Blockquote cite="f"></Blockquote>,
-//   );
-//   assertEquals(
-//     got,
-//     `<blockquote cite="f"></blockquote>`,
-//   );
-// });
-
-// Deno.test("body", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<Body></Body>);
-//   assertEquals(got, `<body></body>`);
-// });
-
-// Deno.test("br", async () => {
-//   const ctx = new Context();
-//   const got = await ctx.evaluate(<Br />);
-//   assertEquals(got, `<br />`);
-// });
+function testGlobalVoid(
+  Macro: (props: TagProps & { children?: Expressions }) => Expression,
+  name: string,
+) {
+  return async () => {
+    await (async () => {
+      const ctx = new Context();
+      const got = await ctx.evaluate(<Macro />);
+      assertEquals(got, `<${name} />`);
+    })();
+  };
+}

@@ -17,7 +17,7 @@ import {
 } from "./renderUtils.tsx";
 
 /**
- * The global attributes are common to and may be specified on all HTML elements.
+ * The global attributes that are common to and may be specified on all HTML elements.
  *
  * https://html.spec.whatwg.org/multipage/dom.html#global-attributes
  */
