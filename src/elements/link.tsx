@@ -3,13 +3,13 @@ import {
   EscapeHtml,
   RenderBoolean,
   RenderExpression,
-  RenderNonVoidElement,
   RenderSpaceSeparatedList,
+  RenderVoidElement,
 } from "../renderUtils.tsx";
 import { ReferrerPolicy } from "../aOrArea.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin } from "../shared.tsx";
+import { CrossOrigin, PossiblyBlockingToken } from "../shared.tsx";
 
 /**
  * Props for the {@linkcode Link} macro.
@@ -87,13 +87,12 @@ export type LinkProps = {
  * The [link element](https://html.spec.whatwg.org/multipage/semantics.html#the-link-element) allows authors to link their document to other resources.
  */
 export function Link(
-  props: LinkProps & { children?: Expressions },
+  props: LinkProps,
 ): Expression {
   return (
-    <RenderNonVoidElement
+    <RenderVoidElement
       name="link"
       attrs={<RenderLinkAttributes attrs={props} />}
-      children={props.children}
     />
   );
 }
@@ -188,10 +187,7 @@ export type Destination =
   | "worker"
   | "xslt";
 
-/**
- * See https://html.spec.whatwg.org/multipage/urls-and-fetching.html#blocking-attribute
- */
-export type PossiblyBlockingToken = "render";
+
 
 /**
  * https://html.spec.whatwg.org/multipage/urls-and-fetching.html#fetch-priority-attribute

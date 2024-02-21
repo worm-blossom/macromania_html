@@ -8,3 +8,8 @@ export type CrossOrigin =
   | "anonymous"
   /** [Requests](https://fetch.spec.whatwg.org/#concept-request) for the element will have their [mode](https://fetch.spec.whatwg.org/#concept-request-mode) set to "`cors`" and their [credentials mode](https://fetch.spec.whatwg.org/#concept-request-credentials-mode) set to "`include`". */
   | "use-credentials";
+
+/**
+ * See https://html.spec.whatwg.org/multipage/urls-and-fetching.html#blocking-attribute
+ */
+export type PossiblyBlockingToken = "render";
