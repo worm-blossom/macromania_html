@@ -18,6 +18,10 @@ function escapeHtmlString(raw: string): string {
   });
 }
 
+/**
+ * Escape all characters in the children that need escaping to be safe to use
+ * in HTML: `< > & " '`
+ */
 export function EscapeHtml(
   { children }: { children?: Expressions },
 ): Expression {
@@ -159,7 +163,7 @@ export function RenderNonVoidElement(
       {name}
       {attrs}
       {">"}
-      <EscapeHtml>{children}</EscapeHtml>
+      <exps x={children} />
       {"</"}
       {name}
       {">"}
@@ -223,7 +227,7 @@ export function H(
         {name}
         <RenderDynamicAttributes attrs={attrs} />
         {">"}
-        <EscapeHtml>{children}</EscapeHtml>
+        <exps x={children} />
         {"</"}
         {name}
         {">"}

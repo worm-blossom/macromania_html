@@ -13,6 +13,7 @@ import { TagProps } from "../src/global.tsx";
 import { Context, Expression, Expressions, expressions } from "../deps.ts";
 import { assertEquals } from "../devDeps.ts";
 import { Base } from "../src/mod.tsx";
+import { EscapeHtml } from "../src/renderUtils.tsx";
 
 Deno.test("basic dynamic tags", async () => {
   await (async () => {
@@ -72,12 +73,12 @@ Deno.test("dynamic tags escaping", async () => {
     );
     assertEquals(got, `<foo bar="&amp;&lt;&gt;&quot;&#39;" />`);
   })();
+});
 
-  await (async () => {
-    const ctx = new Context();
-    const got = await ctx.evaluate(<H name="foo">{`&<>"'`}</H>);
-    assertEquals(got, `<foo>&amp;&lt;&gt;&quot;&#39;</foo>`);
-  })();
+Deno.test("escaping", async () => {
+  const ctx = new Context();
+  const got = await ctx.evaluate(<EscapeHtml>{`&<>"'`}</EscapeHtml>);
+  assertEquals(got, `&amp;&lt;&gt;&quot;&#39;`);
 });
 
 Deno.test("basic void tag", async () => {
