@@ -1,14 +1,28 @@
 import {
   A,
+  Address,
+  Article,
+  Aside,
   Body,
   Br,
   Div,
-  DynamicAttributes,
+  Footer,
   H,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
   Head,
+  Header,
+  Hgroup,
   Html,
   Link,
   Meta,
+  Nav,
+  P,
+  Section,
   Style,
   Title,
 } from "../src/mod.tsx";
@@ -342,6 +356,18 @@ Deno.test("a", async () => {
   })();
 });
 
+Deno.test("address", async () => {
+  await testGlobalNonVoid(Address, "address")();
+});
+
+Deno.test("article", async () => {
+  await testGlobalNonVoid(Article, "article")();
+});
+
+Deno.test("aside", async () => {
+  await testGlobalNonVoid(Aside, "aside")();
+});
+
 Deno.test("base", async () => {
   await testGlobalNonVoid(Base, "base")();
 
@@ -379,8 +405,44 @@ Deno.test("div", async () => {
   await testGlobalNonVoid(Div, "div")();
 });
 
+Deno.test("footer", async () => {
+  await testGlobalNonVoid(Footer, "footer")();
+});
+
+Deno.test("h1", async () => {
+  await testGlobalNonVoid(H1, "h1")();
+});
+
+Deno.test("h2", async () => {
+  await testGlobalNonVoid(H2, "h2")();
+});
+
+Deno.test("h3", async () => {
+  await testGlobalNonVoid(H3, "h3")();
+});
+
+Deno.test("h4", async () => {
+  await testGlobalNonVoid(H4, "h4")();
+});
+
+Deno.test("h5", async () => {
+  await testGlobalNonVoid(H5, "h5")();
+});
+
+Deno.test("h6", async () => {
+  await testGlobalNonVoid(H6, "h6")();
+});
+
 Deno.test("head", async () => {
   await testGlobalNonVoid(Head, "head")();
+});
+
+Deno.test("header", async () => {
+  await testGlobalNonVoid(Header, "header")();
+});
+
+Deno.test("hgroup", async () => {
+  await testGlobalNonVoid(Hgroup, "hgroup")();
 });
 
 Deno.test("html", async () => {
@@ -635,6 +697,18 @@ Deno.test("meta", async () => {
       `<meta media="foo" />`,
     );
   })();
+});
+
+Deno.test("nav", async () => {
+  await testGlobalNonVoid(Nav, "nav")();
+});
+
+Deno.test("p", async () => {
+  await testGlobalNonVoid(P, "p")();
+});
+
+Deno.test("section", async () => {
+  await testGlobalNonVoid(Section, "section")();
 });
 
 Deno.test("style", async () => {
