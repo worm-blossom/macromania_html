@@ -3,9 +3,15 @@ import {
   Address,
   Article,
   Aside,
+  Blockquote,
   Body,
   Br,
+  Dd,
   Div,
+  Dl,
+  Dt,
+  Figcaption,
+  Figure,
   Footer,
   H,
   H1,
@@ -17,14 +23,22 @@ import {
   Head,
   Header,
   Hgroup,
+  Hr,
   Html,
+  Li,
   Link,
+  Main,
+  Menu,
   Meta,
   Nav,
+  Ol,
   P,
+  Pre,
+  Search,
   Section,
   Style,
   Title,
+  Ul,
 } from "../src/mod.tsx";
 import { TagProps } from "../src/global.tsx";
 import { Context, Expression, Expressions, expressions } from "../deps.ts";
@@ -393,6 +407,16 @@ Deno.test("base", async () => {
   })();
 });
 
+Deno.test("blockquote", async () => {
+  await testGlobalNonVoid(Blockquote, "blockquote")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Blockquote cite="foo"></Blockquote>);
+    assertEquals(got, `<blockquote cite="foo"></blockquote>`);
+  })();
+});
+
 Deno.test("body", async () => {
   await testGlobalNonVoid(Body, "body")();
 });
@@ -401,8 +425,28 @@ Deno.test("br", async () => {
   await testGlobalVoid(Br, "br")();
 });
 
+Deno.test("dd", async () => {
+  await testGlobalNonVoid(Dd, "dd")();
+});
+
 Deno.test("div", async () => {
   await testGlobalNonVoid(Div, "div")();
+});
+
+Deno.test("dl", async () => {
+  await testGlobalNonVoid(Dl, "dl")();
+});
+
+Deno.test("dt", async () => {
+  await testGlobalNonVoid(Dt, "dt")();
+});
+
+Deno.test("figcaption", async () => {
+  await testGlobalNonVoid(Figcaption, "figcaption")();
+});
+
+Deno.test("figure", async () => {
+  await testGlobalNonVoid(Figure, "figure")();
 });
 
 Deno.test("footer", async () => {
@@ -445,8 +489,16 @@ Deno.test("hgroup", async () => {
   await testGlobalNonVoid(Hgroup, "hgroup")();
 });
 
+Deno.test("hr", async () => {
+  await testGlobalVoid(Hr, "hr")();
+});
+
 Deno.test("html", async () => {
   await testGlobalNonVoid(Html, "html")();
+});
+
+Deno.test("li", async () => {
+  await testGlobalNonVoid(Li, "li")();
 });
 
 Deno.test("link", async () => {
@@ -640,6 +692,14 @@ Deno.test("link", async () => {
   })();
 });
 
+Deno.test("main", async () => {
+  await testGlobalNonVoid(Main, "main")();
+});
+
+Deno.test("menu", async () => {
+  await testGlobalNonVoid(Menu, "menu")();
+});
+
 Deno.test("meta", async () => {
   await testGlobalVoid(Meta, "meta")();
 
@@ -703,8 +763,38 @@ Deno.test("nav", async () => {
   await testGlobalNonVoid(Nav, "nav")();
 });
 
+Deno.test("ol", async () => {
+  await testGlobalNonVoid(Ol, "ol")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Ol reversed></Ol>);
+    assertEquals(got, `<ol reversed></ol>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Ol start={42}></Ol>);
+    assertEquals(got, `<ol start="42"></ol>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Ol type="i"></Ol>);
+    assertEquals(got, `<ol type="i"></ol>`);
+  })();
+});
+
 Deno.test("p", async () => {
   await testGlobalNonVoid(P, "p")();
+});
+
+Deno.test("pre", async () => {
+  await testGlobalNonVoid(Pre, "pre")();
+});
+
+Deno.test("search", async () => {
+  await testGlobalNonVoid(Search, "search")();
 });
 
 Deno.test("section", async () => {
@@ -739,6 +829,10 @@ Deno.test("style", async () => {
 
 Deno.test("title", async () => {
   await testGlobalNonVoid(Title, "title")();
+});
+
+Deno.test("ul", async () => {
+  await testGlobalNonVoid(Ul, "ul")();
 });
 
 function testGlobalNonVoid(
