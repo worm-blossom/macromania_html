@@ -4,6 +4,9 @@ import {
   Address,
   Article,
   Aside,
+  B,
+  Bdi,
+  Bdo,
   Blockquote,
   Body,
   Br,
@@ -31,9 +34,12 @@ import {
   Hgroup,
   Hr,
   Html,
+  I,
+  Kbd,
   Li,
   Link,
   Main,
+  Mark,
   Menu,
   Meta,
   Nav,
@@ -45,15 +51,21 @@ import {
   Rt,
   Ruby,
   S,
+  Samp,
   Search,
   Section,
   Small,
+  Span,
   Strong,
   Style,
+  Sub,
+  Sup,
   Time,
   Title,
+  U,
   Ul,
   Var,
+  Wbr,
 } from "../src/mod.tsx";
 import { TagProps } from "../src/global.tsx";
 import { Context, Expression, Expressions, expressions } from "../deps.ts";
@@ -401,6 +413,10 @@ Deno.test("aside", async () => {
   await testGlobalNonVoid(Aside, "aside")();
 });
 
+Deno.test("b", async () => {
+  await testGlobalNonVoid(B, "b")();
+});
+
 Deno.test("base", async () => {
   await testGlobalNonVoid(Base, "base")();
 
@@ -424,6 +440,14 @@ Deno.test("base", async () => {
     const got = await ctx.evaluate(<Base target={{ name: "abc" }}></Base>);
     assertEquals(got, `<base target="abc"></base>`);
   })();
+});
+
+Deno.test("bdi", async () => {
+  await testGlobalNonVoid(Bdi, "bdi")();
+});
+
+Deno.test("bdo", async () => {
+  await testGlobalNonVoid(Bdo, "bdo")();
 });
 
 Deno.test("blockquote", async () => {
@@ -538,6 +562,14 @@ Deno.test("hr", async () => {
 
 Deno.test("html", async () => {
   await testGlobalNonVoid(Html, "html")();
+});
+
+Deno.test("i", async () => {
+  await testGlobalNonVoid(I, "i")();
+});
+
+Deno.test("kbd", async () => {
+  await testGlobalNonVoid(Kbd, "kbd")();
 });
 
 Deno.test("li", async () => {
@@ -739,6 +771,10 @@ Deno.test("main", async () => {
   await testGlobalNonVoid(Main, "main")();
 });
 
+Deno.test("mark", async () => {
+  await testGlobalNonVoid(Mark, "mark")();
+});
+
 Deno.test("menu", async () => {
   await testGlobalNonVoid(Menu, "menu")();
 });
@@ -862,6 +898,10 @@ Deno.test("s", async () => {
   await testGlobalNonVoid(S, "s")();
 });
 
+Deno.test("samp", async () => {
+  await testGlobalNonVoid(Samp, "samp")();
+});
+
 Deno.test("search", async () => {
   await testGlobalNonVoid(Search, "search")();
 });
@@ -872,6 +912,10 @@ Deno.test("section", async () => {
 
 Deno.test("small", async () => {
   await testGlobalNonVoid(Small, "small")();
+});
+
+Deno.test("span", async () => {
+  await testGlobalNonVoid(Span, "span")();
 });
 
 Deno.test("strong", async () => {
@@ -904,6 +948,14 @@ Deno.test("style", async () => {
   })();
 });
 
+Deno.test("sub", async () => {
+  await testGlobalNonVoid(Sub, "sub")();
+});
+
+Deno.test("sup", async () => {
+  await testGlobalNonVoid(Sup, "sup")();
+});
+
 Deno.test("time", async () => {
   await testGlobalNonVoid(Time, "time")();
 
@@ -918,12 +970,20 @@ Deno.test("title", async () => {
   await testGlobalNonVoid(Title, "title")();
 });
 
+Deno.test("u", async () => {
+  await testGlobalNonVoid(U, "u")();
+});
+
 Deno.test("ul", async () => {
   await testGlobalNonVoid(Ul, "ul")();
 });
 
 Deno.test("var", async () => {
   await testGlobalNonVoid(Var, "var")();
+});
+
+Deno.test("wbr", async () => {
+  await testGlobalVoid(Wbr, "wbr")();
 });
 
 function testGlobalNonVoid(
