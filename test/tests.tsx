@@ -14,6 +14,7 @@ import {
   Code,
   Data,
   Dd,
+  Del,
   Dfn,
   Div,
   Dl,
@@ -35,6 +36,7 @@ import {
   Hr,
   Html,
   I,
+  Ins,
   Kbd,
   Li,
   Link,
@@ -488,6 +490,22 @@ Deno.test("dd", async () => {
   await testGlobalNonVoid(Dd, "dd")();
 });
 
+Deno.test("del", async () => {
+  await testGlobalNonVoid(Del, "del")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Del cite="foo"></Del>);
+    assertEquals(got, `<del cite="foo"></del>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Del datetime="foo"></Del>);
+    assertEquals(got, `<del datetime="foo"></del>`);
+  })();
+});
+
 Deno.test("dfn", async () => {
   await testGlobalNonVoid(Dfn, "dfn")();
 });
@@ -566,6 +584,22 @@ Deno.test("html", async () => {
 
 Deno.test("i", async () => {
   await testGlobalNonVoid(I, "i")();
+});
+
+Deno.test("ins", async () => {
+  await testGlobalNonVoid(Ins, "ins")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Ins cite="foo"></Ins>);
+    assertEquals(got, `<ins cite="foo"></ins>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Ins datetime="foo"></Ins>);
+    assertEquals(got, `<ins datetime="foo"></ins>`);
+  })();
 });
 
 Deno.test("kbd", async () => {

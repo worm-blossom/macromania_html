@@ -16,6 +16,7 @@ export { Cite } from "./elements/cite.tsx";
 export { Code } from "./elements/code.tsx";
 export { Data } from "./elements/data.tsx";
 export { Dd } from "./elements/dd.tsx";
+export { Del } from "./elements/insdel.tsx";
 export { Dfn } from "./elements/dfn.tsx";
 export { Div } from "./elements/div.tsx";
 export { Dl } from "./elements/dl.tsx";
@@ -31,6 +32,7 @@ export { Hgroup } from "./elements/hgroup.tsx";
 export { Hr } from "./elements/hr.tsx";
 export { Html } from "./elements/html.tsx";
 export { I } from "./elements/i.tsx";
+export { Ins } from "./elements/insdel.tsx";
 export { Kbd } from "./elements/kbd.tsx";
 export { Li } from "./elements/li.tsx";
 export {

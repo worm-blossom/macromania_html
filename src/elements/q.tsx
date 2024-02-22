@@ -20,7 +20,7 @@ export type QProps = {
   /**
    * Content inside a [q element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-q-element) must be quoted from another source, whose address, if it has one, may be cited in the [cite attribute](https://html.spec.whatwg.org/multipage/text-level-semantics.html#attr-q-cite). The source may be fictional, as when quoting characters in a novel or screenplay.
    *
-   * If the [cite attribute] is present, it must be a valid URL potentially surrounded by spaces. To obtain the corresponding citation link, the value of the attribute must be [parsed](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#encoding-parsing-a-url) relative to the element's [node document](https://dom.spec.whatwg.org/#concept-node-document). User agents may allow users to follow such citation links, but they are primarily intended for private use (e.g., by server-side scripts collecting statistics about a site's use of quotations), not for readers.
+   * If the [cite attribute](https://html.spec.whatwg.org/multipage/text-level-semantics.html#attr-q-cite) is present, it must be a valid URL potentially surrounded by spaces. To obtain the corresponding citation link, the value of the attribute must be [parsed](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#encoding-parsing-a-url) relative to the element's [node document](https://dom.spec.whatwg.org/#concept-node-document). User agents may allow users to follow such citation links, but they are primarily intended for private use (e.g., by server-side scripts collecting statistics about a site's use of quotations), not for readers.
    */
   cite?: Expression;
 } & TagProps;
