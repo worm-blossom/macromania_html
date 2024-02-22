@@ -1,15 +1,21 @@
 import {
   A,
+  Abbr,
   Address,
   Article,
   Aside,
   Blockquote,
   Body,
   Br,
+  Cite,
+  Code,
+  Data,
   Dd,
+  Dfn,
   Div,
   Dl,
   Dt,
+  Em,
   Figcaption,
   Figure,
   Footer,
@@ -34,11 +40,20 @@ import {
   Ol,
   P,
   Pre,
+  Q,
+  Rp,
+  Rt,
+  Ruby,
+  S,
   Search,
   Section,
+  Small,
+  Strong,
   Style,
+  Time,
   Title,
   Ul,
+  Var,
 } from "../src/mod.tsx";
 import { TagProps } from "../src/global.tsx";
 import { Context, Expression, Expressions, expressions } from "../deps.ts";
@@ -370,6 +385,10 @@ Deno.test("a", async () => {
   })();
 });
 
+Deno.test("abbr", async () => {
+  await testGlobalNonVoid(Abbr, "abbr")();
+});
+
 Deno.test("address", async () => {
   await testGlobalNonVoid(Address, "address")();
 });
@@ -425,8 +444,28 @@ Deno.test("br", async () => {
   await testGlobalVoid(Br, "br")();
 });
 
+Deno.test("cite", async () => {
+  await testGlobalNonVoid(Cite, "cite")();
+});
+
+Deno.test("code", async () => {
+  await testGlobalNonVoid(Code, "code")();
+});
+
+Deno.test("data", async () => {
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Data value="foo"></Data>);
+    assertEquals(got, `<data value="foo"></data>`);
+  })();
+});
+
 Deno.test("dd", async () => {
   await testGlobalNonVoid(Dd, "dd")();
+});
+
+Deno.test("dfn", async () => {
+  await testGlobalNonVoid(Dfn, "dfn")();
 });
 
 Deno.test("div", async () => {
@@ -439,6 +478,10 @@ Deno.test("dl", async () => {
 
 Deno.test("dt", async () => {
   await testGlobalNonVoid(Dt, "dt")();
+});
+
+Deno.test("em", async () => {
+  await testGlobalNonVoid(Em, "em")();
 });
 
 Deno.test("figcaption", async () => {
@@ -793,12 +836,46 @@ Deno.test("pre", async () => {
   await testGlobalNonVoid(Pre, "pre")();
 });
 
+Deno.test("q", async () => {
+  await testGlobalNonVoid(Q, "q")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Q cite="foo"></Q>);
+    assertEquals(got, `<q cite="foo"></q>`);
+  })();
+});
+
+Deno.test("rp", async () => {
+  await testGlobalNonVoid(Rp, "rp")();
+});
+
+Deno.test("rt", async () => {
+  await testGlobalNonVoid(Rt, "rt")();
+});
+
+Deno.test("ruby", async () => {
+  await testGlobalNonVoid(Ruby, "ruby")();
+});
+
+Deno.test("s", async () => {
+  await testGlobalNonVoid(S, "s")();
+});
+
 Deno.test("search", async () => {
   await testGlobalNonVoid(Search, "search")();
 });
 
 Deno.test("section", async () => {
   await testGlobalNonVoid(Section, "section")();
+});
+
+Deno.test("small", async () => {
+  await testGlobalNonVoid(Small, "small")();
+});
+
+Deno.test("strong", async () => {
+  await testGlobalNonVoid(Strong, "strong")();
 });
 
 Deno.test("style", async () => {
@@ -827,12 +904,26 @@ Deno.test("style", async () => {
   })();
 });
 
+Deno.test("time", async () => {
+  await testGlobalNonVoid(Time, "time")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Time datetime="foo"></Time>);
+    assertEquals(got, `<time datetime="foo"></time>`);
+  })();
+});
+
 Deno.test("title", async () => {
   await testGlobalNonVoid(Title, "title")();
 });
 
 Deno.test("ul", async () => {
   await testGlobalNonVoid(Ul, "ul")();
+});
+
+Deno.test("var", async () => {
+  await testGlobalNonVoid(Var, "var")();
 });
 
 function testGlobalNonVoid(
