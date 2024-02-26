@@ -6,7 +6,7 @@ import {
   RenderSpaceSeparatedList,
   RenderVoidElement,
 } from "../renderUtils.tsx";
-import { ReferrerPolicy } from "../aOrArea.tsx";
+
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
 import { CrossOrigin } from "../shared.tsx";

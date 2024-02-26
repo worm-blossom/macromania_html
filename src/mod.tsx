@@ -37,7 +37,6 @@ export { Kbd } from "./elements/kbd.tsx";
 export { Li } from "./elements/li.tsx";
 export {
   type Destination,
-  type FetchPriority,
   Link,
   type LinkLinkType,
   type LinkProps,
@@ -58,6 +57,7 @@ export { Rt } from "./elements/rt.tsx";
 export { Ruby } from "./elements/ruby.tsx";
 export { S } from "./elements/s.tsx";
 export { Samp } from "./elements/samp.tsx";
+export { Script } from "./elements/script.tsx";
 export { Search } from "./elements/search.tsx";
 export { Section } from "./elements/section.tsx";
 export { Small } from "./elements/small.tsx";
@@ -73,6 +73,10 @@ export { Ul } from "./elements/ul.tsx";
 export { Var } from "./elements/var.tsx";
 export { Wbr } from "./elements/wbr.tsx";
 
-export { type CrossOrigin, type PossiblyBlockingToken } from "./shared.tsx";
+export {
+  type CrossOrigin,
+  type FetchPriority,
+  type PossiblyBlockingToken,
+} from "./shared.tsx";
 
 export { EscapeHtml } from "./renderUtils.tsx";

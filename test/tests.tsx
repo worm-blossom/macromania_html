@@ -54,6 +54,7 @@ import {
   Ruby,
   S,
   Samp,
+  Script,
   Search,
   Section,
   Small,
@@ -934,6 +935,76 @@ Deno.test("s", async () => {
 
 Deno.test("samp", async () => {
   await testGlobalNonVoid(Samp, "samp")();
+});
+
+Deno.test("script", async () => {
+  await testGlobalNonVoid(Script, "script")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script src="foo"></Script>);
+    assertEquals(got, `<script src="foo"></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script type="module"></Script>);
+    assertEquals(got, `<script type="module"></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script type={{ data: "foo" }}></Script>);
+    assertEquals(got, `<script type="foo"></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script nomodule></Script>);
+    assertEquals(got, `<script nomodule></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script async></Script>);
+    assertEquals(got, `<script async></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script defer></Script>);
+    assertEquals(got, `<script defer></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script crossorigin="anonymous"></Script>);
+    assertEquals(got, `<script crossorigin="anonymous"></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script integrity="foo"></Script>);
+    assertEquals(got, `<script integrity="foo"></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script referrerpolicy="origin"></Script>);
+    assertEquals(got, `<script referrerpolicy="origin"></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script blocking="render"></Script>);
+    assertEquals(got, `<script blocking="render"></script>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Script fetchpriority="high"></Script>);
+    assertEquals(got, `<script fetchpriority="high"></script>`);
+  })();
 });
 
 Deno.test("search", async () => {

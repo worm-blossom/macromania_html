@@ -1,15 +1,6 @@
 import { Expression, Expressions } from "../../deps.ts";
-import {
-  EscapeHtml,
-  RenderBoolean,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderSpaceSeparatedList,
-} from "../renderUtils.tsx";
-import { ReferrerPolicy } from "../aOrArea.tsx";
+import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin } from "../shared.tsx";
 
 /**
  * Props for the {@linkcode Q} macro.

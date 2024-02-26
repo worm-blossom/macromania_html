@@ -6,7 +6,7 @@ import {
   RenderSpaceSeparatedList,
   RenderVoidElement,
 } from "../renderUtils.tsx";
-import { ReferrerPolicy } from "../aOrArea.tsx";
+import { FetchPriority, ReferrerPolicy } from "../shared.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
 import { CrossOrigin, PossiblyBlockingToken } from "../shared.tsx";
@@ -186,25 +186,6 @@ export type Destination =
   | "webidentity"
   | "worker"
   | "xslt";
-
-
-
-/**
- * https://html.spec.whatwg.org/multipage/urls-and-fetching.html#fetch-priority-attribute
- */
-export type FetchPriority =
-  /**
-   * Signals a high-priority fetch relative to other resources with the same destination.
-   */
-  | "high"
-  /**
-   * Signals a low-priority fetch relative to other resources with the same destination.
-   */
-  | "low"
-  /**
-   * Signals automatic determination of fetch priority relative to other resources with the same destination.
-   */
-  | "auto";
 
 /**
  * See https://html.spec.whatwg.org/multipage/semantics.html#attr-link-sizes
