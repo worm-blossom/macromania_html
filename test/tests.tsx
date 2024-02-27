@@ -10,6 +10,7 @@ import {
   Blockquote,
   Body,
   Br,
+  Canvas,
   Cite,
   Code,
   Data,
@@ -45,6 +46,7 @@ import {
   Menu,
   Meta,
   Nav,
+  Noscript,
   Ol,
   P,
   Pre,
@@ -57,12 +59,14 @@ import {
   Script,
   Search,
   Section,
+  Slot,
   Small,
   Span,
   Strong,
   Style,
   Sub,
   Sup,
+  Template,
   Time,
   Title,
   U,
@@ -471,6 +475,22 @@ Deno.test("br", async () => {
   await testGlobalVoid(Br, "br")();
 });
 
+Deno.test("canvas", async () => {
+  await testGlobalNonVoid(Canvas, "canvas")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Canvas width={17}></Canvas>);
+    assertEquals(got, `<canvas width="17"></canvas>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Canvas height={42}></Canvas>);
+    assertEquals(got, `<canvas height="42"></canvas>`);
+  })();
+});
+
 Deno.test("cite", async () => {
   await testGlobalNonVoid(Cite, "cite")();
 });
@@ -877,6 +897,10 @@ Deno.test("nav", async () => {
   await testGlobalNonVoid(Nav, "nav")();
 });
 
+Deno.test("noscript", async () => {
+  await testGlobalNonVoid(Noscript, "noscript")();
+});
+
 Deno.test("ol", async () => {
   await testGlobalNonVoid(Ol, "ol")();
 
@@ -1015,6 +1039,18 @@ Deno.test("section", async () => {
   await testGlobalNonVoid(Section, "section")();
 });
 
+Deno.test("slot", async () => {
+  await testGlobalNonVoid(Slot, "slot")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Slot name="foo"></Slot>,
+    );
+    assertEquals(got, `<slot name="foo"></slot>`);
+  })();
+});
+
 Deno.test("small", async () => {
   await testGlobalNonVoid(Small, "small")();
 });
@@ -1059,6 +1095,30 @@ Deno.test("sub", async () => {
 
 Deno.test("sup", async () => {
   await testGlobalNonVoid(Sup, "sup")();
+});
+
+Deno.test("template", async () => {
+  await testGlobalNonVoid(Template, "template")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Template shadowrootmode="open"></Template>);
+    assertEquals(got, `<template shadowrootmode="open"></template>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Template shadowrootdelegatesfocus></Template>,
+    );
+    assertEquals(got, `<template shadowrootdelegatesfocus></template>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Template shadowrootclonable></Template>);
+    assertEquals(got, `<template shadowrootclonable></template>`);
+  })();
 });
 
 Deno.test("time", async () => {
