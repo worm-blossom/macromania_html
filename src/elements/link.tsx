@@ -1,15 +1,16 @@
-import { Expression, Expressions } from "../../deps.ts";
+import type { Expression } from "macromania";
 import {
+  type CustomEnumVariant,
   EscapeHtml,
   RenderBoolean,
   RenderExpression,
   RenderSpaceSeparatedList,
   RenderVoidElement,
 } from "../renderUtils.tsx";
-import { FetchPriority, ReferrerPolicy } from "../shared.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+import type { FetchPriority, ReferrerPolicy } from "../shared.tsx";
+import { RenderGlobalAttributes, type TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin, PossiblyBlockingToken } from "../shared.tsx";
+import type { CrossOrigin, PossiblyBlockingToken } from "../shared.tsx";
 
 /**
  * Props for the {@linkcode Link} macro.
@@ -241,4 +242,5 @@ export type LinkLinkType =
   | "privacy-policy"
   | "search"
   | "stylesheet"
-  | "terms-of-service";
+  | "terms-of-service"
+  | CustomEnumVariant;

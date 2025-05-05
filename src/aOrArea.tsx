@@ -1,6 +1,6 @@
 // Common code for `<a>` and `<area>` elements, see https://html.spec.whatwg.org/multipage/links.html#links-created-by-a-and-area-elements
 
-import { Expression } from "../deps.ts";
+import { Expression } from "macromania";
 import {
   RenderEnum,
   RenderExpression,

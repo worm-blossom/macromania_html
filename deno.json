@@ -1,21 +1,24 @@
 {
-    "$schema": "https://json.schemastore.org/tsconfig",
-    "display": "Deno",
-  
-    "imports": {
-      "macromaniajsx/jsx-dev-runtime": "./deps.ts",
-      "macromaniajsx/jsx-runtime": "./deps.ts",
-    },
-  
-    "compilerOptions": {
-      "jsx": "react-jsxdev",
-      "jsxImportSource": "macromaniajsx",
-      "lib": ["deno.ns", "dom"],
-      "strict": true
-    },
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Deno",
 
-    "tasks": {
-      "test": "deno test test/tests.tsx"
-    }
+  "name": "@wormblossom/macromania-html",
+  "version": "1.0.0",
+  "exports": "./mod.tsx",
+
+  "imports": {
+    "macromania": "jsr:@wormblossom/macromania@^1.0.2",
+    "@std/assert": "jsr:@std/assert@^0.221.0"
+  },
+
+  "compilerOptions": {
+    "jsx": "react-jsxdev",
+    "jsxImportSource": "jsr:@wormblossom/macromania@^1.0.2",
+    "lib": ["deno.ns", "dom"],
+    "strict": true
+  },
+
+  "tasks": {
+    "test": "deno test test/tests.tsx"
   }
-  
+}

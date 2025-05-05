@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "../../deps.ts";
+import { Expression, Expressions } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 

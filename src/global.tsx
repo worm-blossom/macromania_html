@@ -2,7 +2,7 @@
  * Global attributes.
  */
 
-import { Expression } from "../deps.ts";
+import { Expression } from "macromania";
 import { RenderYesNo } from "./renderUtils.tsx";
 import { RenderDynamicAttributes } from "./renderUtils.tsx";
 import { EscapeHtml, RenderNumber } from "./renderUtils.tsx";

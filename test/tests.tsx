@@ -11,11 +11,15 @@ import {
   Body,
   Br,
   Canvas,
+  Caption,
   Cite,
   Code,
+  Col,
+  Colgroup,
   Data,
   Dd,
   Del,
+  Details,
   Dfn,
   Div,
   Dl,
@@ -37,6 +41,7 @@ import {
   Hr,
   Html,
   I,
+  Img,
   Ins,
   Kbd,
   Li,
@@ -65,18 +70,26 @@ import {
   Strong,
   Style,
   Sub,
+  Summary,
   Sup,
+  Table,
+  Tbody,
+  Td,
   Template,
+  Tfoot,
+  Th,
+  Thead,
   Time,
   Title,
+  Tr,
   U,
   Ul,
   Var,
   Wbr,
 } from "../src/mod.tsx";
-import { TagProps } from "../src/global.tsx";
-import { Context, Expression, Expressions, expressions } from "../deps.ts";
-import { assertEquals } from "../devDeps.ts";
+import type { TagProps } from "../src/global.tsx";
+import { Context, type Expression, type Expressions } from "macromania";
+import { assertEquals } from "@std/assert";
 import { Base } from "../src/mod.tsx";
 import { EscapeHtml } from "../src/renderUtils.tsx";
 
@@ -491,12 +504,36 @@ Deno.test("canvas", async () => {
   })();
 });
 
+Deno.test("caption", async () => {
+  await testGlobalNonVoid(Caption, "caption")();
+});
+
 Deno.test("cite", async () => {
   await testGlobalNonVoid(Cite, "cite")();
 });
 
 Deno.test("code", async () => {
   await testGlobalNonVoid(Code, "code")();
+});
+
+Deno.test("col", async () => {
+  await testGlobalNonVoid(Col, "col")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Col span={17}></Col>);
+    assertEquals(got, `<col span="17"></col>`);
+  })();
+});
+
+Deno.test("colgroup", async () => {
+  await testGlobalNonVoid(Colgroup, "colgroup")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Colgroup span={17}></Colgroup>);
+    assertEquals(got, `<colgroup span="17"></colgroup>`);
+  })();
 });
 
 Deno.test("data", async () => {
@@ -524,6 +561,22 @@ Deno.test("del", async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Del datetime="foo"></Del>);
     assertEquals(got, `<del datetime="foo"></del>`);
+  })();
+});
+
+Deno.test("details", async () => {
+  await testGlobalNonVoid(Details, "details")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Details name="foo"></Details>);
+    assertEquals(got, `<details name="foo"></details>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Details open></Details>);
+    assertEquals(got, `<details open></details>`);
   })();
 });
 
@@ -607,6 +660,88 @@ Deno.test("i", async () => {
   await testGlobalNonVoid(I, "i")();
 });
 
+Deno.test("img", async () => {
+  await testGlobalVoid(Img, "img")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img alt="bla"></Img>);
+    assertEquals(got, `<img alt="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img src="bla"></Img>);
+    assertEquals(got, `<img src="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img srcset="bla"></Img>);
+    assertEquals(got, `<img srcset="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img crossorigin="anonymous"></Img>);
+    assertEquals(got, `<img crossorigin="anonymous" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img usemap="#bla"></Img>);
+    assertEquals(got, `<img usemap="#bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img ismap></Img>);
+    assertEquals(got, `<img ismap />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img sizes="bla"></Img>);
+    assertEquals(got, `<img sizes="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img width={17}></Img>);
+    assertEquals(got, `<img width="17" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img height={42}></Img>);
+    assertEquals(got, `<img height="42" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img referrerpolicy="origin"></Img>);
+    assertEquals(got, `<img referrerpolicy="origin" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img decoding="sync"></Img>);
+    assertEquals(got, `<img decoding="sync" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img loading="lazy"></Img>);
+    assertEquals(got, `<img loading="lazy" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Img fetchpriority="low"></Img>);
+    assertEquals(got, `<img fetchpriority="low" />`);
+  })();
+});
+
 Deno.test("ins", async () => {
   await testGlobalNonVoid(Ins, "ins")();
 
@@ -664,6 +799,17 @@ Deno.test("link", async () => {
     assertEquals(
       got,
       `<link rel="alternate" />`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Link rel={{custom: "foo"}} />,
+    );
+    assertEquals(
+      got,
+      `<link rel="foo" />`,
     );
   })();
 
@@ -1093,8 +1239,48 @@ Deno.test("sub", async () => {
   await testGlobalNonVoid(Sub, "sub")();
 });
 
+Deno.test("summary", async () => {
+  await testGlobalNonVoid(Summary, "summary")();
+});
+
 Deno.test("sup", async () => {
   await testGlobalNonVoid(Sup, "sup")();
+});
+
+Deno.test("table", async () => {
+  await testGlobalNonVoid(Table, "table")();
+});
+
+Deno.test("tbody", async () => {
+  await testGlobalNonVoid(Tbody, "tbody")();
+});
+
+Deno.test("td", async () => {
+  await testGlobalNonVoid(Td, "td")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Td colspan={17}></Td>);
+    assertEquals(got, `<td colspan="17"></td>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Td rowspan={17}></Td>);
+    assertEquals(got, `<td rowspan="17"></td>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Td headers="foo"></Td>);
+    assertEquals(got, `<td headers="foo"></td>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Td headers={["foo", "bar"]}></Td>);
+    assertEquals(got, `<td headers="foo bar"></td>`);
+  })();
 });
 
 Deno.test("template", async () => {
@@ -1121,6 +1307,54 @@ Deno.test("template", async () => {
   })();
 });
 
+Deno.test("tfoot", async () => {
+  await testGlobalNonVoid(Tfoot, "tfoot")();
+});
+
+Deno.test("th", async () => {
+  await testGlobalNonVoid(Th, "th")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Th colspan={17}></Th>);
+    assertEquals(got, `<th colspan="17"></th>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Th rowspan={17}></Th>);
+    assertEquals(got, `<th rowspan="17"></th>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Th headers="foo"></Th>);
+    assertEquals(got, `<th headers="foo"></th>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Th headers={["foo", "bar"]}></Th>);
+    assertEquals(got, `<th headers="foo bar"></th>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Th scope="row"></Th>);
+    assertEquals(got, `<th scope="row"></th>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Th abbr="foo"></Th>);
+    assertEquals(got, `<th abbr="foo"></th>`);
+  })();
+});
+
+Deno.test("thead", async () => {
+  await testGlobalNonVoid(Thead, "thead")();
+});
+
 Deno.test("time", async () => {
   await testGlobalNonVoid(Time, "time")();
 
@@ -1133,6 +1367,10 @@ Deno.test("time", async () => {
 
 Deno.test("title", async () => {
   await testGlobalNonVoid(Title, "title")();
+});
+
+Deno.test("tr", async () => {
+  await testGlobalNonVoid(Tr, "tr")();
 });
 
 Deno.test("u", async () => {

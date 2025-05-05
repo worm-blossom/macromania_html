@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "../../deps.ts";
+import { Expression, Expressions } from "macromania";
 import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 import {
   NavigableTargetNameOrKeyword,

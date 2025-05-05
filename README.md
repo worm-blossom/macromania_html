@@ -3,6 +3,59 @@
 Macros for [Macromania](https://github.com/worm-blossom/macromania) to generate
 [html](https://en.wikipedia.org/wiki/HTML).
 
-Offers the `<H>` macro for dynamically generated tags, and statically typed macros (`<A>`, `<Abbr>`, etc...).
+Offers the `<H>` macro for dynamically generated tags, and statically typed
+macros (`<A>`, `<Abbr>`, etc...).
 
-The statically typed API is based off the [living standard](https://html.spec.whatwg.org/multipage/). Does not yet have macros for *all* tags.
+```tsx
+<P>
+  {/* The html `class` attribute is set with the `clazz` prop. */}
+  This is a <Em clazz="info">helpful</Em> example.
+</P>;
+
+// And a custom tag (use this for tags
+// which do not have a dedicated macro yet).
+const ctx = new Context();
+const got = await ctx.evaluate(
+  <H name="foo" isVoid attrs={{ bar: "zzz" }} />,
+);
+assertEquals(got, `<foo bar="zzz" />`);
+```
+
+The statically typed API is based off the
+[living standard](https://html.spec.whatwg.org/multipage/). Most tags have
+macros, but the following are still missing:
+
+- Most elements from section
+  [`4.8 Embedded content`](https://html.spec.whatwg.org/multipage/embedded-content.html#embedded-content)
+  of the living standard (notably, the `img` tag _does_ have a macro):
+  - picture
+  - source
+  - iframe
+  - embed
+  - object
+  - video
+  - track
+  - map
+  - area
+  - all SVG, all MathML
+- Most elements from section
+  [`4.10 Forms`](https://html.spec.whatwg.org/multipage/forms.html#forms) of the
+  living standard:
+  - form
+  - label
+  - input
+  - button
+  - select
+  - datalist
+  - option
+  - textarea
+  - output
+  - progress
+  - meter
+  - fieldset
+  - legend
+- the dialog element
+
+Pull requests for any of these are welcome, but should imitate exactly how all
+the other elements are implemented (including tests and javadocs in the same
+style).

@@ -1,15 +1,12 @@
-import { Expression, Expressions } from "../../deps.ts";
+import type { Expression } from "macromania";
 import {
-  EscapeHtml,
-  RenderBoolean,
+  type CustomEnumVariant,
   RenderExpression,
-  RenderSpaceSeparatedList,
   RenderVoidElement,
 } from "../renderUtils.tsx";
 
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin } from "../shared.tsx";
 
 /**
  * Props for the {@linkcode Meta} macro.
@@ -28,7 +25,8 @@ export type MetaProps = {
     | "keywords"
     | "referrer"
     | "theme-color"
-    | "color-scheme";
+    | "color-scheme"
+    | CustomEnumVariant;
   /**
    * When the [http-equiv attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-meta-http-equiv) is specified on a [meta element](https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element), the element is a pragma directive.
    */

@@ -1,4 +1,4 @@
-import { Expression, Expressions, expressions } from "../deps.ts";
+import { Expression, Expressions } from "macromania";
 
 function escapeHtmlString(raw: string): string {
   return raw.replaceAll(/&|<|>|"|'/g, (match) => {
@@ -31,7 +31,7 @@ export function EscapeHtml(
         return escapeHtmlString(evaled);
       }}
     >
-      <fragment exps={expressions(children)} />
+      <exps x={children} />
     </map>
   );
 }
@@ -44,7 +44,7 @@ export function RenderAttribute(
       {" "}
       {attr}="{
         <EscapeHtml>
-          <fragment exps={expressions(children)} />
+          <exps x={children} />
         </EscapeHtml>
       }"
     </>
@@ -94,12 +94,14 @@ export function RenderNumber(
   );
 }
 
+export type CustomEnumVariant = { custom: string };
+
 export function RenderEnum(
-  { attr, value }: { attr: string; value: string },
+  { attr, value }: { attr: string; value: string | CustomEnumVariant },
 ): Expression {
   return (
     <RenderAttribute attr={attr}>
-      {value}
+      {typeof value === "string" ? value : value.custom}
     </RenderAttribute>
   );
 }
@@ -134,6 +136,12 @@ export function RenderExpression(
       {value}
     </RenderAttribute>
   );
+}
+
+export function RenderExpressions(
+  { attr, value }: { attr: string; value: Expressions },
+): Expression {
+  return <RenderExpression attr={attr} value={<exps x={value} />} />;
 }
 
 // "void element" is the official name for "self-closing tags".
