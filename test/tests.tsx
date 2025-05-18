@@ -54,6 +54,7 @@ import {
   Noscript,
   Ol,
   P,
+  Picture,
   Pre,
   Q,
   Rp,
@@ -805,7 +806,7 @@ Deno.test("link", async () => {
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(
-      <Link rel={{custom: "foo"}} />,
+      <Link rel={{ custom: "foo" }} />,
     );
     assertEquals(
       got,
@@ -1071,6 +1072,10 @@ Deno.test("ol", async () => {
 
 Deno.test("p", async () => {
   await testGlobalNonVoid(P, "p")();
+});
+
+Deno.test("picture", async () => {
+  await testGlobalNonVoid(Picture, "picture")();
 });
 
 Deno.test("pre", async () => {
