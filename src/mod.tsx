@@ -70,6 +70,7 @@ export { Search } from "./elements/search.tsx";
 export { Section } from "./elements/section.tsx";
 export { Slot } from "./elements/slot.tsx";
 export { Small } from "./elements/small.tsx";
+export { Source } from "./elements/source.tsx";
 export { Span } from "./elements/span.tsx";
 export { Strong } from "./elements/strong.tsx";
 export { Style } from "./elements/style.tsx";

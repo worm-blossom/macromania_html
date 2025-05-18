@@ -67,6 +67,7 @@ import {
   Section,
   Slot,
   Small,
+  Source,
   Span,
   Strong,
   Style,
@@ -1204,6 +1205,52 @@ Deno.test("slot", async () => {
 
 Deno.test("small", async () => {
   await testGlobalNonVoid(Small, "small")();
+});
+
+Deno.test("source", async () => {
+  await testGlobalVoid(Source, "source")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Source type="bla" />);
+    assertEquals(got, `<source type="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Source media="bla" />);
+    assertEquals(got, `<source media="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Source src="bla"></Source>);
+    assertEquals(got, `<source src="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Source srcset="bla"></Source>);
+    assertEquals(got, `<source srcset="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Source sizes="bla"></Source>);
+    assertEquals(got, `<source sizes="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Source width={17}></Source>);
+    assertEquals(got, `<source width="17" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Source height={42}></Source>);
+    assertEquals(got, `<source height="42" />`);
+  })();
 });
 
 Deno.test("span", async () => {
