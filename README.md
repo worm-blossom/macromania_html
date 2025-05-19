@@ -25,10 +25,9 @@ The statically typed API is based off the
 [living standard](https://html.spec.whatwg.org/multipage/). Most tags have
 macros, but the following are still missing:
 
-- Most elements from section
+- Some elements from section
   [`4.8 Embedded content`](https://html.spec.whatwg.org/multipage/embedded-content.html#embedded-content)
-  of the living standard (notably, the `img` tag _does_ have a macro):
-  - iframe
+  of the living standard:
   - embed
   - object
   - video
@@ -55,5 +54,5 @@ macros, but the following are still missing:
 - the dialog element
 
 Pull requests for any of these are welcome, but should imitate exactly how all
-the other elements are implemented (including tests and javadocs in the same
+the other elements are implemented (including tests and doc comments in the same
 style).

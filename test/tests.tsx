@@ -41,6 +41,7 @@ import {
   Hr,
   Html,
   I,
+  Iframe,
   Img,
   Ins,
   Kbd,
@@ -660,6 +661,70 @@ Deno.test("html", async () => {
 
 Deno.test("i", async () => {
   await testGlobalNonVoid(I, "i")();
+});
+
+Deno.test("iframe", async () => {
+  await testGlobalVoid(Iframe, "iframe")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe src="bla"></Iframe>);
+    assertEquals(got, `<iframe src="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe srcdoc="bla"></Iframe>);
+    assertEquals(got, `<iframe srcdoc="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe name="bla"></Iframe>);
+    assertEquals(got, `<iframe name="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe sandbox="allow-downloads"></Iframe>);
+    assertEquals(got, `<iframe sandbox="allow-downloads" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe allow="bla"></Iframe>);
+    assertEquals(got, `<iframe allow="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe allowfullscreen></Iframe>);
+    assertEquals(got, `<iframe allowfullscreen />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe width={17}></Iframe>);
+    assertEquals(got, `<iframe width="17" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe height={42}></Iframe>);
+    assertEquals(got, `<iframe height="42" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe referrerpolicy="origin"></Iframe>);
+    assertEquals(got, `<iframe referrerpolicy="origin" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Iframe loading="lazy"></Iframe>);
+    assertEquals(got, `<iframe loading="lazy" />`);
+  })();
 });
 
 Deno.test("img", async () => {
