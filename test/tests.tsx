@@ -54,6 +54,7 @@ import {
   Meta,
   Nav,
   Noscript,
+  Object,
   Ol,
   P,
   Picture,
@@ -693,66 +694,66 @@ Deno.test("i", async () => {
 });
 
 Deno.test("iframe", async () => {
-  await testGlobalVoid(Iframe, "iframe")();
+  await testGlobalNonVoid(Iframe, "iframe")();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe src="bla"></Iframe>);
-    assertEquals(got, `<iframe src="bla" />`);
+    assertEquals(got, `<iframe src="bla"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe srcdoc="bla"></Iframe>);
-    assertEquals(got, `<iframe srcdoc="bla" />`);
+    assertEquals(got, `<iframe srcdoc="bla"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe name="bla"></Iframe>);
-    assertEquals(got, `<iframe name="bla" />`);
+    assertEquals(got, `<iframe name="bla"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe sandbox="allow-downloads"></Iframe>);
-    assertEquals(got, `<iframe sandbox="allow-downloads" />`);
+    assertEquals(got, `<iframe sandbox="allow-downloads"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe allow="bla"></Iframe>);
-    assertEquals(got, `<iframe allow="bla" />`);
+    assertEquals(got, `<iframe allow="bla"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe allowfullscreen></Iframe>);
-    assertEquals(got, `<iframe allowfullscreen />`);
+    assertEquals(got, `<iframe allowfullscreen></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe width={17}></Iframe>);
-    assertEquals(got, `<iframe width="17" />`);
+    assertEquals(got, `<iframe width="17"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe height={42}></Iframe>);
-    assertEquals(got, `<iframe height="42" />`);
+    assertEquals(got, `<iframe height="42"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe referrerpolicy="origin"></Iframe>);
-    assertEquals(got, `<iframe referrerpolicy="origin" />`);
+    assertEquals(got, `<iframe referrerpolicy="origin"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe loading="lazy"></Iframe>);
-    assertEquals(got, `<iframe loading="lazy" />`);
+    assertEquals(got, `<iframe loading="lazy"></iframe>`);
   })();
 });
 
@@ -1141,6 +1142,40 @@ Deno.test("nav", async () => {
 
 Deno.test("noscript", async () => {
   await testGlobalNonVoid(Noscript, "noscript")();
+});
+
+Deno.test("object", async () => {
+  await testGlobalNonVoid(Object, "object")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Object data_="bla"></Object>);
+    assertEquals(got, `<object data="bla"></object>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Object type_="bla"></Object>);
+    assertEquals(got, `<object type="bla"></object>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Object form="bla"></Object>);
+    assertEquals(got, `<object form="bla"></object>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Object width={17}></Object>);
+    assertEquals(got, `<object width="17"></object>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Object height={42}></Object>);
+    assertEquals(got, `<object height="42"></object>`);
+  })();
 });
 
 Deno.test("ol", async () => {

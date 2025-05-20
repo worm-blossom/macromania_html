@@ -57,6 +57,7 @@ export { Menu } from "./elements/menu.tsx";
 export { Meta } from "./elements/meta.tsx";
 export { Nav } from "./elements/nav.tsx";
 export { Noscript } from "./elements/noscript.tsx";
+export { Object } from "./elements/object.tsx";
 export { Ol } from "./elements/ol.tsx";
 export { P } from "./elements/p.tsx";
 export { Picture } from "./elements/picture.tsx";

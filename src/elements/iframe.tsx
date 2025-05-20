@@ -79,9 +79,10 @@ export function Iframe(
   props: IframeProps & { children?: Expressions },
 ): Expression {
   return (
-    <RenderVoidElement
+    <RenderNonVoidElement
       name="iframe"
       attrs={<RenderIframeAttributes attrs={props} />}
+      children={props.children}
     />
   );
 }
