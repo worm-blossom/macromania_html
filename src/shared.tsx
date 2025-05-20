@@ -102,3 +102,16 @@ export type FetchPriority =
    * Signals automatic determination of fetch priority relative to other resources with the same destination.
    */
   | "auto";
+
+/**
+ * https://html.spec.whatwg.org/multipage/media.html#attr-media-preload
+ */
+export type Preload =
+  /** Hints to the user agent that the user agent can put the user's needs first without risk to the server, up to and including optimistically downloading the entire resource.  */
+  | "auto"
+  /**  	Hints to the user agent that either the author does not expect the user to need the media resource, or that the server wants to minimize unnecessary traffic. This state does not provide a hint regarding how aggressively to actually download the media resource if buffering starts anyway (e.g. once the user hits "play"). */
+  | "use-none"
+  /**
+   * Hints to the user agent that the author does not expect the user to need the media resource, but that fetching the resource metadata (dimensions, track list, duration, etc.), and maybe even the first few frames, is reasonable.
+   */
+  | "metadata";

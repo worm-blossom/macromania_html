@@ -90,6 +90,7 @@ import {
   U,
   Ul,
   Var,
+  Video,
   Wbr,
 } from "../src/mod.tsx";
 import type { TagProps } from "../src/global.tsx";
@@ -1564,6 +1565,76 @@ Deno.test("ul", async () => {
 
 Deno.test("var", async () => {
   await testGlobalNonVoid(Var, "var")();
+});
+
+Deno.test("video", async () => {
+  await testGlobalNonVoid(Video, "video")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video src="bla"></Video>);
+    assertEquals(got, `<video src="bla"></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video crossorigin="anonymous"></Video>);
+    assertEquals(got, `<video crossorigin="anonymous"></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video poster="bla"></Video>);
+    assertEquals(got, `<video poster="bla"></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video preload="auto"></Video>);
+    assertEquals(got, `<video preload="auto"></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video autoplay></Video>);
+    assertEquals(got, `<video autoplay></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video playsinline></Video>);
+    assertEquals(got, `<video playsinline></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video loop></Video>);
+    assertEquals(got, `<video loop></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video muted></Video>);
+    assertEquals(got, `<video muted></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video controls></Video>);
+    assertEquals(got, `<video controls></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video width={17}></Video>);
+    assertEquals(got, `<video width="17"></video>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Video height={42}></Video>);
+    assertEquals(got, `<video height="42"></video>`);
+  })();
 });
 
 Deno.test("wbr", async () => {

@@ -93,6 +93,7 @@ export { Tr } from "./elements/tr.tsx";
 export { U } from "./elements/u.tsx";
 export { Ul } from "./elements/ul.tsx";
 export { Var } from "./elements/var.tsx";
+export { Video } from "./elements/video.tsx";
 export { Wbr } from "./elements/wbr.tsx";
 
 export {
