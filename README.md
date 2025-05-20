@@ -28,7 +28,6 @@ macros, but the following are still missing:
 - Some elements from section
   [`4.8 Embedded content`](https://html.spec.whatwg.org/multipage/embedded-content.html#embedded-content)
   of the living standard:
-  - embed
   - object
   - video
   - track

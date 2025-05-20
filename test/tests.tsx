@@ -25,6 +25,7 @@ import {
   Dl,
   Dt,
   Em,
+  Embed,
   Figcaption,
   Figure,
   Footer,
@@ -601,6 +602,34 @@ Deno.test("dt", async () => {
 
 Deno.test("em", async () => {
   await testGlobalNonVoid(Em, "em")();
+});
+
+Deno.test("embed", async () => {
+  await testGlobalVoid(Embed, "embed")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Embed src="bla"></Embed>);
+    assertEquals(got, `<embed src="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Embed type="bla"></Embed>);
+    assertEquals(got, `<embed type="bla" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Embed width={17}></Embed>);
+    assertEquals(got, `<embed width="17" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Embed height={42}></Embed>);
+    assertEquals(got, `<embed height="42" />`);
+  })();
 });
 
 Deno.test("figcaption", async () => {
