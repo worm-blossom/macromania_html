@@ -4,6 +4,7 @@ import {
   Address,
   Article,
   Aside,
+  Audio,
   B,
   Bdi,
   Bdo,
@@ -437,6 +438,52 @@ Deno.test("article", async () => {
 
 Deno.test("aside", async () => {
   await testGlobalNonVoid(Aside, "aside")();
+});
+
+Deno.test("audio", async () => {
+  await testGlobalNonVoid(Audio, "audio")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Audio src="bla"></Audio>);
+    assertEquals(got, `<audio src="bla"></audio>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Audio crossorigin="anonymous"></Audio>);
+    assertEquals(got, `<audio crossorigin="anonymous"></audio>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Audio preload="auto"></Audio>);
+    assertEquals(got, `<audio preload="auto"></audio>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Audio autoplay></Audio>);
+    assertEquals(got, `<audio autoplay></audio>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Audio loop></Audio>);
+    assertEquals(got, `<audio loop></audio>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Audio muted></Audio>);
+    assertEquals(got, `<audio muted></audio>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Audio controls></Audio>);
+    assertEquals(got, `<audio controls></audio>`);
+  })();
 });
 
 Deno.test("b", async () => {

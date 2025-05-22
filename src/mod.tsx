@@ -5,6 +5,7 @@ export { Abbr } from "./elements/abbr.tsx";
 export { Address } from "./elements/address.tsx";
 export { Article } from "./elements/article.tsx";
 export { Aside } from "./elements/aside.tsx";
+export { Audio } from "./elements/audio.tsx";
 export { B } from "./elements/b.tsx";
 export { Base, type BaseProps } from "./elements/base.tsx";
 export { Bdi } from "./elements/bdi.tsx";
