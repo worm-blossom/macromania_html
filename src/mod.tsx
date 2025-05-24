@@ -3,6 +3,7 @@ export { type AOrAreaLinkProps } from "./aOrArea.tsx";
 export { A, type AProps } from "./elements/a.tsx";
 export { Abbr } from "./elements/abbr.tsx";
 export { Address } from "./elements/address.tsx";
+export { Area, type AreaProps } from "./elements/area.tsx";
 export { Article } from "./elements/article.tsx";
 export { Aside } from "./elements/aside.tsx";
 export { Audio } from "./elements/audio.tsx";
@@ -53,6 +54,7 @@ export {
   type SizeEntry,
 } from "./elements/link.tsx";
 export { Main } from "./elements/main.tsx";
+export { Map } from "./elements/map.tsx";
 export { Mark } from "./elements/mark.tsx";
 export { Menu } from "./elements/menu.tsx";
 export { Meta } from "./elements/meta.tsx";
@@ -91,6 +93,7 @@ export { Thead } from "./elements/thead.tsx";
 export { Time } from "./elements/time.tsx";
 export { Title } from "./elements/title.tsx";
 export { Tr } from "./elements/tr.tsx";
+export { Track } from "./elements/track.tsx";
 export { U } from "./elements/u.tsx";
 export { Ul } from "./elements/ul.tsx";
 export { Var } from "./elements/var.tsx";

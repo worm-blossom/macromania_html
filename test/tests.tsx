@@ -2,6 +2,7 @@ import {
   A,
   Abbr,
   Address,
+  Area,
   Article,
   Aside,
   Audio,
@@ -50,6 +51,7 @@ import {
   Li,
   Link,
   Main,
+  Map,
   Mark,
   Menu,
   Meta,
@@ -88,6 +90,7 @@ import {
   Time,
   Title,
   Tr,
+  Track,
   U,
   Ul,
   Var,
@@ -421,6 +424,31 @@ Deno.test("a", async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<A target={{ name: "abc" }}></A>);
     assertEquals(got, `<a target="abc"></a>`);
+  })();
+});
+
+Deno.test("area", async () => {
+  await testGlobalVoid(Area, "area")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area
+        download=""
+        href="bla"
+        alt="foo"
+        coords={[1, 2.4, 7]}
+        shape="poly"
+        ping="a"
+        referrerpolicy="origin"
+        rel="prev"
+        target="_self"
+      />,
+    );
+    assertEquals(
+      got,
+      `<area download="" href="bla" ping="a" referrerpolicy="origin" rel="prev" target="_self" alt="foo" coords="1,2.4,7" shape="poly" />`,
+    );
   })();
 });
 
@@ -1121,6 +1149,14 @@ Deno.test("mark", async () => {
   await testGlobalNonVoid(Mark, "mark")();
 });
 
+Deno.test("map", async () => {
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Map name="foo" />);
+    assertEquals(got, `<map name="foo"></map>`);
+  })();
+});
+
 Deno.test("menu", async () => {
   await testGlobalNonVoid(Menu, "menu")();
 });
@@ -1600,6 +1636,38 @@ Deno.test("title", async () => {
 
 Deno.test("tr", async () => {
   await testGlobalNonVoid(Tr, "tr")();
+});
+
+Deno.test("track", async () => {
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Track src="foo" />);
+    assertEquals(got, `<track src="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Track kind="captions" src="foo" />);
+    assertEquals(got, `<track kind="captions" src="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Track src="foo" srclang="bar" />);
+    assertEquals(got, `<track src="foo" srclang="bar" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Track src="foo" label="bar" />);
+    assertEquals(got, `<track src="foo" label="bar" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Track src="foo" default />);
+    assertEquals(got, `<track src="foo" default />`);
+  })();
 });
 
 Deno.test("u", async () => {

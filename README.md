@@ -25,13 +25,6 @@ The statically typed API is based off the
 [living standard](https://html.spec.whatwg.org/multipage/). Most tags have
 macros, but the following are still missing:
 
-- Some elements from section
-  [`4.8 Embedded content`](https://html.spec.whatwg.org/multipage/embedded-content.html#embedded-content)
-  of the living standard:
-  - track
-  - map
-  - area
-  - all SVG, all MathML
 - Most elements from section
   [`4.10 Forms`](https://html.spec.whatwg.org/multipage/forms.html#forms) of the
   living standard:
@@ -49,6 +42,8 @@ macros, but the following are still missing:
   - fieldset
   - legend
 - the dialog element
+
+There are no statically typed macros for SVG and MathML.
 
 Pull requests for any of these are welcome, but should imitate exactly how all
 the other elements are implemented (including tests and doc comments in the same
