@@ -25,7 +25,7 @@ The statically typed API is based off the
 [living standard](https://html.spec.whatwg.org/multipage/). Most tags have
 macros, but the following are still missing:
 
-- Most elements from section
+- Some elements from section
   [`4.10 Forms`](https://html.spec.whatwg.org/multipage/forms.html#forms) of the
   living standard:
   - select
@@ -37,7 +37,6 @@ macros, but the following are still missing:
   - meter
   - fieldset
   - legend
-- the dialog element
 
 There are no statically typed macros for SVG and MathML.
 

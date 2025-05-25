@@ -24,6 +24,7 @@ import {
   Del,
   Details,
   Dfn,
+  Dialog,
   Div,
   Dl,
   Dt,
@@ -757,6 +758,22 @@ Deno.test("details", async () => {
 
 Deno.test("dfn", async () => {
   await testGlobalNonVoid(Dfn, "dfn")();
+});
+
+Deno.test("dialog", async () => {
+  await testGlobalNonVoid(Dialog, "dialog")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Dialog closedby="closerequest"></Dialog>);
+    assertEquals(got, `<dialog closedby="closerequest"></dialog>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Dialog open></Dialog>);
+    assertEquals(got, `<dialog open></dialog>`);
+  })();
 });
 
 Deno.test("div", async () => {

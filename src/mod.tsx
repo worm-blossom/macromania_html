@@ -26,6 +26,7 @@ export { Dd } from "./elements/dd.tsx";
 export { Del } from "./elements/insdel.tsx";
 export { Details } from "./elements/details.tsx";
 export { Dfn } from "./elements/dfn.tsx";
+export { Dialog } from "./elements/dialog.tsx";
 export { Div } from "./elements/div.tsx";
 export { Dl } from "./elements/dl.tsx";
 export { Dt } from "./elements/dt.tsx";
