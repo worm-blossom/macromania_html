@@ -65,20 +65,6 @@ function RenderFormAttributes(
   return (
     <>
       <RenderGlobalAttributes attrs={attrs} />
-      {
-        /* acceptCharset?: "UTF-8";
-        action?: Expressions;
-        autocomplete?: "on" | "off";
-        enctype?:
-            | "application/x-www-form-urlencoded"
-            | "multipart/form-data"
-            | "text/plain";
-        method?: "get" | "post" | "dialog";
-        name?: Expressions;
-        novalidate?: boolean;
-        target?: Expressions;
-        rel?: FormRel; */
-      }
       {attrs.acceptCharset !== undefined
         ? <RenderEnum attr="accept-charset" value={attrs.acceptCharset} />
         : ""}

@@ -49,6 +49,7 @@ import {
   Img,
   Ins,
   Kbd,
+  Label,
   Li,
   Link,
   Main,
@@ -998,6 +999,21 @@ Deno.test("ins", async () => {
 
 Deno.test("kbd", async () => {
   await testGlobalNonVoid(Kbd, "kbd")();
+});
+
+Deno.test("label", async () => {
+  await testGlobalNonVoid(Label, "label")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Label for_="foo" />,
+    );
+    assertEquals(
+      got,
+      `<label for="foo"></label>`,
+    );
+  })();
 });
 
 Deno.test("li", async () => {

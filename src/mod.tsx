@@ -45,6 +45,7 @@ export { Iframe } from "./elements/iframe.tsx";
 export { Img } from "./elements/img.tsx";
 export { Ins } from "./elements/insdel.tsx";
 export { Kbd } from "./elements/kbd.tsx";
+export { Label } from "./elements/label.tsx";
 export { Li } from "./elements/li.tsx";
 export {
   type Destination,
