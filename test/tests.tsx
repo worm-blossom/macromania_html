@@ -31,6 +31,7 @@ import {
   Figcaption,
   Figure,
   Footer,
+  Form,
   H,
   H1,
   H2,
@@ -719,6 +720,70 @@ Deno.test("figure", async () => {
 
 Deno.test("footer", async () => {
   await testGlobalNonVoid(Footer, "footer")();
+});
+
+Deno.test("form", async () => {
+  await testGlobalNonVoid(Form, "form")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form acceptCharset="UTF-8"></Form>);
+    assertEquals(got, `<form accept-charset="UTF-8"></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form action="foo"></Form>);
+    assertEquals(got, `<form action="foo"></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form autocomplete="off"></Form>);
+    assertEquals(got, `<form autocomplete="off"></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form enctype="text/plain"></Form>);
+    assertEquals(got, `<form enctype="text/plain"></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form method="post"></Form>);
+    assertEquals(got, `<form method="post"></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form name="foo"></Form>);
+    assertEquals(got, `<form name="foo"></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form novalidate></Form>);
+    assertEquals(got, `<form novalidate></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form target="foo"></Form>);
+    assertEquals(got, `<form target="foo"></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form rel="next"></Form>);
+    assertEquals(got, `<form rel="next"></form>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Form action="foo"></Form>);
+    assertEquals(got, `<form action="foo"></form>`);
+  })();
 });
 
 Deno.test("h1", async () => {

@@ -33,6 +33,7 @@ export { Embed } from "./elements/embed.tsx";
 export { Figcaption } from "./elements/figcaption.tsx";
 export { Figure } from "./elements/figure.tsx";
 export { Footer } from "./elements/footer.tsx";
+export { Form } from "./elements/form.tsx";
 export { H1, H2, H3, H4, H5, H6 } from "./elements/hs.tsx";
 export { Head } from "./elements/head.tsx";
 export { Header } from "./elements/header.tsx";
