@@ -43,6 +43,7 @@ export { Html } from "./elements/html.tsx";
 export { I } from "./elements/i.tsx";
 export { Iframe } from "./elements/iframe.tsx";
 export { Img } from "./elements/img.tsx";
+export { Input } from "./elements/input.tsx";
 export { Ins } from "./elements/insdel.tsx";
 export { Kbd } from "./elements/kbd.tsx";
 export { Label } from "./elements/label.tsx";

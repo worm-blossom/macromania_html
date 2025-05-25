@@ -47,6 +47,7 @@ import {
   I,
   Iframe,
   Img,
+  Input,
   Ins,
   Kbd,
   Label,
@@ -978,6 +979,208 @@ Deno.test("img", async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Img fetchpriority="low"></Img>);
     assertEquals(got, `<img fetchpriority="low" />`);
+  })();
+});
+
+Deno.test("input", async () => {
+  await testGlobalVoid(Input, "input")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input type_="button" />);
+    assertEquals(got, `<input type="button" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input accept="foo" />);
+    assertEquals(got, `<input accept="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input alpha />);
+    assertEquals(got, `<input alpha />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input alt="foo" />);
+    assertEquals(got, `<input alt="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input autocomplete="foo" />);
+    assertEquals(got, `<input autocomplete="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input checked />);
+    assertEquals(got, `<input checked />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input colorspace="display-p3" />);
+    assertEquals(got, `<input colorspace="display-p3" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input disabled />);
+    assertEquals(got, `<input disabled />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input form="foo" />);
+    assertEquals(got, `<input form="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input formaction="foo" />);
+    assertEquals(got, `<input formaction="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input formenctype="text/plain" />);
+    assertEquals(got, `<input formenctype="text/plain" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input formmethod="post" />);
+    assertEquals(got, `<input formmethod="post" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input formnovalidate />);
+    assertEquals(got, `<input formnovalidate />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input formtarget="foo" />);
+    assertEquals(got, `<input formtarget="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input height={1} />);
+    assertEquals(got, `<input height="1" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input list="foo" />);
+    assertEquals(got, `<input list="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input max="foo" />);
+    assertEquals(got, `<input max="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input maxlength={2} />);
+    assertEquals(got, `<input maxlength="2" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input min="foo" />);
+    assertEquals(got, `<input min="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input minlength={3} />);
+    assertEquals(got, `<input minlength="3" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input multiple />);
+    assertEquals(got, `<input multiple />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input name="foo" />);
+    assertEquals(got, `<input name="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input pattern="foo" />);
+    assertEquals(got, `<input pattern="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input placeholder="foo" />);
+    assertEquals(got, `<input placeholder="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input popovertarget="foo" />);
+    assertEquals(got, `<input popovertarget="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input popovertargetaction="hide" />);
+    assertEquals(got, `<input popovertargetaction="hide" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input readonly />);
+    assertEquals(got, `<input readonly />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input required />);
+    assertEquals(got, `<input required />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input size={4} />);
+    assertEquals(got, `<input size="4" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input src="foo" />);
+    assertEquals(got, `<input src="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input step="foo" />);
+    assertEquals(got, `<input step="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input value="foo" />);
+    assertEquals(got, `<input value="foo" />`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Input width={5} />);
+    assertEquals(got, `<input width="5" />`);
   })();
 });
 

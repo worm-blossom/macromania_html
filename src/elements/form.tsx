@@ -20,6 +20,13 @@ export type FormRel =
   | "prev"
   | "search";
 
+export type FormEnctype =
+  | "application/x-www-form-urlencoded"
+  | "multipart/form-data"
+  | "text/plain";
+
+export type FormMethod = "get" | "post" | "dialog";
+
 /**
  * Props for the {@linkcode Form} macro.
  *
@@ -29,11 +36,8 @@ export type FormProps = {
   acceptCharset?: "UTF-8";
   action?: Expressions;
   autocomplete?: "on" | "off";
-  enctype?:
-    | "application/x-www-form-urlencoded"
-    | "multipart/form-data"
-    | "text/plain";
-  method?: "get" | "post" | "dialog";
+  enctype?: FormEnctype;
+  method?: FormMethod;
   name?: Expressions;
   novalidate?: boolean;
   target?: Expressions;
