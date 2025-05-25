@@ -14,6 +14,7 @@ export { Bdo } from "./elements/bdo.tsx";
 export { Blockquote } from "./elements/blockquote.tsx";
 export { Body } from "./elements/body.tsx";
 export { Br } from "./elements/br.tsx";
+export { Button } from "./elements/button.tsx";
 export { Canvas } from "./elements/canvas.tsx";
 export { Caption } from "./elements/caption.tsx";
 export { Cite } from "./elements/cite.tsx";

@@ -34,6 +34,8 @@ export type InputType =
   | "reset"
   | "button";
 
+export type PopoverTargetAction = "toggle" | "show" | "hide";
+
 /**
  * Props for the {@linkcode Input} macro.
  *
@@ -66,7 +68,7 @@ export type InputProps = {
   pattern?: Expressions;
   placeholder?: Expressions;
   popovertarget?: Expressions;
-  popovertargetaction?: "toggle" | "show" | "hide";
+  popovertargetaction?: PopoverTargetAction;
   readonly?: boolean;
   required?: boolean;
   size?: number;

@@ -12,6 +12,7 @@ import {
   Blockquote,
   Body,
   Br,
+  Button,
   Canvas,
   Caption,
   Cite,
@@ -570,6 +571,96 @@ Deno.test("body", async () => {
 
 Deno.test("br", async () => {
   await testGlobalVoid(Br, "br")();
+});
+
+Deno.test("button", async () => {
+  await testGlobalNonVoid(Button, "button")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button command="foo"></Button>);
+    assertEquals(got, `<button command="foo"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button commandfor="foo"></Button>);
+    assertEquals(got, `<button commandfor="foo"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button disabled></Button>);
+    assertEquals(got, `<button disabled></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button form="foo"></Button>);
+    assertEquals(got, `<button form="foo"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button formaction="foo"></Button>);
+    assertEquals(got, `<button formaction="foo"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button formenctype="text/plain"></Button>);
+    assertEquals(got, `<button formenctype="text/plain"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button formmethod="post"></Button>);
+    assertEquals(got, `<button formmethod="post"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button formnovalidate></Button>);
+    assertEquals(got, `<button formnovalidate></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button formtarget="foo"></Button>);
+    assertEquals(got, `<button formtarget="foo"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button name="foo"></Button>);
+    assertEquals(got, `<button name="foo"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button popovertarget="foo"></Button>);
+    assertEquals(got, `<button popovertarget="foo"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Button popovertargetaction="hide"></Button>,
+    );
+    assertEquals(got, `<button popovertargetaction="hide"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button type_="submit"></Button>);
+    assertEquals(got, `<button type="submit"></button>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Button value="foo"></Button>);
+    assertEquals(got, `<button value="foo"></button>`);
+  })();
 });
 
 Deno.test("canvas", async () => {
