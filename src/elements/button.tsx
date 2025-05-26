@@ -3,6 +3,7 @@ import {
   RenderBoolean,
   RenderEnum,
   RenderExpression,
+  RenderExpressions,
   RenderNonVoidElement,
 } from "../renderUtils.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
@@ -17,8 +18,8 @@ export type ButtonType = "submit" | "reset" | "button";
  * https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element
  */
 export type ButtonProps = {
-  command?: Expression;
-  commandfor?: Expression;
+  command?: Expressions;
+  commandfor?: Expressions;
   disabled?: boolean;
   form?: Expressions;
   formaction?: Expressions;
@@ -59,10 +60,10 @@ function RenderButtonAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.command !== undefined
-        ? <RenderExpression attr="command" value={attrs.command} />
+        ? <RenderExpressions attr="command" value={attrs.command} />
         : ""}
       {attrs.commandfor !== undefined
-        ? <RenderExpression attr="commandfor" value={attrs.commandfor} />
+        ? <RenderExpressions attr="commandfor" value={attrs.commandfor} />
         : ""}
       {attrs.disabled !== undefined
         ? <RenderBoolean attr="disabled" value={attrs.disabled} />

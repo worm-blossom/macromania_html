@@ -28,7 +28,6 @@ macros, but the following are still missing:
 - Some elements from section
   [`4.10 Forms`](https://html.spec.whatwg.org/multipage/forms.html#forms) of the
   living standard:
-  - select
   - datalist
   - option
   - textarea
@@ -39,7 +38,3 @@ macros, but the following are still missing:
   - legend
 
 There are no statically typed macros for SVG and MathML.
-
-Pull requests for any of these are welcome, but should imitate exactly how all
-the other elements are implemented (including tests and doc comments in the same
-style).

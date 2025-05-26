@@ -76,6 +76,7 @@ import {
   Script,
   Search,
   Section,
+  Select,
   Slot,
   Small,
   Source,
@@ -1794,6 +1795,54 @@ Deno.test("search", async () => {
 
 Deno.test("section", async () => {
   await testGlobalNonVoid(Section, "section")();
+});
+
+Deno.test("select", async () => {
+  await testGlobalNonVoid(Select, "select")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Select autocomplete="foo"></Select>);
+    assertEquals(got, `<select autocomplete="foo"></select>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Select disabled></Select>);
+    assertEquals(got, `<select disabled></select>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Select form="foo"></Select>);
+    assertEquals(got, `<select form="foo"></select>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Select multiple></Select>);
+    assertEquals(got, `<select multiple></select>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Select name="foo"></Select>);
+    assertEquals(got, `<select name="foo"></select>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Select required></Select>);
+    assertEquals(got, `<select required></select>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Select size={3}></Select>,
+    );
+    assertEquals(got, `<select size="3"></select>`);
+  })();
 });
 
 Deno.test("slot", async () => {
