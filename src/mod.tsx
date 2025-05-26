@@ -96,6 +96,7 @@ export { Table } from "./elements/table.tsx";
 export { Tbody } from "./elements/tbody.tsx";
 export { Td } from "./elements/td.tsx";
 export { Template } from "./elements/template.tsx";
+export { Textarea } from "./elements/textarea.tsx";
 export { Tfoot } from "./elements/tfoot.tsx";
 export { Th } from "./elements/th.tsx";
 export { Thead } from "./elements/thead.tsx";

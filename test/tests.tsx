@@ -93,6 +93,7 @@ import {
   Tbody,
   Td,
   Template,
+  Textarea,
   Tfoot,
   Th,
   Thead,
@@ -2061,6 +2062,88 @@ Deno.test("template", async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Template shadowrootclonable></Template>);
     assertEquals(got, `<template shadowrootclonable></template>`);
+  })();
+});
+
+Deno.test("textarea", async () => {
+  await testGlobalNonVoid(Textarea, "textarea")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea autocomplete="foo" />);
+    assertEquals(got, `<textarea autocomplete="foo"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea cols={1} />);
+    assertEquals(got, `<textarea cols="1"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea dirname="foo" />);
+    assertEquals(got, `<textarea dirname="foo"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea disabled />);
+    assertEquals(got, `<textarea disabled></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea form="foo" />);
+    assertEquals(got, `<textarea form="foo"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea maxlength={2} />);
+    assertEquals(got, `<textarea maxlength="2"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea minlength={3} />);
+    assertEquals(got, `<textarea minlength="3"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea name="foo" />);
+    assertEquals(got, `<textarea name="foo"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea placeholder="foo" />);
+    assertEquals(got, `<textarea placeholder="foo"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea readonly />);
+    assertEquals(got, `<textarea readonly></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea required />);
+    assertEquals(got, `<textarea required></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea rows={4} />);
+    assertEquals(got, `<textarea rows="4"></textarea>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Textarea wrap="soft" />);
+    assertEquals(got, `<textarea wrap="soft"></textarea>`);
   })();
 });
 
