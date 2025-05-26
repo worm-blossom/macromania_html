@@ -65,6 +65,7 @@ import {
   Noscript,
   Object,
   Ol,
+  Optgroup,
   P,
   Picture,
   Pre,
@@ -1679,6 +1680,22 @@ Deno.test("ol", async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Ol type="i"></Ol>);
     assertEquals(got, `<ol type="i"></ol>`);
+  })();
+});
+
+Deno.test("optgroup", async () => {
+  await testGlobalNonVoid(Optgroup, "optgroup")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Optgroup disabled></Optgroup>);
+    assertEquals(got, `<optgroup disabled></optgroup>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Optgroup label="foo"></Optgroup>);
+    assertEquals(got, `<optgroup label="foo"></optgroup>`);
   })();
 });
 
