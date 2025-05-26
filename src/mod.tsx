@@ -22,6 +22,7 @@ export { Code } from "./elements/code.tsx";
 export { Col } from "./elements/col.tsx";
 export { Colgroup } from "./elements/colgroup.tsx";
 export { Data } from "./elements/data.tsx";
+export { Datalist } from "./elements/datalist.tsx";
 export { Dd } from "./elements/dd.tsx";
 export { Del } from "./elements/insdel.tsx";
 export { Details } from "./elements/details.tsx";

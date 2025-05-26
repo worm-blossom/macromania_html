@@ -20,6 +20,7 @@ import {
   Col,
   Colgroup,
   Data,
+  Datalist,
   Dd,
   Del,
   Details,
@@ -719,6 +720,10 @@ Deno.test("data", async () => {
     const got = await ctx.evaluate(<Data value="foo"></Data>);
     assertEquals(got, `<data value="foo"></data>`);
   })();
+});
+
+Deno.test("datalist", async () => {
+  await testGlobalNonVoid(Datalist, "datalist")();
 });
 
 Deno.test("dd", async () => {

@@ -28,7 +28,6 @@ macros, but the following are still missing:
 - Some elements from section
   [`4.10 Forms`](https://html.spec.whatwg.org/multipage/forms.html#forms) of the
   living standard:
-  - datalist
   - option
   - textarea
   - output
