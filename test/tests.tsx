@@ -66,6 +66,7 @@ import {
   Object,
   Ol,
   Optgroup,
+  Option,
   P,
   Picture,
   Pre,
@@ -1696,6 +1697,34 @@ Deno.test("optgroup", async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Optgroup label="foo"></Optgroup>);
     assertEquals(got, `<optgroup label="foo"></optgroup>`);
+  })();
+});
+
+Deno.test("option", async () => {
+  await testGlobalNonVoid(Option, "option")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Option disabled></Option>);
+    assertEquals(got, `<option disabled></option>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Option label="foo"></Option>);
+    assertEquals(got, `<option label="foo"></option>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Option selected></Option>);
+    assertEquals(got, `<option selected></option>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Option value="foo"></Option>);
+    assertEquals(got, `<option value="foo"></option>`);
   })();
 });
 
