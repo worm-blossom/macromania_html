@@ -25,7 +25,7 @@ export type MeterProps = {
 } & TagProps;
 
 /**
- * The [progress element](https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element) represents a scalar measurement within a known range, or a fractional value; for example disk usage, the relevance of a query result, or the fraction of a voting population to have selected a particular candidate.
+ * The [meter element](https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element) represents a scalar measurement within a known range, or a fractional value; for example disk usage, the relevance of a query result, or the fraction of a voting population to have selected a particular candidate.
  */
 export function Meter(
   props: MeterProps & { children?: Expressions },

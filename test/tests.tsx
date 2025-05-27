@@ -31,6 +31,7 @@ import {
   Dt,
   Em,
   Embed,
+  Fieldset,
   Figcaption,
   Figure,
   Footer,
@@ -829,6 +830,28 @@ Deno.test("embed", async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Embed height={42}></Embed>);
     assertEquals(got, `<embed height="42" />`);
+  })();
+});
+
+Deno.test("fieldset", async () => {
+  await testGlobalNonVoid(Fieldset, "fieldset")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Fieldset disabled></Fieldset>);
+    assertEquals(got, `<fieldset disabled></fieldset>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Fieldset form="foo"></Fieldset>);
+    assertEquals(got, `<fieldset form="foo"></fieldset>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Fieldset name="foo"></Fieldset>);
+    assertEquals(got, `<fieldset name="foo"></fieldset>`);
   })();
 });
 

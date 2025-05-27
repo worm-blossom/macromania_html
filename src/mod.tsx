@@ -33,6 +33,7 @@ export { Dl } from "./elements/dl.tsx";
 export { Dt } from "./elements/dt.tsx";
 export { Em } from "./elements/em.tsx";
 export { Embed } from "./elements/embed.tsx";
+export { Fieldset } from "./elements/fieldset.tsx";
 export { Figcaption } from "./elements/figcaption.tsx";
 export { Figure } from "./elements/figure.tsx";
 export { Footer } from "./elements/footer.tsx";
