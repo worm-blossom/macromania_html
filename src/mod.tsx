@@ -74,6 +74,7 @@ export { Output } from "./elements/output.tsx";
 export { P } from "./elements/p.tsx";
 export { Picture } from "./elements/picture.tsx";
 export { Pre } from "./elements/pre.tsx";
+export { Progress } from "./elements/progress.tsx";
 export { Q } from "./elements/q.tsx";
 export { Rp } from "./elements/rp.tsx";
 export { Rt } from "./elements/rt.tsx";

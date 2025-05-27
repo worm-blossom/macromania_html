@@ -71,6 +71,7 @@ import {
   P,
   Picture,
   Pre,
+  Progress,
   Q,
   Rp,
   Rt,
@@ -1762,6 +1763,22 @@ Deno.test("picture", async () => {
 
 Deno.test("pre", async () => {
   await testGlobalNonVoid(Pre, "pre")();
+});
+
+Deno.test("progress", async () => {
+  await testGlobalNonVoid(Progress, "progress")();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Progress value={4}></Progress>);
+    assertEquals(got, `<progress value="4"></progress>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Progress max={4}></Progress>);
+    assertEquals(got, `<progress max="4"></progress>`);
+  })();
 });
 
 Deno.test("q", async () => {
