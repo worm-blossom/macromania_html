@@ -64,6 +64,7 @@ export { Map } from "./elements/map.tsx";
 export { Mark } from "./elements/mark.tsx";
 export { Menu } from "./elements/menu.tsx";
 export { Meta } from "./elements/meta.tsx";
+export { Meter } from "./elements/meter.tsx";
 export { Nav } from "./elements/nav.tsx";
 export { Noscript } from "./elements/noscript.tsx";
 export { Object } from "./elements/object.tsx";

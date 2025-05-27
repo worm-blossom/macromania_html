@@ -61,6 +61,7 @@ import {
   Mark,
   Menu,
   Meta,
+  Meter,
   Nav,
   Noscript,
   Object,
@@ -1620,6 +1621,44 @@ Deno.test("meta", async () => {
       got,
       `<meta media="foo" />`,
     );
+  })();
+});
+
+Deno.test("meter", async () => {
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Meter value={4}></Meter>);
+    assertEquals(got, `<meter value="4"></meter>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Meter value={2} min={4}></Meter>);
+    assertEquals(got, `<meter value="2" min="4"></meter>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Meter value={2} max={4}></Meter>);
+    assertEquals(got, `<meter value="2" max="4"></meter>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Meter value={2} low={4}></Meter>);
+    assertEquals(got, `<meter value="2" low="4"></meter>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Meter value={2} high={4}></Meter>);
+    assertEquals(got, `<meter value="2" high="4"></meter>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<Meter value={2} optimum={4}></Meter>);
+    assertEquals(got, `<meter value="2" optimum="4"></meter>`);
   })();
 });
 
