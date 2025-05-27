@@ -70,6 +70,7 @@ export { Object } from "./elements/object.tsx";
 export { Ol } from "./elements/ol.tsx";
 export { Optgroup } from "./elements/optgroup.tsx";
 export { Option } from "./elements/option.tsx";
+export { Output } from "./elements/output.tsx";
 export { P } from "./elements/p.tsx";
 export { Picture } from "./elements/picture.tsx";
 export { Pre } from "./elements/pre.tsx";
