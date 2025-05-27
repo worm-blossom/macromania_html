@@ -51,6 +51,7 @@ export { Input } from "./elements/input.tsx";
 export { Ins } from "./elements/insdel.tsx";
 export { Kbd } from "./elements/kbd.tsx";
 export { Label } from "./elements/label.tsx";
+export { Legend } from "./elements/legend.tsx";
 export { Li } from "./elements/li.tsx";
 export {
   type Destination,

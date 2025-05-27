@@ -55,6 +55,7 @@ import {
   Ins,
   Kbd,
   Label,
+  Legend,
   Li,
   Link,
   Main,
@@ -1360,6 +1361,10 @@ Deno.test("label", async () => {
       `<label for="foo"></label>`,
     );
   })();
+});
+
+Deno.test("legend", async () => {
+  await testGlobalNonVoid(Legend, "legend")();
 });
 
 Deno.test("li", async () => {
