@@ -1009,6 +1009,17 @@ Deno.test("iframe", async () => {
 
   await (async () => {
     const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Iframe sandbox={["allow-downloads", "allow-forms"]}></Iframe>,
+    );
+    assertEquals(
+      got,
+      `<iframe sandbox="allow-downloads allow-forms"></iframe>`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
     const got = await ctx.evaluate(<Iframe allow="bla"></Iframe>);
     assertEquals(got, `<iframe allow="bla"></iframe>`);
   })();

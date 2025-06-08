@@ -11,6 +11,24 @@ import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { CrossOrigin, FetchPriority } from "../shared.tsx";
 
 /**
+ * The allowed values for the [sandbox attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox).
+ */
+export type Sandbox =
+  | "allow-downloads"
+  | "allow-forms"
+  | "allow-modals"
+  | "allow-orientation-lock"
+  | "allow-pointer-lock"
+  | "allow-popups"
+  | "allow-popups-to-escape-sandbox"
+  | "allow-presentation"
+  | "allow-same-origin"
+  | "allow-scripts"
+  | "allow-top-navigation"
+  | "allow-top-navigation-by-user-activation"
+  | "allow-top-navigation-to-custom-protocols";
+
+/**
  * Props for the {@linkcode Iframe} macro.
  *
  * https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element
@@ -45,7 +63,7 @@ export type IframeProps = {
    * - [allow-top-navigation-by-user-activation](https://html.spec.whatwg.org/multipage/browsers.html#attr-iframe-sandbox-allow-top-navigation-by-user-activation)
    * - [allow-top-navigation-to-custom-protocols](https://html.spec.whatwg.org/multipage/browsers.html#attr-iframe-sandbox-allow-top-navigation-to-custom-protocols)
    */
-  sandbox?: Expression;
+  sandbox?: Sandbox | Sandbox[];
   /**
    * The [allow attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-allow), when specified, determines the [container policy](https://w3c.github.io/webappsec-permissions-policy/#container-policy) that will be used when the [permissions policy](https://html.spec.whatwg.org/multipage/dom.html#concept-document-permissions-policy) for a [Document](https://html.spec.whatwg.org/multipage/dom.html#document) in the [iframe](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element)'s [content navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#content-navigable) is initialized. Its value must be a [serialized permissions policy](https://w3c.github.io/webappsec-permissions-policy/#serialized-permissions-policy).
    */
@@ -107,7 +125,14 @@ function RenderIframeAttributes(
         ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
         : ""}
       {attrs.sandbox !== undefined
-        ? <RenderExpression attr="sandbox" value={<exps x={attrs.sandbox} />} />
+        ? (
+          <RenderExpression
+            attr="sandbox"
+            value={Array.isArray(attrs.sandbox)
+              ? attrs.sandbox.join(" ")
+              : attrs.sandbox}
+          />
+        )
         : ""}
       {attrs.allow !== undefined
         ? <RenderExpression attr="allow" value={<exps x={attrs.allow} />} />
