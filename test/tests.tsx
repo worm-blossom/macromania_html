@@ -1410,17 +1410,6 @@ Deno.test("link", async () => {
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(
-      <Link rel={{ custom: "foo" }} />,
-    );
-    assertEquals(
-      got,
-      `<link rel="foo" />`,
-    );
-  })();
-
-  await (async () => {
-    const ctx = new Context();
-    const got = await ctx.evaluate(
       <Link media="foo" />,
     );
     assertEquals(

@@ -7,7 +7,7 @@ import { RenderYesNo } from "./renderUtils.tsx";
 import { RenderDynamicAttributes } from "./renderUtils.tsx";
 import { EscapeHtml, RenderNumber } from "./renderUtils.tsx";
 import {
-  DynamicAttributes,
+  type DynamicAttributes,
   RenderBoolean,
   RenderBooleanOrEnum,
   RenderEnum,

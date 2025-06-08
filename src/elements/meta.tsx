@@ -1,9 +1,5 @@
 import type { Expression } from "macromania";
-import {
-  type CustomEnumVariant,
-  RenderExpression,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
+import { RenderExpression, RenderVoidElement } from "../renderUtils.tsx";
 
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
@@ -25,8 +21,7 @@ export type MetaProps = {
     | "keywords"
     | "referrer"
     | "theme-color"
-    | "color-scheme"
-    | CustomEnumVariant;
+    | "color-scheme";
   /**
    * When the [http-equiv attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-meta-http-equiv) is specified on a [meta element](https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element), the element is a pragma directive.
    */

@@ -94,14 +94,12 @@ export function RenderNumber(
   );
 }
 
-export type CustomEnumVariant = { custom: string };
-
 export function RenderEnum(
-  { attr, value }: { attr: string; value: string | CustomEnumVariant },
+  { attr, value }: { attr: string; value: string },
 ): Expression {
   return (
     <RenderAttribute attr={attr}>
-      {typeof value === "string" ? value : value.custom}
+      {value}
     </RenderAttribute>
   );
 }

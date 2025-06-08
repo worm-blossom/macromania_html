@@ -1,6 +1,5 @@
 import type { Expression } from "macromania";
 import {
-  type CustomEnumVariant,
   EscapeHtml,
   RenderBoolean,
   RenderExpression,
@@ -242,5 +241,4 @@ export type LinkLinkType =
   | "privacy-policy"
   | "search"
   | "stylesheet"
-  | "terms-of-service"
-  | CustomEnumVariant;
+  | "terms-of-service";
