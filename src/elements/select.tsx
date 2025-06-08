@@ -16,11 +16,11 @@ import { PopoverTargetAction } from "./input.tsx";
  * https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element
  */
 export type SelectProps = {
-  autocomplete?: Expressions;
+  autocomplete?: Expression;
   disabled?: boolean;
-  form?: Expressions;
+  form?: Expression;
   multiple?: boolean;
-  name?: Expressions;
+  name?: Expression;
   required?: boolean;
   size?: number;
 } & TagProps;

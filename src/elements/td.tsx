@@ -26,7 +26,7 @@ export type TdProps = {
   /**
    * The header cells for this cell. When given as an array, the arrays are joined by spaces.
    */
-  headers?: Expressions;
+  headers?: Expression;
 } & TagProps;
 
 /**

@@ -19,11 +19,11 @@ export type EmbedProps = {
   /**
    * The [src attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src) gives the [URL](https://url.spec.whatwg.org/#concept-url) of the resource being embedded. The attribute, if present, must contain a [valid non-empty URL potentially surrounded by spaces](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces).
    */
-  src?: Expressions;
+  src?: Expression;
   /**
    * The [type attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-type), if present, gives the [MIME type](https://mimesniff.spec.whatwg.org/#mime-type) by which the plugin to instantiate is selected. The value must be a [valid MIME type string](https://mimesniff.spec.whatwg.org/#valid-mime-type). If both the [type attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-type) and the [src attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src) are present, then the [type attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-type) must specify the same type as the [explicit Content-Type metadata](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#content-type) of the resource given by the [src attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src).
    */
-  type?: Expressions;
+  type?: Expression;
   /**
    * The [width attribute](https://html.spec.whatwg.org/multipage/embedded-content-other.html#attr-dim-width) specifies the horizontal dimension in [CSS pixels](https://drafts.csswg.org/css-values/#px). It is a [dimension attribute](https://html.spec.whatwg.org/multipage/embedded-content-other.html#dimension-attributes), i.e., a [valid non-negative integer](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-non-negative-integer).
    */

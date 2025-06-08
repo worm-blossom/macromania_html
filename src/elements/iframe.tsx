@@ -19,15 +19,15 @@ export type IframeProps = {
   /**
    * The [src attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src) gives the [URL](https://url.spec.whatwg.org/#concept-url) of a page that the element's [content navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#content-navigable) is to contain. The attribute, if present, must be a [valid non-empty URL potentially surrounded by spaces](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces). If the [itemprop attribute](https://html.spec.whatwg.org/multipage/microdata.html#names:-the-itemprop-attribute) is specified on an [iframe element](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element), then the [src attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-src) must also be specified.
    */
-  src?: Expressions;
+  src?: Expression;
   /**
    * The [srcdoc attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-srcdoc) gives the content of the page that the element's [content navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#content-navigable) is to contain. The value of the attribute is used to [construct](https://html.spec.whatwg.org/multipage/browsing-the-web.html#create-navigation-params-from-a-srcdoc-resource) an iframe srcdoc document, which is a [Document](https://html.spec.whatwg.org/multipage/dom.html#document) whose [URL](https://dom.spec.whatwg.org/#concept-document-url) [matches about:srcdoc](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#matches-about:srcdoc).
    */
-  srcdoc?: Expressions;
+  srcdoc?: Expression;
   /**
    * The [name attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-name), if present, must be a [valid navigable target name](https://html.spec.whatwg.org/multipage/document-sequences.html#valid-navigable-target-name). The given value is used to name the element's [content navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#content-navigable) if present when that is [created](https://html.spec.whatwg.org/multipage/document-sequences.html#create-a-new-child-navigable).
    */
-  name?: Expressions;
+  name?: Expression;
   /**
    * The [sandbox attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox), when specified, enables a set of extra restrictions on any content hosted by the [iframe](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element). Its value must be an [unordered set of unique space-separated tokens](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#unordered-set-of-unique-space-separated-tokens) that are [ASCII case-insensitive](https://infra.spec.whatwg.org/#ascii-case-insensitive). The allowed values are:
    *
@@ -45,11 +45,11 @@ export type IframeProps = {
    * - [allow-top-navigation-by-user-activation](https://html.spec.whatwg.org/multipage/browsers.html#attr-iframe-sandbox-allow-top-navigation-by-user-activation)
    * - [allow-top-navigation-to-custom-protocols](https://html.spec.whatwg.org/multipage/browsers.html#attr-iframe-sandbox-allow-top-navigation-to-custom-protocols)
    */
-  sandbox?: Expressions;
+  sandbox?: Expression;
   /**
    * The [allow attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-allow), when specified, determines the [container policy](https://w3c.github.io/webappsec-permissions-policy/#container-policy) that will be used when the [permissions policy](https://html.spec.whatwg.org/multipage/dom.html#concept-document-permissions-policy) for a [Document](https://html.spec.whatwg.org/multipage/dom.html#document) in the [iframe](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element)'s [content navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#content-navigable) is initialized. Its value must be a [serialized permissions policy](https://w3c.github.io/webappsec-permissions-policy/#serialized-permissions-policy).
    */
-  allow?: Expressions;
+  allow?: Expression;
   /**
    * The [allowfullscreen attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-allowfullscreen), when specified, indicates that [Document](https://html.spec.whatwg.org/multipage/dom.html#document) objects in the [iframe element](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element)'s [content navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#content-navigable) will be initialized with a [permissions policy](https://html.spec.whatwg.org/multipage/dom.html#concept-document-permissions-policy) which allows the `"fullscreen"` feature to be used from any [origin](https://html.spec.whatwg.org/multipage/browsers.html#concept-origin). This is enforced by the [process permissions policy attributes](https://w3c.github.io/webappsec-permissions-policy/#process-permissions-policy-attributes) algorithm.
    */

@@ -18,20 +18,20 @@ export type ButtonType = "submit" | "reset" | "button";
  * https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element
  */
 export type ButtonProps = {
-  command?: Expressions;
-  commandfor?: Expressions;
+  command?: Expression;
+  commandfor?: Expression;
   disabled?: boolean;
-  form?: Expressions;
-  formaction?: Expressions;
+  form?: Expression;
+  formaction?: Expression;
   formenctype?: FormEnctype;
   formmethod?: FormMethod;
   formnovalidate?: boolean;
-  formtarget?: Expressions;
-  name?: Expressions;
-  popovertarget?: Expressions;
+  formtarget?: Expression;
+  name?: Expression;
+  popovertarget?: Expression;
   popovertargetaction?: PopoverTargetAction;
   type_?: ButtonType;
-  value?: Expressions;
+  value?: Expression;
 } & TagProps;
 
 /**

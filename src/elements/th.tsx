@@ -26,7 +26,7 @@ export type ThProps = {
   /**
    * The header cells for this cell. When given as an array, the arrays are joined by spaces.
    */
-  headers?: Expressions;
+  headers?: Expression;
   /**
    * Specifies which cells the header cell applies to.
    */
@@ -34,7 +34,7 @@ export type ThProps = {
   /**
    * Alternative label to use for the header cell when referencing the cell in other contexts.
    */
-  abbr?: Expressions;
+  abbr?: Expression;
 } & TagProps;
 
 /**

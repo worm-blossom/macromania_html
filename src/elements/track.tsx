@@ -45,15 +45,15 @@ export type TrackProps = {
   /**
    * The [src attribute](https://html.spec.whatwg.org/multipage/media.html#attr-track-src) gives the [URL](https://url.spec.whatwg.org/#concept-url) of the text track data. The value must be a [valid non-empty URL potentially surrounded by spaces](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces).
    */
-  src: Expressions;
+  src: Expression;
   /**
    * The [srclang attribute](https://html.spec.whatwg.org/multipage/media.html#attr-track-srclang) gives the language of the text track data. The value must be a valid BCP 47 language tag. This attribute must be present if the element's [kind attribute](https://html.spec.whatwg.org/multipage/media.html#attr-track-kind) is in the [subtitles](https://html.spec.whatwg.org/multipage/media.html#attr-track-kind-subtitles) state.
    */
-  srclang?: Expressions;
+  srclang?: Expression;
   /**
    * The [label attribute](https://html.spec.whatwg.org/multipage/media.html#attr-track-label) gives a user-readable title for the track. This title is used by user agents when listing [subtitle](https://html.spec.whatwg.org/multipage/media.html#attr-track-kind-subtitles), [caption](https://html.spec.whatwg.org/multipage/media.html#attr-track-kind-captions), and [audio description](https://html.spec.whatwg.org/multipage/media.html#attr-track-kind-descriptions) tracks in their user interface.
    */
-  label?: Expressions;
+  label?: Expression;
   /**
    * The [default attribute](https://html.spec.whatwg.org/multipage/media.html#attr-track-default), if specified, indicates that the track is to be enabled if the user's preferences do not indicate that another track would be more appropriate.
    */

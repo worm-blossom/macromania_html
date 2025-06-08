@@ -34,13 +34,13 @@ export type FormMethod = "get" | "post" | "dialog";
  */
 export type FormProps = {
   acceptCharset?: "UTF-8";
-  action?: Expressions;
+  action?: Expression;
   autocomplete?: "on" | "off";
   enctype?: FormEnctype;
   method?: FormMethod;
-  name?: Expressions;
+  name?: Expression;
   novalidate?: boolean;
-  target?: Expressions;
+  target?: Expression;
   rel?: FormRel;
 } & TagProps;
 

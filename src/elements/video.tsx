@@ -18,7 +18,7 @@ export type VideoProps = {
   /**
    * The [src content attribute](https://html.spec.whatwg.org/multipage/media.html#attr-media-src) on [media elements](https://html.spec.whatwg.org/multipage/media.html#media-element) gives the [URL](https://url.spec.whatwg.org/#concept-url) of the media resource (video, audio) to show. The attribute, if present, must contain a [valid non-empty URL potentially surrounded by spaces](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces).
    */
-  src?: Expressions;
+  src?: Expression;
   /**
    * The [crossorigin content attribute](https://html.spec.whatwg.org/multipage/media.html#attr-media-crossorigin) on [media elements](https://html.spec.whatwg.org/multipage/media.html#media-element) is a [CORS settings attribute](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attribute).
    */
@@ -26,7 +26,7 @@ export type VideoProps = {
   /**
    * The [poster attribute](https://html.spec.whatwg.org/multipage/media.html#attr-video-poster) gives the [URL](https://url.spec.whatwg.org/#concept-url) of an image file that the user agent can show while no video data is available. The attribute, if present, must contain a [valid non-empty URL potentially surrounded by spaces](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces).
    */
-  poster?: Expressions;
+  poster?: Expression;
   /**
    * The [preload attribute](https://html.spec.whatwg.org/multipage/media.html#attr-media-preload) hints how much buffering the [media resource](https://html.spec.whatwg.org/multipage/media.html#media-resource) will likely need.
    */

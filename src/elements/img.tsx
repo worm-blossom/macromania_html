@@ -21,19 +21,19 @@ export type ImgProps = {
    *
    * The value of the [alt attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-alt) provides equivalent content for those who cannot process images or who have image loading disabled (i.e. it is the img element's [fallback content](https://html.spec.whatwg.org/multipage/dom.html#fallback-content)).
    */
-  alt?: Expressions;
+  alt?: Expression;
   /**
    * The [src attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-src) gives the address of the resource.
    */
-  src?: Expressions;
+  src?: Expression;
   /**
    * The [srcset attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) indicates the images to use in different situations, e.g., high-resolution displays, small monitors, etc. (for [rel](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-rel)="[preload](https://html.spec.whatwg.org/multipage/links.html#link-type-preload)"). It is a [srcset attribute](https://html.spec.whatwg.org/multipage/images.html#srcset-attribute).
    */
-  srcset?: Expressions;
+  srcset?: Expression;
   /**
    * If the [srcset attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-srcset) is present and has any [image candidate strings](https://html.spec.whatwg.org/multipage/images.html#image-candidate-string) using a [width descriptor](https://html.spec.whatwg.org/multipage/images.html#width-descriptor), the [sizes attribute](hhttps://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-sizes) must also be present, and is a [sizes attribute](https://html.spec.whatwg.org/multipage/images.html#sizes-attribute). The [sizes attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-sizes) contributes the [source size](https://html.spec.whatwg.org/multipage/images.html#source-size-2) to the [source set](https://html.spec.whatwg.org/multipage/images.html#source-set) (if no [source element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-source-element) was selected).
    */
-  sizes?: Expressions;
+  sizes?: Expression;
   /**
    * The [crossorigin attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-crossorigin) is a [CORS settings attribute](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attribute). Its purpose is to allow images from third-party sites that allow cross-origin access to be used with [canvas](https://html.spec.whatwg.org/multipage/canvas.html#the-canvas-element).
    */
@@ -41,7 +41,7 @@ export type ImgProps = {
   /**
    * The [usemap attribute](https://html.spec.whatwg.org/multipage/image-maps.html#attr-hyperlink-usemap) gives the name of an [image map](https://html.spec.whatwg.org/multipage/image-maps.html#image-map) to use.  It must be a valid [hash-name reference](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-hash-name-reference) to a [map element](https://html.spec.whatwg.org/multipage/image-maps.html#the-map-element).
    */
-  usemap?: Expressions;
+  usemap?: Expression;
   /**
    * The [ismap attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-ismap), when used on an element that is a descendant of an [a element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element) with an [href attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-href), indicates by its presence that the element provides access to a server-side image map. This affects how events are handled on the corresponding [a element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element).
    */

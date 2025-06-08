@@ -16,15 +16,15 @@ import { PopoverTargetAction } from "./input.tsx";
  * https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element
  */
 export type TextareaProps = {
-  autocomplete?: Expressions;
+  autocomplete?: Expression;
   cols?: number;
-  dirname?: Expressions;
+  dirname?: Expression;
   disabled?: boolean;
-  form?: Expressions;
+  form?: Expression;
   maxlength?: number;
   minlength?: number;
-  name?: Expressions;
-  placeholder?: Expressions;
+  name?: Expression;
+  placeholder?: Expression;
   readonly?: boolean;
   required?: boolean;
   rows?: number;

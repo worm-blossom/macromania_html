@@ -19,24 +19,24 @@ export type SourceProps = {
   /**
    * The [type attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-type) may be present. If present, the value must be a [valid MIME type string](https://mimesniff.spec.whatwg.org/#valid-mime-type).
    */
-  type?: Expressions;
+  type?: Expression;
   /**
    * The [media attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-media) may be present. If present, the value must contain a [valid media query list](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-media-query-list). The user agent will skip to the next [source element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-source-element) if the value does not [match the environment](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#matches-the-environment).
    */
-  media?: Expressions;
+  media?: Expression;
   /**
    * The [src attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-src) gives the [URL](https://url.spec.whatwg.org/#concept-url) of the [media resource](https://html.spec.whatwg.org/multipage/media.html#media-resource). The value must be a [valid non-empty URL potentially surrounded by spaces](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces). This attribute must be present if the parent element is a [media element](https://html.spec.whatwg.org/multipage/media.html#media-element), and must not be present if the parent element is a [picture element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-picture-element).
    */
-  src?: Expressions;
+  src?: Expression;
   /**
    * The [srcset attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-srcset) is a [srcset attribute](https://html.spec.whatwg.org/multipage/images.html#srcset-attribute). It must be present if the parent element is a [picture element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-picture-element).
    * The [srcset attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-srcset) contributes the [image sources](https://html.spec.whatwg.org/multipage/images.html#image-source) to the [source set](https://html.spec.whatwg.org/multipage/images.html#source-set), if the [source element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-source-element) is selected.
    */
-  srcset?: Expressions;
+  srcset?: Expression;
   /**
    * If the [srcset attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-srcset) has any [image candidate strings](https://html.spec.whatwg.org/multipage/images.html#image-candidate-string) using a [width descriptor](https://html.spec.whatwg.org/multipage/images.html#width-descriptor), the [sizes attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-sizes) may also be present. If, additionally, the following sibling [img element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element) does not [allow auto-sizes](https://html.spec.whatwg.org/multipage/embedded-content.html#allows-auto-sizes), the [sizes attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-sizes) *must* be present. The [sizes attribute](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-source-sizes) is a [sizes attribute](https://html.spec.whatwg.org/multipage/images.html#sizes-attribute), which contributes the [source size](https://html.spec.whatwg.org/multipage/images.html#source-size-2) to the [source set](https://html.spec.whatwg.org/multipage/images.html#source-set), if the [source element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-source-element) is selected.
    */
-  sizes?: Expressions;
+  sizes?: Expression;
   /**
    * (Only in [picture elements](https://html.spec.whatwg.org/multipage/embedded-content.html#the-picture-element)): The [width attribute](https://html.spec.whatwg.org/multipage/embedded-content-other.html#attr-dim-width) specifies the horizontal dimension in [CSS pixels](https://drafts.csswg.org/css-values/#px). It is a [dimension attribute](https://html.spec.whatwg.org/multipage/embedded-content-other.html#dimension-attributes), i.e., a [valid non-negative integer](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-non-negative-integer).
    */

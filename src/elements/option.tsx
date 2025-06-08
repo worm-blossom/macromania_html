@@ -17,9 +17,9 @@ import { PopoverTargetAction } from "./input.tsx";
  */
 export type OptionProps = {
   disabled?: boolean;
-  label?: Expressions;
+  label?: Expression;
   selected?: boolean;
-  value?: Expressions;
+  value?: Expression;
 } & TagProps;
 
 /**

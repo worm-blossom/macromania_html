@@ -16,9 +16,9 @@ import { PopoverTargetAction } from "./input.tsx";
  * https://html.spec.whatwg.org/multipage/form-elements.html#the-output-element
  */
 export type OutputProps = {
-  for_?: Expressions;
-  form?: Expressions;
-  name?: Expressions;
+  for_?: Expression;
+  form?: Expression;
+  name?: Expression;
 } & TagProps;
 
 /**

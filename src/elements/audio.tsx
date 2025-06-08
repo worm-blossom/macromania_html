@@ -19,7 +19,7 @@ export type AudioProps = {
   /**
    * The [src content attribute](https://html.spec.whatwg.org/multipage/media.html#attr-media-src) on [media elements](https://html.spec.whatwg.org/multipage/media.html#media-element) gives the [URL](https://url.spec.whatwg.org/#concept-url) of the media resource (video, audio) to show. The attribute, if present, must contain a [valid non-empty URL potentially surrounded by spaces](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces).
    */
-  src?: Expressions;
+  src?: Expression;
   /**
    * The [crossorigin content attribute](https://html.spec.whatwg.org/multipage/media.html#attr-media-crossorigin) on [media elements](https://html.spec.whatwg.org/multipage/media.html#media-element) is a [CORS settings attribute](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attribute).
    */

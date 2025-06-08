@@ -17,8 +17,8 @@ import { PopoverTargetAction } from "./input.tsx";
  */
 export type FieldsetProps = {
   disabled?: boolean;
-  form?: Expressions;
-  name?: Expressions;
+  form?: Expression;
+  name?: Expression;
 } & TagProps;
 
 /**
