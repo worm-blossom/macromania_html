@@ -1,3 +1,6 @@
+import type { LogLevel } from "macromania";
+import { configurableLogging } from "./loggingUtils.tsx";
+
 export { type DynamicAttributes, H } from "./renderUtils.tsx";
 export { type AOrAreaLinkProps } from "./aOrArea.tsx";
 export { A, type AProps } from "./elements/a.tsx";
@@ -123,3 +126,39 @@ export {
 
 export { EscapeHtml } from "./renderUtils.tsx";
 export { type TagProps } from "./global.tsx";
+
+export type LoggingConfig = {
+  /**
+   * Set the logging level for all html verification. Defaults to `"warn"`.
+   *
+   * More specific logging options overwrite this one.
+   */
+  "verify": LogLevel;
+  /**
+   * Set the logging level for all verification of the `html` tag.
+   */
+  "html": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `html` tag.
+   */
+  "htmlContentModel": LogLevel | null;
+};
+
+const { ConfigLogging, SetCurrentKeys, warn, info, Info, Warn } =
+  configurableLogging<
+    LoggingConfig
+  >(
+    () => ({
+      "verify": "warn",
+      "html": null,
+      "htmlContentModel": null,
+    }),
+    "ConfigHtmlLogging",
+  );
+
+export { ConfigLogging as ConfigHtmlLogging };
+
+/**
+ * For internal use.
+ */
+export { Info, info, SetCurrentKeys, Warn, warn };
