@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -65,7 +65,7 @@ export type VideoProps = {
  * A [video element](https://html.spec.whatwg.org/multipage/media.html#the-video-element) is used for playing videos or movies, and audio files with captions.
  */
 export function Video(
-  props: VideoProps & { children?: Expressions },
+  props: VideoProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -87,13 +87,13 @@ function RenderVideoAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={<exps x={attrs.src} />} />
+        ? <RenderExpression attr="src" value={attrs.src} />
         : ""}
       {attrs.crossorigin !== undefined
         ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
         : ""}
       {attrs.poster !== undefined
-        ? <RenderExpression attr="poster" value={<exps x={attrs.poster} />} />
+        ? <RenderExpression attr="poster" value={attrs.poster} />
         : ""}
       {attrs.preload !== undefined
         ? <RenderEnum attr="preload" value={attrs.preload} />

@@ -216,7 +216,7 @@ function RenderSizes(
     first = false;
   }
 
-  return <>{" "}sizes="{<fragment exps={exps} />}"</>;
+  return <>{" "}sizes="{exps}"</>;
 }
 
 /**

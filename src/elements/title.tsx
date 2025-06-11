@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -8,7 +8,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
  * There must be no more than one [title element](https://html.spec.whatwg.org/multipage/semantics.html#the-title-element) per document.
  */
 export function Title(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 
@@ -20,7 +20,7 @@ export type QProps = {
  * The [q element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-q-element) represents some phrasing content quoted from another source.
  */
 export function Q(
-  props: QProps & { children?: Expressions },
+  props: QProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

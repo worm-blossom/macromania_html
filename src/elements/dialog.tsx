@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -29,7 +29,7 @@ export type DialogProps = {
  * The [dialog element](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element) represents a transitory part of an application, in the form of a small window ("dialog box"), which the user interacts with to perform a task or gather information. Once the user is done, the dialog can be automatically closed by the application, or manually closed by the user
  */
 export function Dialog(
-  props: DialogProps & { children?: Expressions },
+  props: DialogProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

@@ -1,8 +1,8 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
-  RenderExpressions,
+  RenderChildren,
   RenderNonVoidElement,
   RenderNumber,
   RenderSpaceSeparatedList,
@@ -41,7 +41,7 @@ export type ThProps = {
  * The [th element](https://html.spec.whatwg.org/multipage/tables.html#the-th-element) represents a header [cell](https://html.spec.whatwg.org/multipage/tables.html#concept-cell) in a table.
  */
 export function Th(
-  props: ThProps & { children?: Expressions },
+  props: ThProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -75,7 +75,7 @@ function RenderThAttributes(
         ? <RenderEnum attr="scope" value={attrs.scope} />
         : ""}
       {attrs.abbr !== undefined
-        ? <RenderExpressions attr="abbr" value={attrs.abbr} />
+        ? <RenderChildren attr="abbr" value={attrs.abbr} />
         : ""}
     </>
   );

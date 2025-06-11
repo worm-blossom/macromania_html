@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -46,7 +46,7 @@ export type ObjectProps = {
  * The [object element](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element) can represent an external resource, which, depending on the type of the resource, will either be treated as an image or as a [child navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#child-navigable).
  */
 export function Object(
-  props: ObjectProps & { children?: Expressions },
+  props: ObjectProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -68,16 +68,16 @@ function RenderObjectAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.data_ !== undefined
-        ? <RenderExpression attr="data" value={<exps x={attrs.data_} />} />
+        ? <RenderExpression attr="data" value={attrs.data_} />
         : ""}
       {attrs.type_ !== undefined
-        ? <RenderExpression attr="type" value={<exps x={attrs.type_} />} />
+        ? <RenderExpression attr="type" value={attrs.type_} />
         : ""}
       {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
+        ? <RenderExpression attr="name" value={attrs.name} />
         : ""}
       {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={<exps x={attrs.form} />} />
+        ? <RenderExpression attr="form" value={attrs.form} />
         : ""}
       {attrs.width !== undefined
         ? <RenderNumber attr="width" value={attrs.width} />

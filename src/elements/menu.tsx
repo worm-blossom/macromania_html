@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -6,7 +6,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
  * The [menu element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-menu-element) represents a toolbar consisting of its contents, in the form of an unordered list of items (represented by [li elements](https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element)), each of which represents a command that the user can perform or activate.
  */
 export function Menu(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

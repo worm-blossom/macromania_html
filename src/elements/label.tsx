@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -18,14 +18,14 @@ export type LabelProps = {
   /**
    * Associate the label with form control.
    */
-  for_?: Expressions;
+  for_?: Expression;
 } & TagProps;
 
 /**
  * The [label element](https://html.spec.whatwg.org/multipage/forms.html#the-label-element) represents a caption in a user interface.
  */
 export function Label(
-  props: LabelProps & { children?: Expressions },
+  props: LabelProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -47,7 +47,7 @@ function RenderLabelAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.for_ !== undefined
-        ? <RenderExpression attr="for" value={<exps x={attrs.for_} />} />
+        ? <RenderExpression attr="for" value={attrs.for_} />
         : ""}
     </>
   );

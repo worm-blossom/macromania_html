@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -35,7 +35,7 @@ export type TextareaProps = {
  * The [textarea element](https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element) represents a multiline plain text edit control for the element's raw value. The contents of the control represent the control's default value.
  */
 export function Textarea(
-  props: TextareaProps & { children?: Expressions },
+  props: TextareaProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -59,7 +59,7 @@ function RenderTextareaAttributes(
         ? (
           <RenderExpression
             attr="autocomplete"
-            value={<exps x={attrs.autocomplete} />}
+            value={attrs.autocomplete}
           />
         )
         : ""}
@@ -70,7 +70,7 @@ function RenderTextareaAttributes(
         ? (
           <RenderExpression
             attr="dirname"
-            value={<exps x={attrs.dirname} />}
+            value={attrs.dirname}
           />
         )
         : ""}
@@ -81,7 +81,7 @@ function RenderTextareaAttributes(
         ? (
           <RenderExpression
             attr="form"
-            value={<exps x={attrs.form} />}
+            value={attrs.form}
           />
         )
         : ""}
@@ -95,7 +95,7 @@ function RenderTextareaAttributes(
         ? (
           <RenderExpression
             attr="name"
-            value={<exps x={attrs.name} />}
+            value={attrs.name}
           />
         )
         : ""}
@@ -103,7 +103,7 @@ function RenderTextareaAttributes(
         ? (
           <RenderExpression
             attr="placeholder"
-            value={<exps x={attrs.placeholder} />}
+            value={attrs.placeholder}
           />
         )
         : ""}

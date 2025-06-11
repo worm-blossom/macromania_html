@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -17,14 +17,14 @@ import { PopoverTargetAction } from "./input.tsx";
  */
 export type OptgroupProps = {
   disabled?: boolean;
-  label?: Expressions;
+  label?: Expression;
 } & TagProps;
 
 /**
  * The [optgroup element](https://html.spec.whatwg.org/multipage/form-elements.html#the-optgroup-element) represents a group of [option elements](https://html.spec.whatwg.org/multipage/form-elements.html#the-option-element) with a common label.
  */
 export function Optgroup(
-  props: OptgroupProps & { children?: Expressions },
+  props: OptgroupProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -48,7 +48,7 @@ function RenderOptgroupAttributes(
         ? <RenderBoolean attr="disabled" value={attrs.disabled} />
         : ""}
       {attrs.label !== undefined
-        ? <RenderExpression attr="label" value={<exps x={attrs.label} />} />
+        ? <RenderExpression attr="label" value={attrs.label} />
         : ""}
     </>
   );

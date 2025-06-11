@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 
@@ -18,7 +18,7 @@ export type DataProps = {
  * The [data element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-data-element) represents its contents, along with a machine-readable form of those contents in the [value attribute](https://html.spec.whatwg.org/multipage/text-level-semantics.html#attr-data-value).
  */
 export function Data(
-  props: DataProps & { children?: Expressions },
+  props: DataProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   EscapeHtml,
   RenderBoolean,
@@ -29,7 +29,7 @@ export type BlockquoteProps = {
  * The [blockquote element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-blockquote-element) represents a section that is quoted from another source.
  */
 export function Blockquote(
-  props: BlockquoteProps & { children?: Expressions },
+  props: BlockquoteProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -23,7 +23,7 @@ export type SlotProps = {
  * The [slot element](https://html.spec.whatwg.org/multipage/scripting.html#the-slot-element) defines a [slot](https://dom.spec.whatwg.org/#concept-slot). It is typically used in a [shadow tree](https://dom.spec.whatwg.org/#concept-shadow-tree). A [slot element](https://html.spec.whatwg.org/multipage/scripting.html#the-slot-element) represents its [assigned nodes](https://dom.spec.whatwg.org/#slot-assigned-nodes), if any, and its contents otherwise.
  */
 export function Slot(
-  props: SlotProps & { children?: Expressions },
+  props: SlotProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

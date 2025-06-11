@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   EscapeHtml,
   RenderBoolean,
@@ -35,7 +35,7 @@ export type InsDelProps = {
  * The [ins element](https://html.spec.whatwg.org/multipage/edits.html#the-ins-element) represents an addition to the document.
  */
 export function Ins(
-  props: InsDelProps & { children?: Expressions },
+  props: InsDelProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -50,7 +50,7 @@ export function Ins(
  * The [del element](https://html.spec.whatwg.org/multipage/edits.html#the-del-element) represents a removal from the document.
  */
 export function Del(
-    props: InsDelProps & { children?: Expressions },
+    props: InsDelProps & { children?: Children },
   ): Expression {
     return (
       <RenderNonVoidElement

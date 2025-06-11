@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -25,7 +25,7 @@ export type FieldsetProps = {
  * The [fieldset element](https://html.spec.whatwg.org/multipage/form-elements.html#the-fieldset-element) represents a set of form controls (or other content) grouped together, optionally with a caption. The caption is given by the first legend element that is a child of the fieldset element, if any. The remainder of the descendants form the group.
  */
 export function Fieldset(
-  props: FieldsetProps & { children?: Expressions },
+  props: FieldsetProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -49,10 +49,10 @@ function RenderFieldsetAttributes(
         ? <RenderBoolean attr="disabled" value={attrs.disabled} />
         : ""}
       {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={<exps x={attrs.form} />} />
+        ? <RenderExpression attr="form" value={attrs.form} />
         : ""}
       {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
+        ? <RenderExpression attr="name" value={attrs.name} />
         : ""}
     </>
   );

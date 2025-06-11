@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -24,7 +24,7 @@ export type ColProps = {
  * If a [col element](https://html.spec.whatwg.org/multipage/tables.html#the-col-element) has a parent and that is a [colgroup element](https://html.spec.whatwg.org/multipage/tables.html#the-colgroup-element) that itself has a parent that is a [table element](https://html.spec.whatwg.org/multipage/tables.html#the-table-element), then the [col element](https://html.spec.whatwg.org/multipage/tables.html#the-col-element) represents one or more [columns](https://html.spec.whatwg.org/multipage/tables.html#concept-column) in the [column group](https://html.spec.whatwg.org/multipage/tables.html#concept-column-group) represented by that [colgroup](https://html.spec.whatwg.org/multipage/tables.html#the-colgroup-element).
  */
 export function Col(
-  props: ColProps & { children?: Expressions },
+  props: ColProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

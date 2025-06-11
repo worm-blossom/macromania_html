@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   EscapeHtml,
   RenderBoolean,
@@ -28,7 +28,7 @@ export type LiProps = {
  * The [li element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element) represents a list item. If its parent element is an [ol](https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element), [ul](https://html.spec.whatwg.org/multipage/grouping-content.html#the-ul-element), or [menu](https://html.spec.whatwg.org/multipage/grouping-content.html#the-menu-element) element, then the element is an item of the parent element's list, as defined for those elements. Otherwise, the list item has no defined list-related relationship to any other [li element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element).
  */
 export function Li(
-  props: LiProps & { children?: Expressions },
+  props: LiProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

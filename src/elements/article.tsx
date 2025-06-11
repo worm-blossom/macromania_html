@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -8,7 +8,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
 When [article elements](https://html.spec.whatwg.org/multipage/sections.html#the-article-element) are nested, the inner [article elements](https://html.spec.whatwg.org/multipage/sections.html#the-article-element) represent articles that are in principle related to the contents of the outer article. For instance, a blog entry on a site that accepts user-submitted comments could represent the comments as [article elements](https://html.spec.whatwg.org/multipage/sections.html#the-article-element) nested within the [article element](https://html.spec.whatwg.org/multipage/sections.html#the-article-element) for the blog entry.
  */
 export function Article(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -28,7 +28,7 @@ export type CanvasProps = {
  * The [canvas element](https://html.spec.whatwg.org/multipage/canvas.html#the-canvas-element) provides scripts with a resolution-dependent bitmap canvas, which can be used for rendering graphs, game graphics, art, or other visual images on the fly.
  */
 export function Canvas(
-  props: CanvasProps & { children?: Expressions },
+  props: CanvasProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

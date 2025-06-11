@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderExpression,
@@ -26,7 +26,7 @@ export type DetailsProps = {
  * The [details element](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-details-element) represents a disclosure widget from which the user can obtain additional information or controls.
  */
 export function Details(
-  props: DetailsProps & { children?: Expressions },
+  props: DetailsProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

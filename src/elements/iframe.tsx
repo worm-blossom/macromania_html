@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -94,7 +94,7 @@ export type IframeProps = {
  * The [iframe element](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element) represents its [content navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#content-navigable).
  */
 export function Iframe(
-  props: IframeProps & { children?: Expressions },
+  props: IframeProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -116,13 +116,13 @@ function RenderIframeAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={<exps x={attrs.src} />} />
+        ? <RenderExpression attr="src" value={attrs.src} />
         : ""}
       {attrs.srcdoc !== undefined
-        ? <RenderExpression attr="srcdoc" value={<exps x={attrs.srcdoc} />} />
+        ? <RenderExpression attr="srcdoc" value={attrs.srcdoc} />
         : ""}
       {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
+        ? <RenderExpression attr="name" value={attrs.name} />
         : ""}
       {attrs.sandbox !== undefined
         ? (
@@ -135,7 +135,7 @@ function RenderIframeAttributes(
         )
         : ""}
       {attrs.allow !== undefined
-        ? <RenderExpression attr="allow" value={<exps x={attrs.allow} />} />
+        ? <RenderExpression attr="allow" value={attrs.allow} />
         : ""}
       {attrs.allowfullscreen !== undefined
         ? <RenderBoolean attr="allowfullscreen" value={attrs.allowfullscreen} />

@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -8,7 +8,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
  * When a [table element](https://html.spec.whatwg.org/multipage/tables.html#the-table-element) is the only content in a [figure element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figure-element) other than the [figcaption](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figcaption-element), the [caption element](https://html.spec.whatwg.org/multipage/tables.html#the-caption-element) should be omitted in favor of the [figcaption](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figcaption-element).
  */
 export function Caption(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

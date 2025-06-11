@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 import {
   NavigableTargetNameOrKeyword,
@@ -34,7 +34,7 @@ export type BaseProps = {
  * A [base element](https://html.spec.whatwg.org/multipage/semantics.html#the-base-element) must have either an [href attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-base-href), a [target attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-base-target), or both.
  */
 export function Base(
-  props: BaseProps & { children?: Expressions },
+  props: BaseProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

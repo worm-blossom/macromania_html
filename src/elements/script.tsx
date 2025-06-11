@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   EscapeHtml,
   RenderBoolean,
@@ -68,7 +68,7 @@ export type ScriptProps = {
  * The [script element](https://html.spec.whatwg.org/multipage/scripting.html#the-script-element) allows authors to include dynamic script and data blocks in their documents. The element does not represent content for the user.
  */
 export function Script(
-  props: ScriptProps & { children?: Expressions },
+  props: ScriptProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

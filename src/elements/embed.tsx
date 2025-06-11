@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -23,7 +23,7 @@ export type EmbedProps = {
   /**
    * The [type attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-type), if present, gives the [MIME type](https://mimesniff.spec.whatwg.org/#mime-type) by which the plugin to instantiate is selected. The value must be a [valid MIME type string](https://mimesniff.spec.whatwg.org/#valid-mime-type). If both the [type attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-type) and the [src attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src) are present, then the [type attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-type) must specify the same type as the [explicit Content-Type metadata](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#content-type) of the resource given by the [src attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-embed-src).
    */
-  type?: Expression;
+  type_?: Expression;
   /**
    * The [width attribute](https://html.spec.whatwg.org/multipage/embedded-content-other.html#attr-dim-width) specifies the horizontal dimension in [CSS pixels](https://drafts.csswg.org/css-values/#px). It is a [dimension attribute](https://html.spec.whatwg.org/multipage/embedded-content-other.html#dimension-attributes), i.e., a [valid non-negative integer](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-non-negative-integer).
    */
@@ -38,7 +38,7 @@ export type EmbedProps = {
  * The [embed element](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-embed-element) provides an integration point for an external application or interactive content.
  */
 export function Embed(
-  props: EmbedProps & { children?: Expressions },
+  props: EmbedProps & { children?: Children },
 ): Expression {
   return (
     <RenderVoidElement
@@ -59,10 +59,10 @@ function RenderEmbedAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={<exps x={attrs.src} />} />
+        ? <RenderExpression attr="src" value={attrs.src} />
         : ""}
-      {attrs.type !== undefined
-        ? <RenderExpression attr="type" value={<exps x={attrs.type} />} />
+      {attrs.type_ !== undefined
+        ? <RenderExpression attr="type" value={attrs.type_} />
         : ""}
       {attrs.width !== undefined
         ? <RenderNumber attr="width" value={attrs.width} />

@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -8,7 +8,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
  * See also https://html.spec.whatwg.org/multipage/sections.html#headings-and-outlines
  */
 export function H1(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -25,7 +25,7 @@ export function H1(
  * See also https://html.spec.whatwg.org/multipage/sections.html#headings-and-outlines
  */
 export function H2(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -42,7 +42,7 @@ export function H2(
  * See also https://html.spec.whatwg.org/multipage/sections.html#headings-and-outlines
  */
 export function H3(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -59,7 +59,7 @@ export function H3(
  * See also https://html.spec.whatwg.org/multipage/sections.html#headings-and-outlines
  */
 export function H4(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -76,7 +76,7 @@ export function H4(
  * See also https://html.spec.whatwg.org/multipage/sections.html#headings-and-outlines
  */
 export function H5(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -93,7 +93,7 @@ export function H5(
  * See also https://html.spec.whatwg.org/multipage/sections.html#headings-and-outlines
  */
 export function H6(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

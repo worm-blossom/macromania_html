@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -29,7 +29,7 @@ export type SelectProps = {
  * The [select element](https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element) represents a control for selecting amongst a set of options.
  */
 export function Select(
-  props: SelectProps & { children?: Expressions },
+  props: SelectProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -54,7 +54,7 @@ function RenderSelectAttributes(
         ? (
           <RenderExpression
             attr="autocomplete"
-            value={<exps x={attrs.autocomplete} />}
+            value={attrs.autocomplete}
           />
         )
         : ""}
@@ -62,13 +62,13 @@ function RenderSelectAttributes(
         ? <RenderBoolean attr="disabled" value={attrs.disabled} />
         : ""}
       {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={<exps x={attrs.form} />} />
+        ? <RenderExpression attr="form" value={attrs.form} />
         : ""}
       {attrs.multiple !== undefined
         ? <RenderBoolean attr="multiple" value={attrs.multiple} />
         : ""}
       {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
+        ? <RenderExpression attr="name" value={attrs.name} />
         : ""}
       {attrs.required !== undefined
         ? <RenderBoolean attr="required" value={attrs.required} />

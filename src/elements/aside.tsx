@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -8,7 +8,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
 The element can be used for typographical effects like pull quotes or sidebars, for advertising, for groups of [nav elements](https://html.spec.whatwg.org/multipage/sections.html#the-nav-element), and for other content that is considered separate from the main content of the page.
  */
 export function Aside(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

@@ -1,9 +1,9 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
   RenderExpression,
-  RenderExpressions,
+  RenderChildren,
   RenderNonVoidElement,
 } from "../renderUtils.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
@@ -38,7 +38,7 @@ export type ButtonProps = {
  * The [button element](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element) represents a button labeled by its contents.
  */
 export function Button(
-  props: ButtonProps & { children?: Expressions },
+  props: ButtonProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -60,22 +60,22 @@ function RenderButtonAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.command !== undefined
-        ? <RenderExpressions attr="command" value={attrs.command} />
+        ? <RenderChildren attr="command" value={attrs.command} />
         : ""}
       {attrs.commandfor !== undefined
-        ? <RenderExpressions attr="commandfor" value={attrs.commandfor} />
+        ? <RenderChildren attr="commandfor" value={attrs.commandfor} />
         : ""}
       {attrs.disabled !== undefined
         ? <RenderBoolean attr="disabled" value={attrs.disabled} />
         : ""}
       {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={<exps x={attrs.form} />} />
+        ? <RenderExpression attr="form" value={attrs.form} />
         : ""}
       {attrs.formaction !== undefined
         ? (
           <RenderExpression
             attr="formaction"
-            value={<exps x={attrs.formaction} />}
+            value={attrs.formaction}
           />
         )
         : ""}
@@ -92,18 +92,18 @@ function RenderButtonAttributes(
         ? (
           <RenderExpression
             attr="formtarget"
-            value={<exps x={attrs.formtarget} />}
+            value={attrs.formtarget}
           />
         )
         : ""}
       {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
+        ? <RenderExpression attr="name" value={attrs.name} />
         : ""}
       {attrs.popovertarget !== undefined
         ? (
           <RenderExpression
             attr="popovertarget"
-            value={<exps x={attrs.popovertarget} />}
+            value={attrs.popovertarget}
           />
         )
         : ""}
@@ -116,10 +116,10 @@ function RenderButtonAttributes(
         )
         : ""}
       {attrs.type_ !== undefined
-        ? <RenderExpression attr="type" value={<exps x={attrs.type_} />} />
+        ? <RenderExpression attr="type" value={attrs.type_} />
         : ""}
       {attrs.value !== undefined
-        ? <RenderExpression attr="value" value={<exps x={attrs.value} />} />
+        ? <RenderExpression attr="value" value={attrs.value} />
         : ""}
     </>
   );

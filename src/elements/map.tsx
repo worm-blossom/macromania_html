@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderExpression,
   RenderNonVoidElement,
@@ -22,7 +22,7 @@ export type MapProps = {
  * The [map element](https://html.spec.whatwg.org/multipage/image-maps.html#the-map-element), in conjunction with an [img element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element) and any [area element](https://html.spec.whatwg.org/multipage/image-maps.html#the-area-element) descendants, defines an [image map](https://html.spec.whatwg.org/multipage/image-maps.html#image-map).
  */
 export function Map(
-  props: MapProps & { children?: Expressions },
+  props: MapProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

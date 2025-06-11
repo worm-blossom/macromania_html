@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -6,7 +6,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
  * The [figcaption element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figcaption-element) represents a caption or legend for the rest of the contents of the [figcaption element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figcaption-element's parent [figure element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figure-element), if any.
  */
 export function Figcaption(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

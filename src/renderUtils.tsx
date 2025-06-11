@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 
 function escapeHtmlString(raw: string): string {
   return raw.replaceAll(/&|<|>|"|'/g, (match) => {
@@ -23,28 +23,28 @@ function escapeHtmlString(raw: string): string {
  * in HTML: `< > & " '`
  */
 export function EscapeHtml(
-  { children }: { children?: Expressions },
+  { children }: { children?: Children },
 ): Expression {
   return (
     <map
-      fun={(evaled, _ctx) => {
+      fun={(_ctx, evaled) => {
         return escapeHtmlString(evaled);
       }}
     >
-      <exps x={children} />
+      {children}
     </map>
   );
 }
 
 export function RenderAttribute(
-  { attr, children }: { attr: string; children: Expressions },
+  { attr, children }: { attr: string; children: Children },
 ): Expression {
   return (
     <>
       {" "}
       {attr}="{
         <EscapeHtml>
-          <exps x={children} />
+          {children}
         </EscapeHtml>
       }"
     </>
@@ -73,7 +73,7 @@ export function RenderSpaceSeparatedList(
 
   return (
     <RenderAttribute attr={attr}>
-      <fragment exps={actualExps} />
+      {actualExps}
     </RenderAttribute>
   );
 }
@@ -136,10 +136,10 @@ export function RenderExpression(
   );
 }
 
-export function RenderExpressions(
-  { attr, value }: { attr: string; value: Expressions },
+export function RenderChildren(
+  { attr, value }: { attr: string; value: Expression },
 ): Expression {
-  return <RenderExpression attr={attr} value={<exps x={value} />} />;
+  return <RenderExpression attr={attr} value={value} />;
 }
 
 // "void element" is the official name for "self-closing tags".
@@ -160,7 +160,7 @@ export function RenderNonVoidElement(
   { name, attrs, children }: {
     name: string;
     attrs: Expression;
-    children?: Expressions;
+    children?: Children;
   },
 ): Expression {
   return (
@@ -169,7 +169,7 @@ export function RenderNonVoidElement(
       {name}
       {attrs}
       {">"}
-      <exps x={children} />
+      {children}
       {"</"}
       {name}
       {">"}
@@ -198,7 +198,7 @@ export function RenderDynamicAttributes(
     exps.push(`"`);
   }
 
-  return <fragment exps={exps} />;
+  return <>{exps}</>;
 }
 
 /**
@@ -214,7 +214,7 @@ export function H(
     name: Expression;
     attrs?: DynamicAttributes;
     isVoid?: boolean;
-    children?: Expressions;
+    children?: Children;
   },
 ): Expression {
   if (isVoid) {
@@ -233,7 +233,7 @@ export function H(
         {name}
         <RenderDynamicAttributes attrs={attrs} />
         {">"}
-        <exps x={children} />
+        {children}
         {"</"}
         {name}
         {">"}

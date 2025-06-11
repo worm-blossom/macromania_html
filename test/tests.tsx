@@ -113,7 +113,7 @@ import {
   Wbr,
 } from "../src/mod.tsx";
 import type { TagProps } from "../src/global.tsx";
-import { Context, type Expression, type Expressions } from "macromania";
+import { Context, type Expression, type Children } from "macromania";
 import { assertEquals } from "@std/assert";
 import { Base } from "../src/mod.tsx";
 import { EscapeHtml } from "../src/renderUtils.tsx";
@@ -270,7 +270,7 @@ Deno.test("not boolean but true-false-enum rendering", async () => {
 
 Deno.test("expression props", async () => {
   function A() {
-    return <impure fun={(_) => "A"} />;
+    return <effect fun={(_) => "A"} />;
   }
   const ctx = new Context();
   const got = await ctx.evaluate(<Br id={<A />} />);
@@ -305,7 +305,7 @@ Deno.test("space-separated expression props", async () => {
 
 Deno.test("inline expression props", async () => {
   const ctx = new Context();
-  const got = await ctx.evaluate(<Br id={<impure fun={(_) => "A"} />} />);
+  const got = await ctx.evaluate(<Br id={<effect fun={(_) => "A"} />} />);
   assertEquals(got, `<br id="A" />`);
 });
 
@@ -817,7 +817,7 @@ Deno.test("embed", async () => {
 
   await (async () => {
     const ctx = new Context();
-    const got = await ctx.evaluate(<Embed type="bla"></Embed>);
+    const got = await ctx.evaluate(<Embed type_="bla"></Embed>);
     assertEquals(got, `<embed type="bla" />`);
   })();
 
@@ -2439,7 +2439,7 @@ Deno.test("wbr", async () => {
 });
 
 function testGlobalNonVoid(
-  Macro: (props: TagProps & { children?: Expressions }) => Expression,
+  Macro: (props: TagProps & { children?: Children }) => Expression,
   name: string,
 ) {
   return async () => {
@@ -2458,7 +2458,7 @@ function testGlobalNonVoid(
 }
 
 function testGlobalVoid(
-  Macro: (props: TagProps & { children?: Expressions }) => Expression,
+  Macro: (props: TagProps & { children?: Children }) => Expression,
   name: string,
 ) {
   return async () => {

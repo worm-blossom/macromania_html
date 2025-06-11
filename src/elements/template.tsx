@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -30,7 +30,7 @@ export type TemplateProps = {
  * The [template element](https://html.spec.whatwg.org/multipage/scripting.html#the-template-element) is used to declare fragments of HTML that can be cloned and inserted in the document by script.
  */
 export function Template(
-  props: TemplateProps & { children?: Expressions },
+  props: TemplateProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

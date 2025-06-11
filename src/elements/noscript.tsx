@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -6,7 +6,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
  * The [noscript element](https://html.spec.whatwg.org/multipage/scripting.html#the-noscript-element) represents nothing if [scripting is enabled](https://html.spec.whatwg.org/multipage/webappapis.html#concept-n-script), and represents its children if [scripting is disabled](https://html.spec.whatwg.org/multipage/webappapis.html#concept-n-noscript). It is used to present different markup to user agents that support scripting and those that don't support scripting, by affecting how the document is parsed.
  */
 export function Noscript(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   EscapeHtml,
   RenderBoolean,
@@ -58,7 +58,7 @@ export type OlProps = {
  * The items of the list are the [li element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element) child nodes of the [ol element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element), in tree order.
  */
 export function Ol(
-  props: OlProps & { children?: Expressions },
+  props: OlProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

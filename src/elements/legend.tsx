@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -6,7 +6,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
  * The [legend element](https://html.spec.whatwg.org/multipage/form-elements.html#the-legend-element) a caption for the rest of the contents of the [legend element](https://html.spec.whatwg.org/multipage/form-elements.html#the-legend-element)'s parent [fieldset element](https://html.spec.whatwg.org/multipage/form-elements.html#the-fieldset-element), if any.
  */
 export function Legend(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

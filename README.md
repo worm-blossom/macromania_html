@@ -3,7 +3,7 @@
 Macros for [Macromania](https://github.com/worm-blossom/macromania) to generate
 [html](https://en.wikipedia.org/wiki/HTML).
 
-Offers the `<H>` macro for dynamically generated tags, and statically typed
+<!-- Offers the `<H>` macro for dynamically generated tags, and statically typed
 macros (`<A>`, `<Abbr>`, etc...).
 
 ```tsx
@@ -19,7 +19,7 @@ const got = await ctx.evaluate(
   <H name="foo" isVoid attrs={{ bar: "zzz" }} />,
 );
 assertEquals(got, `<foo bar="zzz" />`);
-```
+``` -->
 
 The statically typed API is based off the
 [living standard](https://html.spec.whatwg.org/multipage/).

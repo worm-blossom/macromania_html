@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -51,7 +51,7 @@ export type SourceProps = {
  * The [source element](https://html.spec.whatwg.org/multipage/embedded-content.html#the-source-element) allows authors to specify multiple alternative [source sets](https://html.spec.whatwg.org/multipage/images.html#source-set) for [img elements](https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element) or multiple alternative [media resources](https://html.spec.whatwg.org/multipage/media.html#media-resource) for [media elements](https://html.spec.whatwg.org/multipage/media.html#media-element). It does not represent anything on its own.
  */
 export function Source(
-  props: SourceProps & { children?: Expressions },
+  props: SourceProps & { children?: Children },
 ): Expression {
   return (
     <RenderVoidElement
@@ -72,19 +72,19 @@ function RenderSourceAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.type !== undefined
-        ? <RenderExpression attr="type" value={<exps x={attrs.type} />} />
+        ? <RenderExpression attr="type" value={attrs.type} />
         : ""}
       {attrs.media !== undefined
-        ? <RenderExpression attr="media" value={<exps x={attrs.media} />} />
+        ? <RenderExpression attr="media" value={attrs.media} />
         : ""}
       {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={<exps x={attrs.src} />} />
+        ? <RenderExpression attr="src" value={attrs.src} />
         : ""}
       {attrs.srcset !== undefined
-        ? <RenderExpression attr="srcset" value={<exps x={attrs.srcset} />} />
+        ? <RenderExpression attr="srcset" value={attrs.srcset} />
         : ""}
       {attrs.sizes !== undefined
-        ? <RenderExpression attr="sizes" value={<exps x={attrs.sizes} />} />
+        ? <RenderExpression attr="sizes" value={attrs.sizes} />
         : ""}
       {attrs.width !== undefined
         ? <RenderNumber attr="width" value={attrs.width} />

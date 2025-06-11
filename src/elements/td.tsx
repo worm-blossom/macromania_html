@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -33,7 +33,7 @@ export type TdProps = {
  * The [td element](https://html.spec.whatwg.org/multipage/tables.html#the-td-element) represents a data [cell](https://html.spec.whatwg.org/multipage/tables.html#concept-cell) in a table.
  */
 export function Td(
-  props: TdProps & { children?: Expressions },
+  props: TdProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

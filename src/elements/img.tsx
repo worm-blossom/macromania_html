@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -76,7 +76,7 @@ export type ImgProps = {
  * The [canvas element](https://html.spec.whatwg.org/multipage/canvas.html#the-canvas-element) provides scripts with a resolution-dependent bitmap canvas, which can be used for rendering graphs, game graphics, art, or other visual images on the fly.
  */
 export function Img(
-  props: ImgProps & { children?: Expressions },
+  props: ImgProps & { children?: Children },
 ): Expression {
   return (
     <RenderVoidElement
@@ -97,22 +97,22 @@ function RenderImgAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.alt !== undefined
-        ? <RenderExpression attr="alt" value={<exps x={attrs.alt} />} />
+        ? <RenderExpression attr="alt" value={attrs.alt} />
         : ""}
       {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={<exps x={attrs.src} />} />
+        ? <RenderExpression attr="src" value={attrs.src} />
         : ""}
       {attrs.srcset !== undefined
-        ? <RenderExpression attr="srcset" value={<exps x={attrs.srcset} />} />
+        ? <RenderExpression attr="srcset" value={attrs.srcset} />
         : ""}
       {attrs.sizes !== undefined
-        ? <RenderExpression attr="sizes" value={<exps x={attrs.sizes} />} />
+        ? <RenderExpression attr="sizes" value={attrs.sizes} />
         : ""}
       {attrs.crossorigin !== undefined
         ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
         : ""}
       {attrs.usemap !== undefined
-        ? <RenderExpression attr="usemap" value={<exps x={attrs.usemap} />} />
+        ? <RenderExpression attr="usemap" value={attrs.usemap} />
         : ""}
       {attrs.ismap !== undefined
         ? <RenderBoolean attr="ismap" value={attrs.ismap} />

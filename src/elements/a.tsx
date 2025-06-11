@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { AOrAreaLinkProps, RenderAOrAreaAttributes } from "../aOrArea.tsx";
 import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -22,7 +22,7 @@ export type AProps = AOrAreaLinkProps & {
  * The [a element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element).
  */
 export function A(
-  props: AProps & { children?: Expressions },
+  props: AProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

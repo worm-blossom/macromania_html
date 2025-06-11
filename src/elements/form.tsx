@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -48,7 +48,7 @@ export type FormProps = {
  * The [form element](https://html.spec.whatwg.org/multipage/forms.html#the-form-element) represents a [hyperlink](https://html.spec.whatwg.org/multipage/links.html#hyperlink) that can be manipulated through a collection of [form-associated elements](https://html.spec.whatwg.org/multipage/forms.html#form-associated-element), some of which can represent editable values that can be submitted to a server for processing.
  */
 export function Form(
-  props: FormProps & { children?: Expressions },
+  props: FormProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -73,7 +73,7 @@ function RenderFormAttributes(
         ? <RenderEnum attr="accept-charset" value={attrs.acceptCharset} />
         : ""}
       {attrs.action !== undefined
-        ? <RenderExpression attr="action" value={<exps x={attrs.action} />} />
+        ? <RenderExpression attr="action" value={attrs.action} />
         : ""}
       {attrs.autocomplete !== undefined
         ? <RenderEnum attr="autocomplete" value={attrs.autocomplete} />
@@ -85,13 +85,13 @@ function RenderFormAttributes(
         ? <RenderEnum attr="method" value={attrs.method} />
         : ""}
       {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
+        ? <RenderExpression attr="name" value={attrs.name} />
         : ""}
       {attrs.novalidate !== undefined
         ? <RenderBoolean attr="novalidate" value={attrs.novalidate} />
         : ""}
       {attrs.target !== undefined
-        ? <RenderExpression attr="target" value={<exps x={attrs.target} />} />
+        ? <RenderExpression attr="target" value={attrs.target} />
         : ""}
       {attrs.rel !== undefined
         ? <RenderEnum attr="rel" value={attrs.rel} />

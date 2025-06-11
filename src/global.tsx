@@ -298,7 +298,7 @@ function RenderData(
     }
   }
 
-  return <fragment exps={dataAttrs} />;
+  return <>{dataAttrs}</>;
 }
 
 function RenderExportparts(
@@ -323,5 +323,5 @@ function RenderExportparts(
     first = false;
   }
 
-  return <>{" "}exportparts="{<fragment exps={exps} />}"</>;
+  return <>{" "}exportparts="{exps}"</>;
 }

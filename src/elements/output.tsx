@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -25,7 +25,7 @@ export type OutputProps = {
  * The [output element](https://html.spec.whatwg.org/multipage/form-elements.html#the-output-element) represents the result of a calculation performed by the application, or the result of a user action.
  */
 export function Output(
-  props: OutputProps & { children?: Expressions },
+  props: OutputProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -46,13 +46,13 @@ function RenderOutputAttributes(
   return (
     <>
       {attrs.for_ !== undefined
-        ? <RenderExpression attr="for" value={<exps x={attrs.for_} />} />
+        ? <RenderExpression attr="for" value={attrs.for_} />
         : ""}
       {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={<exps x={attrs.form} />} />
+        ? <RenderExpression attr="form" value={attrs.form} />
         : ""}
       {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
+        ? <RenderExpression attr="name" value={attrs.name} />
         : ""}
     </>
   );

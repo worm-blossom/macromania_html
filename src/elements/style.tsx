@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderSpaceSeparatedList } from "../renderUtils.tsx";
@@ -24,14 +24,14 @@ export type StyleProps = {
  * The [style element](https://html.spec.whatwg.org/multipage/semantics.html#the-style-element) allows authors to embed CSS style sheets in their documents. The element does not represent content for the user.
  */
 export function Style(
-  props: StyleProps & { children?: Expressions },
+  props: StyleProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
       name="style"
       attrs={<RenderStyleAttributes attrs={props} />}
     >
-      <exps x={props.children} />
+      {props.children}
     </RenderNonVoidElement>
   );
 }

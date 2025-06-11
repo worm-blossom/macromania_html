@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -87,12 +87,12 @@ function RenderTrackAttributes(
       {attrs.kind !== undefined
         ? <RenderEnum attr="kind" value={attrs.kind} />
         : ""}
-      <RenderExpression attr="src" value={<exps x={attrs.src} />} />
+      <RenderExpression attr="src" value={attrs.src} />
       {attrs.srclang !== undefined
-        ? <RenderExpression attr="srclang" value={<exps x={attrs.srclang} />} />
+        ? <RenderExpression attr="srclang" value={attrs.srclang} />
         : ""}
       {attrs.label !== undefined
-        ? <RenderExpression attr="label" value={<exps x={attrs.label} />} />
+        ? <RenderExpression attr="label" value={attrs.label} />
         : ""}
       {attrs.default !== undefined
         ? <RenderBoolean attr="default" value={attrs.default} />

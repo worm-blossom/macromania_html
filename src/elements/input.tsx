@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -106,19 +106,19 @@ function RenderInputAttributes(
         ? <RenderEnum attr="type" value={attrs.type_} />
         : ""}
       {attrs.accept !== undefined
-        ? <RenderExpression attr="accept" value={<exps x={attrs.accept} />} />
+        ? <RenderExpression attr="accept" value={attrs.accept} />
         : ""}
       {attrs.alpha !== undefined
         ? <RenderBoolean attr="alpha" value={attrs.alpha} />
         : ""}
       {attrs.alt !== undefined
-        ? <RenderExpression attr="alt" value={<exps x={attrs.alt} />} />
+        ? <RenderExpression attr="alt" value={attrs.alt} />
         : ""}
       {attrs.autocomplete !== undefined
         ? (
           <RenderExpression
             attr="autocomplete"
-            value={<exps x={attrs.autocomplete} />}
+            value={attrs.autocomplete}
           />
         )
         : ""}
@@ -129,19 +129,19 @@ function RenderInputAttributes(
         ? <RenderEnum attr="colorspace" value={attrs.colorspace} />
         : ""}
       {attrs.dirname !== undefined
-        ? <RenderExpression attr="dirname" value={<exps x={attrs.dirname} />} />
+        ? <RenderExpression attr="dirname" value={attrs.dirname} />
         : ""}
       {attrs.disabled !== undefined
         ? <RenderBoolean attr="disabled" value={attrs.disabled} />
         : ""}
       {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={<exps x={attrs.form} />} />
+        ? <RenderExpression attr="form" value={attrs.form} />
         : ""}
       {attrs.formaction !== undefined
         ? (
           <RenderExpression
             attr="formaction"
-            value={<exps x={attrs.formaction} />}
+            value={attrs.formaction}
           />
         )
         : ""}
@@ -158,7 +158,7 @@ function RenderInputAttributes(
         ? (
           <RenderExpression
             attr="formtarget"
-            value={<exps x={attrs.formtarget} />}
+            value={attrs.formtarget}
           />
         )
         : ""}
@@ -166,16 +166,16 @@ function RenderInputAttributes(
         ? <RenderNumber attr="height" value={attrs.height} />
         : ""}
       {attrs.list !== undefined
-        ? <RenderExpression attr="list" value={<exps x={attrs.list} />} />
+        ? <RenderExpression attr="list" value={attrs.list} />
         : ""}
       {attrs.max !== undefined
-        ? <RenderExpression attr="max" value={<exps x={attrs.max} />} />
+        ? <RenderExpression attr="max" value={attrs.max} />
         : ""}
       {attrs.maxlength !== undefined
         ? <RenderNumber attr="maxlength" value={attrs.maxlength} />
         : ""}
       {attrs.min !== undefined
-        ? <RenderExpression attr="min" value={<exps x={attrs.min} />} />
+        ? <RenderExpression attr="min" value={attrs.min} />
         : ""}
       {attrs.minlength !== undefined
         ? <RenderNumber attr="minlength" value={attrs.minlength} />
@@ -184,16 +184,16 @@ function RenderInputAttributes(
         ? <RenderBoolean attr="multiple" value={attrs.multiple} />
         : ""}
       {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={<exps x={attrs.name} />} />
+        ? <RenderExpression attr="name" value={attrs.name} />
         : ""}
       {attrs.pattern !== undefined
-        ? <RenderExpression attr="pattern" value={<exps x={attrs.pattern} />} />
+        ? <RenderExpression attr="pattern" value={attrs.pattern} />
         : ""}
       {attrs.placeholder !== undefined
         ? (
           <RenderExpression
             attr="placeholder"
-            value={<exps x={attrs.placeholder} />}
+            value={attrs.placeholder}
           />
         )
         : ""}
@@ -201,7 +201,7 @@ function RenderInputAttributes(
         ? (
           <RenderExpression
             attr="popovertarget"
-            value={<exps x={attrs.popovertarget} />}
+            value={attrs.popovertarget}
           />
         )
         : ""}
@@ -223,13 +223,13 @@ function RenderInputAttributes(
         ? <RenderNumber attr="size" value={attrs.size} />
         : ""}
       {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={<exps x={attrs.src} />} />
+        ? <RenderExpression attr="src" value={attrs.src} />
         : ""}
       {attrs.step !== undefined
-        ? <RenderExpression attr="step" value={<exps x={attrs.step} />} />
+        ? <RenderExpression attr="step" value={attrs.step} />
         : ""}
       {attrs.value !== undefined
-        ? <RenderExpression attr="value" value={<exps x={attrs.value} />} />
+        ? <RenderExpression attr="value" value={attrs.value} />
         : ""}
       {attrs.width !== undefined
         ? <RenderNumber attr="width" value={attrs.width} />

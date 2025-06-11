@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -50,7 +50,7 @@ export type AudioProps = {
  * An [audio element](https://html.spec.whatwg.org/multipage/media.html#the-audio-element) represents a sound or audio stream.
  */
 export function Audio(
-  props: AudioProps & { children?: Expressions },
+  props: AudioProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -72,7 +72,7 @@ function RenderAudioAttributes(
     <>
       <RenderGlobalAttributes attrs={attrs} />
       {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={<exps x={attrs.src} />} />
+        ? <RenderExpression attr="src" value={attrs.src} />
         : ""}
       {attrs.crossorigin !== undefined
         ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />

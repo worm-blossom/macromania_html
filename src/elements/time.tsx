@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 
@@ -18,7 +18,7 @@ export type TimeProps = {
  * The [time element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-time-element) represents its contents, along with a machine-readable form of those contents in the [datetime attribute](https://html.spec.whatwg.org/multipage/text-level-semantics.html#attr-time-datetime). The kind of content is limited to various kinds of dates, times, time-zone offsets, and durations.
  */
 export function Time(
-  props: TimeProps & { children?: Expressions },
+  props: TimeProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

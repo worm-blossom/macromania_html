@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -26,7 +26,7 @@ export type OptionProps = {
  * The [option element](https://html.spec.whatwg.org/multipage/form-elements.html#the-option-element) represents an option in a [select element](https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element) or as part of a list of suggestions in a [datalist element](https://html.spec.whatwg.org/multipage/form-elements.html#the-datalist-element).
  */
 export function Option(
-  props: OptionProps & { children?: Expressions },
+  props: OptionProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement
@@ -50,13 +50,13 @@ function RenderOptionAttributes(
         ? <RenderBoolean attr="disabled" value={attrs.disabled} />
         : ""}
       {attrs.label !== undefined
-        ? <RenderExpression attr="label" value={<exps x={attrs.label} />} />
+        ? <RenderExpression attr="label" value={attrs.label} />
         : ""}
       {attrs.selected !== undefined
         ? <RenderBoolean attr="selected" value={attrs.selected} />
         : ""}
       {attrs.value !== undefined
-        ? <RenderExpression attr="value" value={<exps x={attrs.value} />} />
+        ? <RenderExpression attr="value" value={attrs.value} />
         : ""}
     </>
   );

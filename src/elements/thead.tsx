@@ -1,4 +1,4 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 
@@ -6,7 +6,7 @@ import { RenderNonVoidElement } from "../renderUtils.tsx";
  * The [thead element](https://html.spec.whatwg.org/multipage/tables.html#the-thead-element) represents the [block](https://html.spec.whatwg.org/multipage/tables.html#concept-row-group) of [rows](https://html.spec.whatwg.org/multipage/tables.html#concept-row) that consist of the column labels (headers) and any ancillary non-header cells for the parent [table element](https://html.spec.whatwg.org/multipage/tables.html#the-table-element), if the [thead element](https://html.spec.whatwg.org/multipage/tables.html#the-thead-element) has a parent and it is a [table](https://html.spec.whatwg.org/multipage/tables.html#the-table-element).
  */
 export function Thead(
-  props: TagProps & { children?: Expressions },
+  props: TagProps & { children?: Children },
 ): Expression {
   return (
     <RenderNonVoidElement

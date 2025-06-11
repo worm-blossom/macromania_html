@@ -1,10 +1,10 @@
-import { Expression, Expressions } from "macromania";
+import { Expression, Children } from "macromania";
 import { AOrAreaLinkProps, RenderAOrAreaAttributes } from "../aOrArea.tsx";
 import {
   RenderAttribute,
   RenderEnum,
   RenderExpression,
-  RenderExpressions,
+  RenderChildren,
   RenderNonVoidElement,
   RenderVoidElement,
 } from "../renderUtils.tsx";
@@ -68,7 +68,7 @@ export function RenderAreaAttributes(
     <>
       <RenderAOrAreaAttributes attrs={attrs} />
       {attrs.alt !== undefined
-        ? <RenderExpressions attr="alt" value={attrs.alt} />
+        ? <RenderChildren attr="alt" value={attrs.alt} />
         : ""}
       {attrs.coords !== undefined
         ? (
