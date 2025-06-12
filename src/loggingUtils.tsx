@@ -6,6 +6,7 @@ import {
   type LogLevel,
   logMin,
 } from "macromania";
+import { RenderChildren } from "./renderUtils.tsx";
 
 const joiner = "§ö@";
 
@@ -34,6 +35,7 @@ export type ConfigurableLogging<
     props: { children?: Children; keys: CurrentKeys<C> },
   ): Expression;
   withOtherKeys(ctx: Context, keys: CurrentKeys<C>, thunk: () => void): void;
+  logEmptyLine(vtx: Context, level: LogLevel): void;
   log(
     ctx: Context,
     level: LogLevel,
@@ -57,7 +59,7 @@ export type ConfigurableLogging<
 export function configurableLogging<
   C extends Record<string, undefined | LogLevel | null>,
 >(init: () => Required<C>, configMacroName: string): ConfigurableLogging<C> {
-  const [SetCurrentKeys, getCurrentKeys, setCurrentKeys] = Context
+  const [NewKeyScope, getCurrentKeys, setCurrentKeys] = Context
     .createScopedState<
       CurrentKeys<C>
     >(() => []);
@@ -69,7 +71,7 @@ export function configurableLogging<
     level: LogLevel,
     ...message: any[]
   ): void {
-    return doLog(false, ctx, level, message);
+    return doLog(false, ctx, level, ...message);
   }
 
   function doLog(
@@ -99,13 +101,13 @@ export function configurableLogging<
         renderedProps = ctx.fmtCode(`${String(keys[0])}`);
       } else {
         for (let i = 0; i < keys.length; i++) {
-          renderedProps = `${renderedProps}${String(keys[i])}`;
+          renderedProps = `${renderedProps}${ctx.fmtCode(String(keys[i]))}`;
 
           if (i + 1 !== keys.length) {
             renderedProps = `${renderedProps}, `;
           }
 
-          if (keys.length + 2 === keys.length) {
+          if (i + 2 === keys.length) {
             renderedProps = `${renderedProps}or `;
           }
         }
@@ -147,7 +149,49 @@ export function configurableLogging<
       configuredLevel = "info";
     }
 
-    ctx.log(logMin(configuredLevel, level), message);
+    ctx.log(logMin(configuredLevel, level), ...message);
+  }
+
+  function logEmptyLine(
+    ctx: Context,
+    level: LogLevel,
+  ): void {
+    const keys = getCurrentKeys(ctx);
+
+    if (keys.length === 0) {
+      ctx.error(
+        "A macro has mismanaged its logging level, no keys were specified to retrieve the logging level from the configuration. Please go yell (in a friendly way) at the author(s) responsible for the following macro (we sure hope that's the correct culprit, but the mistake might be in a dependency of theirs):",
+      );
+      ctx.loggingGroup(() => {
+        ctx.currentError();
+      });
+      ctx.halt();
+    }
+
+    const globalState = getGlobalState(ctx);
+    const joinedKeys = keys.join(joiner);
+
+    const config = getConfig(ctx);
+
+    let configuredLevel: null | LogLevel = null;
+    for (const key of keys) {
+      const levelForKey = config[key];
+      if (levelForKey !== undefined && levelForKey !== null) {
+        configuredLevel = levelForKey;
+      }
+    }
+
+    if (configuredLevel === null) {
+      ctx.error(
+        "A macro has mismanaged its logging level, all keys were configured to return null instead of a proper logging level. Please go yell (in a friendly way) at the author(s) responsible for the following macro (we sure hope that's the correct culprit, but the mistake might be in a dependency of theirs):",
+      );
+      ctx.loggingGroup(() => {
+        ctx.currentError();
+      });
+      configuredLevel = "info";
+    }
+
+    ctx.logEmptyLine(logMin(configuredLevel, level));
   }
 
   function Log(
@@ -170,7 +214,20 @@ export function configurableLogging<
 
   return {
     ConfigLogging: ConfigureLogging,
-    SetCurrentKeys,
+    SetCurrentKeys: (
+      { children, keys }: { children?: Children; keys: CurrentKeys<C> },
+    ) => {
+      return (
+        <NewKeyScope>
+          <effect
+            fun={(ctx) => {
+              setCurrentKeys(ctx, keys);
+              return <>{children}</>;
+            }}
+          />
+        </NewKeyScope>
+      );
+    },
     withOtherKeys: (ctx: Context, keys: CurrentKeys<C>, thunk: () => void) => {
       const oldKeys = getCurrentKeys(ctx);
       setCurrentKeys(ctx, keys);
@@ -178,11 +235,12 @@ export function configurableLogging<
       setCurrentKeys(ctx, oldKeys);
     },
     log,
-    error: (ctx: Context, ...message: any[]) => log(ctx, "error", message),
-    warn: (ctx: Context, ...message: any[]) => log(ctx, "warn", message),
-    info: (ctx: Context, ...message: any[]) => log(ctx, "info", message),
-    debug: (ctx: Context, ...message: any[]) => log(ctx, "debug", message),
-    trace: (ctx: Context, ...message: any[]) => log(ctx, "trace", message),
+    logEmptyLine,
+    error: (ctx: Context, ...message: any[]) => log(ctx, "error", ...message),
+    warn: (ctx: Context, ...message: any[]) => log(ctx, "warn", ...message),
+    info: (ctx: Context, ...message: any[]) => log(ctx, "info", ...message),
+    debug: (ctx: Context, ...message: any[]) => log(ctx, "debug", ...message),
+    trace: (ctx: Context, ...message: any[]) => log(ctx, "trace", ...message),
     Log,
     Error: (props: { children?: Children }) =>
       Log({ ...props, level: "error" }),

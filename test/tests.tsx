@@ -113,8 +113,8 @@ import {
   Wbr,
 } from "../src/mod.tsx";
 import type { TagProps } from "../src/global.tsx";
-import { Context, type Expression, type Children } from "macromania";
-import { assertEquals } from "@std/assert";
+import { type Children, Context, type Expression } from "macromania";
+import { assert, assertEquals } from "@std/assert";
 import { Base } from "../src/mod.tsx";
 import { EscapeHtml } from "../src/renderUtils.tsx";
 
@@ -958,6 +958,47 @@ Deno.test("h6", async () => {
 
 Deno.test("head", async () => {
   await testGlobalNonVoid(Head, "head")();
+
+  await assertWarns(
+    <Head>
+    </Head>,
+  ); // content model
+  await assertWarns(
+    <Head>
+      <Title>bla</Title>
+      <Title>bla</Title>
+    </Head>,
+  ); // content model
+  await assertWarns(
+    <Head>
+      <Title>bla</Title>
+      <Base>bla</Base>
+      <Base>bla</Base>
+    </Head>,
+  ); // content model
+  await assertWarns(
+    <Head>
+      <Title>bla</Title>
+      <Div></Div>
+    </Head>,
+  ); // content model
+  await assertNoWarning(
+    <Head>
+      <Title>bla</Title>
+    </Head>,
+  );
+  await assertNoWarning(
+    <Head>
+      <Title>bla</Title>
+      <Base>bla</Base>
+    </Head>,
+  );
+  await assertNoWarning(
+    <Head>
+      <Title>bla</Title>
+      <Script></Script>
+    </Head>,
+  );
 });
 
 Deno.test("header", async () => {
@@ -974,6 +1015,40 @@ Deno.test("hr", async () => {
 
 Deno.test("html", async () => {
   await testGlobalNonVoid(Html, "html")();
+
+  await assertWarns(<Html></Html>); // content model
+  await assertWarns(
+    <Html>
+      <Head></Head>
+    </Html>,
+  ); // content model
+  await assertWarns(
+    <Html>
+      <Body></Body>
+    </Html>,
+  ); // content model
+  await assertWarns(
+    <Html>
+      <Head>
+      </Head>
+      <Body></Body>
+      <Body></Body>
+    </Html>,
+  ); // content model
+  await assertWarns(
+    <Html>
+      <Head>
+      </Head>
+      <Div></Div>
+      <Body></Body>
+    </Html>,
+  ); // content model
+  await assertNoWarning(
+    <Html>
+      <Head></Head>
+      <Body></Body>
+    </Html>,
+  );
 });
 
 Deno.test("i", async () => {
@@ -2468,4 +2543,18 @@ function testGlobalVoid(
       assertEquals(got, `<${name} />`);
     })();
   };
+}
+
+async function assertWarns(exp: Expression) {
+  const ctx = new Context();
+  const got = await ctx.evaluate(exp);
+  assert(got !== null);
+  assert(ctx.didWarnOrError());
+}
+
+async function assertNoWarning(exp: Expression) {
+  const ctx = new Context();
+  const got = await ctx.evaluate(exp);
+  assert(got !== null);
+  assert(!ctx.didWarnOrError());
 }

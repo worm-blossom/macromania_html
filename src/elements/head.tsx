@@ -1,6 +1,18 @@
-import { Expression, Children } from "macromania";
+import { Children, Expression } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_BASE,
+  CAT_METADATA_CONTENT,
+  CAT_TITLE,
+  CmAnd,
+  CmCategory,
+  CmContainsAtMostOne,
+  CmContainsExactlyOne,
+  CmOneOrMore,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * The [head element](https://html.spec.whatwg.org/multipage/semantics.html#the-head-element) represents a collection of metadata for the Document.
@@ -9,10 +21,23 @@ export function Head(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="head"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM dom={dom}>
+      <RenderNonVoidElement
+        name={dom.tag}
+        attrs={<RenderGlobalAttributes attrs={props} />}
+        children={props.children}
+      />
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "head",
+  new CmAnd([
+    new CmOneOrMore(new CmCategory(CAT_METADATA_CONTENT)),
+    new CmContainsExactlyOne(new CmCategory(CAT_TITLE)),
+    new CmContainsAtMostOne(new CmCategory(CAT_BASE)),
+  ]),
+  new Set(),
+  "https://html.spec.whatwg.org/multipage/semantics.html#the-head-element",
+);

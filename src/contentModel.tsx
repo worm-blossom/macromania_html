@@ -1,12 +1,23 @@
 import {
   Children,
   Context,
+  // @ts-types="../../macromania/mod.ts"
+  DebuggingInformation,
   EvaluationTreePosition,
   Expression,
 } from "macromania";
 
-import { Info, info, LoggingConfig, Warn, warn } from "./mod.tsx";
+import {
+  Info,
+  info,
+  logEmptyLine,
+  LoggingConfig,
+  Warn,
+  warn,
+  withOtherKeys,
+} from "./mod.tsx";
 import { SetCurrentKeys } from "./mod.tsx";
+import { fail } from "@std/assert/fail";
 
 /**
  * https://html.spec.whatwg.org/multipage/dom.html#content-categories
@@ -29,6 +40,11 @@ export abstract class Category {
    * Renders a human-friendly name for this category.
    */
   abstract name(ctx: Context): string;
+
+  /**
+   * Returns true iff the given node belongs to this category.
+   */
+  abstract belongsToCategory(ctx: Context, node: DOMNode): boolean;
 }
 
 export class CategorySpecificTag extends Category {
@@ -40,7 +56,11 @@ export class CategorySpecificTag extends Category {
   }
 
   override name(ctx: Context): string {
-    return `a ${ctx.fmtCode(this.tag)} tag`;
+    return `${ctx.fmtCode(this.tag)} tag`;
+  }
+
+  override belongsToCategory(_ctx: Context, node: DOMNode): boolean {
+    return node.info.tag === this.tag;
   }
 }
 
@@ -52,17 +72,41 @@ export const CAT_BODY = new CategorySpecificTag(
   "https://html.spec.whatwg.org/multipage/sections.html#the-body-element",
   "body",
 );
+export const CAT_TITLE = new CategorySpecificTag(
+  "https://html.spec.whatwg.org/multipage/semantics.html#the-title-element",
+  "title",
+);
+export const CAT_BASE = new CategorySpecificTag(
+  "https://html.spec.whatwg.org/multipage/semantics.html#the-base-element",
+  "base",
+);
 
-// type Category =
-//   | "Metadata Content"
-//   | "Flow Content"
-//   | "Sectioning Content"
-//   | "Heading Content"
-//   | "Phrasing Content"
-//   | "Embedded Content"
-//   | "Interactive Content"
-//   | "Palpable Content"
-//   | { specificTag: string };
+export class CategorySetOfElements extends Category {
+  setName: string;
+  tags: Set<string>;
+
+  constructor(specURL: string, setName: string, tags: string[]) {
+    super(specURL);
+    this.setName = setName;
+    this.tags = new Set(tags);
+  }
+
+  override name(ctx: Context): string {
+    return `${this.setName} content, i.e., one of the following tags: ${
+      Array.from(this.tags.keys().map((tag) => ctx.fmtCode(tag))).join(", ")
+    }`;
+  }
+
+  override belongsToCategory(_ctx: Context, node: DOMNode): boolean {
+    return this.tags.has(node.info.tag);
+  }
+}
+
+export const CAT_METADATA_CONTENT = new CategorySetOfElements(
+  "https://html.spec.whatwg.org/multipage/dom.html#metadata-content-2",
+  "metadata",
+  ["base", "link", "meta", "noscript", "script", "style", "template", "title"],
+);
 
 export interface ContentModel {
   /**
@@ -71,9 +115,16 @@ export interface ContentModel {
   checkChildren(ctx: Context, children: DOMNode[]): boolean;
 
   /**
-   * Renders a human-friendly description of what was expected.
+   * Log with the `info` function a human-friendly description of what was expected (and optionally, where things went wrong).
    */
-  expected(ctx: Context): Expression;
+  expected(ctx: Context, children: DOMNode[]): void;
+}
+
+/**
+ * To be called after printing an `expected` content of a ContentModel which was not satisfied.
+ */
+function thingsWentWrongHere(ctx: Context) {
+  info(ctx, `${ctx.fmt.bgBrightRed(`^^^^ things went wrong here ^^^^`)}`);
 }
 
 /**
@@ -83,23 +134,19 @@ export class CmEmpty implements ContentModel {
   constructor() {
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(_ctx: Context, children: DOMNode[]): boolean {
     return children.length === 0;
   }
 
-  expected(ctx: Context): Expression {
-    return (
-      <>
-        no inner html at all
-      </>
-    );
+  expected(ctx: Context) {
+    info(ctx, `no inner html at all`);
   }
 }
 
 /**
  * Works iff there is exactly one child and its categories include this `category` (object identity, not just equality).
  */
-export class CmExactly implements ContentModel {
+export class CmCategory implements ContentModel {
   category: Category;
 
   constructor(category: Category) {
@@ -108,15 +155,141 @@ export class CmExactly implements ContentModel {
 
   checkChildren(ctx: Context, children: DOMNode[]): boolean {
     return children.length === 1 &&
-      children[0].info.categories.has(this.category);
+      this.category.belongsToCategory(ctx, children[0]);
   }
 
-  expected(ctx: Context): Expression {
-    return (
-      <>
-        a {this.category.name} (see {ctx.fmtURL(this.category.specifiedAt())} )
-      </>
+  expected(ctx: Context) {
+    info(
+      ctx,
+      `one ${this.category.name(ctx)} (see ${
+        ctx.fmtURL(this.category.specifiedAt())
+      } )`,
     );
+  }
+}
+
+/**
+ * Works iff exactly one of the children matches the `inner` content model.
+ */
+export class CmContainsExactlyOne implements ContentModel {
+  inner: ContentModel;
+
+  constructor(inner: ContentModel) {
+    this.inner = inner;
+  }
+
+  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+    let matches = 0;
+
+    children.forEach((child) => {
+      if (this.inner.checkChildren(ctx, [child])) {
+        matches += 1;
+      }
+    });
+
+    return matches === 1;
+  }
+
+  expected(ctx: Context, children: DOMNode[]) {
+    info(
+      ctx,
+      `exactly one child tag satisfying the following:`,
+    );
+    ctx.loggingGroup(() => {
+      this.inner.expected(ctx, children);
+    });
+
+    const matchIndices: number[] = [];
+
+    children.forEach((child, i) => {
+      if (this.inner.checkChildren(ctx, [child])) {
+        matchIndices.push(i);
+      }
+    });
+
+    ctx.loggingGroup(() => {
+      if (matchIndices.length === 0) {
+        info(
+          ctx,
+          `but ${ctx.fmt.italic("no")} child satisfied the requirement`,
+        );
+      } else {
+        info(
+          ctx,
+          `but ${
+            ctx.fmt.italic("too many")
+          } children satisfied the requirement, namely those at`,
+        );
+        ctx.loggingGroup(() => {
+          matchIndices.forEach((i) => {
+            info(
+              ctx,
+              `- ${ctx.fmtDebuggingInformation(children[i].definedAt!)}`,
+            );
+          });
+        });
+      }
+    });
+  }
+}
+
+/**
+ * Works iff at most one of the children matches the `inner` content model.
+ */
+export class CmContainsAtMostOne implements ContentModel {
+  inner: ContentModel;
+
+  constructor(inner: ContentModel) {
+    this.inner = inner;
+  }
+
+  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+    let matches = 0;
+
+    children.forEach((child) => {
+      if (this.inner.checkChildren(ctx, [child])) {
+        matches += 1;
+      }
+    });
+
+    return matches <= 1;
+  }
+
+  expected(ctx: Context, children: DOMNode[]) {
+    info(
+      ctx,
+      `at most one child tag to satisfy the following:`,
+    );
+    ctx.loggingGroup(() => {
+      this.inner.expected(ctx, children);
+    });
+
+    const matchIndices: number[] = [];
+
+    children.forEach((child, i) => {
+      if (this.inner.checkChildren(ctx, [child])) {
+        matchIndices.push(i);
+      }
+    });
+
+    ctx.loggingGroup(() => {
+      if (matchIndices.length > 1) {
+        info(
+          ctx,
+          `but ${
+            ctx.fmt.italic("too many")
+          } children satisfied the requirement, namely those at`,
+        );
+        ctx.loggingGroup(() => {
+          matchIndices.forEach((i) => {
+            info(
+              ctx,
+              `- ${ctx.fmtDebuggingInformation(children[i].definedAt!)}`,
+            );
+          });
+        });
+      }
+    });
   }
 }
 
@@ -134,19 +307,13 @@ export class CmChoice implements ContentModel {
     return this.options.some((opt) => opt.checkChildren(ctx, children));
   }
 
-  expected(ctx: Context): Expression {
-    return (
-      <>
-        one of the following:
-        <loggingGroup>
-          {this.options.map((opt, i) => (
-            <Info>
-              {opt.expected(ctx)}${i + 1 === this.options.length ? "." : ",\n"}
-            </Info>
-          ))}
-        </loggingGroup>
-      </>
-    );
+  expected(ctx: Context, children: DOMNode[]) {
+    info(ctx, `any one of the following:`);
+    ctx.loggingGroup(() => {
+      this.options.forEach((opt) => {
+        opt.expected(ctx, children);
+      });
+    });
   }
 }
 
@@ -174,23 +341,105 @@ export class CmSequence implements ContentModel {
     return true;
   }
 
-  expected(ctx: Context): Expression {
-    return (
-      <>
-        an exact sequence of the following:
-        <loggingGroup>
-          {this.sequence.map((cm, i) => (
-            <Info>
-              {cm.expected(ctx)}${i + 1 === this.sequence.length ? "." : ",\n"}
-            </Info>
-          ))}
-        </loggingGroup>
-      </>
-    );
+  expected(ctx: Context, children: DOMNode[]) {
+    info(ctx, `an exact sequence of the following:`);
+    ctx.loggingGroup(() => {
+      for (let i = 0; i < this.sequence.length; i++) {
+        this.sequence[i].expected(ctx, [children[i]]);
+
+        if (i < children.length) {
+          if (!this.sequence[i].checkChildren(ctx, [children[i]])) {
+            thingsWentWrongHere(ctx);
+          }
+        } else {
+          if (!this.sequence[i].checkChildren(ctx, [])) {
+            thingsWentWrongHere(ctx);
+          }
+        }
+      }
+    });
   }
 }
 
-// export type ContentModel = {sequence: ContentModel[]} | {many: ContentModel};
+/**
+ * Works iff all the children correspond to the `inner` content model.
+ */
+export class CmZeroOrMore implements ContentModel {
+  inner: ContentModel;
+
+  constructor(inner: ContentModel) {
+    this.inner = inner;
+  }
+
+  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+    return children.every((child) => this.inner.checkChildren(ctx, [child]));
+  }
+
+  expected(ctx: Context, children: DOMNode[]) {
+    info(ctx, `zero or more of the following:`);
+    ctx.loggingGroup(() => {
+      this.inner.expected(ctx, children);
+    });
+  }
+}
+
+/**
+ * Works iff there is at least one child and all the children correspond to the `inner` content model.
+ */
+export class CmOneOrMore implements ContentModel {
+  inner: ContentModel;
+
+  constructor(inner: ContentModel) {
+    this.inner = inner;
+  }
+
+  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+    return children.length > 0 &&
+      children.every((child) => this.inner.checkChildren(ctx, [child]));
+  }
+
+  expected(ctx: Context, children: DOMNode[]) {
+    info(ctx, `one or more of the following:`);
+    ctx.loggingGroup(() => {
+      this.inner.expected(ctx, children);
+    });
+  }
+}
+
+/**
+ * Works iff there is at least one child and all the children correspond to the `inner` content model.
+ */
+export class CmAnd implements ContentModel {
+  inner: ContentModel[];
+
+  constructor(inner: ContentModel[]) {
+    this.inner = inner;
+  }
+
+  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+    return this.inner.every((cm) => cm.checkChildren(ctx, children));
+  }
+
+  expected(ctx: Context, children: DOMNode[]) {
+    const failureIndices: Set<number> = new Set();
+
+    this.inner.forEach((cm, i) => {
+      if (!cm.checkChildren(ctx, children)) {
+        failureIndices.add(i);
+      }
+    });
+
+    info(ctx, `contents satisfying all of the following criteria:`);
+    ctx.loggingGroup(() => {
+      this.inner.forEach((cm, i) => {
+        cm.expected(ctx, children);
+        if (failureIndices.has(i)) {
+          thingsWentWrongHere(ctx);
+        }
+      });
+    });
+  }
+}
 
 export class DOMNodeInfo {
   contentModel: ContentModel;
@@ -221,6 +470,7 @@ type DOMNode = {
   parent?: DOMNode;
   children: DOMNode[];
   etp?: EvaluationTreePosition;
+  definedAt?: DebuggingInformation;
 };
 
 const [TreeScope, getCurrentDOMNode] = Context.createScopedState<DOMNode>(
@@ -245,6 +495,7 @@ export function BuildVerificationDOM(
           const node = getCurrentDOMNode(ctx);
           node.info = dom;
           node.etp = ctx.getEvaluationTreePosition();
+          node.definedAt = ctx.getCurrentDebuggingInformation();
 
           return (
             <SetCurrentKeys keys={["verify", dom.tag as (keyof LoggingConfig)]}>
@@ -252,8 +503,6 @@ export function BuildVerificationDOM(
                 fun={(ctx, evaled) => {
                   // Fully evaluated all children, now it is time to verify things.
                   const node = getCurrentDOMNode(ctx);
-
-                  const collectedWarnings: Expression[] = [];
 
                   // First, sort all children that registered themselves by their ordering in the macromania source code.
                   node.children.sort((
@@ -266,29 +515,32 @@ export function BuildVerificationDOM(
 
                   // Now, check our content model.
                   if (!dom.contentModel.checkChildren(ctx, node.children)) {
-                    collectedWarnings.push(
-                      <SetCurrentKeys
-                        keys={[
-                          "verify",
-                          dom.tag as (keyof LoggingConfig),
-                          (`${dom.tag}ContentModel`) as (keyof LoggingConfig),
-                        ]}
-                      >
-                        <Warn>
-                          Failed content model verification for a ${ctx.fmtCode(
+                    withOtherKeys(ctx, [
+                      "verify",
+                      dom.tag as (keyof LoggingConfig),
+                      (`${dom.tag}ContentModel`) as (keyof LoggingConfig),
+                    ], () => {
+                      warn(
+                        ctx,
+                        `Failed content model verification for a ${
+                          ctx.fmtCode(
                             dom.tag,
-                          )} tag:
-                        </Warn>
-                        <loggingGroup>
-                          <Info>Expected {dom.contentModel.expected(ctx)}</Info>
-                          <Info>
-                            {ctx.fmtDebuggingInformation(
+                          )
+                        } tag, expected its content to be:`,
+                      );
+                      ctx.loggingGroup(() => {
+                        dom.contentModel.expected(ctx, node.children);
+                        info(
+                          ctx,
+                          `at ${
+                            ctx.fmtDebuggingInformation(
                               ctx.getCurrentDebuggingInformation(),
-                            )}
-                          </Info>
-                        </loggingGroup>
-                      </SetCurrentKeys>,
-                    );
+                            )
+                          }`,
+                        );
+                      });
+                      logEmptyLine(ctx, "warn");
+                    });
                   }
 
                   // We are done verifying ourselves.
@@ -298,13 +550,8 @@ export function BuildVerificationDOM(
                     node.parent.children.push(node);
                   }
 
-                  // Return the collected warnings, and the created html string.
-                  return (
-                    <>
-                      {collectedWarnings}
-                      {evaled}
-                    </>
-                  );
+                  // Return the created html string.
+                  return evaled;
                 }}
               >
                 {children}

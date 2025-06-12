@@ -1,11 +1,12 @@
-import { Children, Expression } from "macromania";
+import { Children, // @ts-types="../../../macromania/mod.ts"
+Context, Expression } from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 import {
   BuildVerificationDOM,
   CAT_BODY,
   CAT_HEAD,
-  CmExactly,
+  CmCategory,
   CmSequence,
   DOMNodeInfo,
 } from "../contentModel.tsx";
@@ -21,7 +22,7 @@ export function Html(
   return (
     <BuildVerificationDOM dom={dom}>
       <RenderNonVoidElement
-        name="html"
+        name={dom.tag}
         attrs={<RenderGlobalAttributes attrs={props} />}
         children={props.children}
       />
@@ -31,7 +32,7 @@ export function Html(
 
 const dom = new DOMNodeInfo(
   "html",
-  new CmSequence([new CmExactly(CAT_HEAD), new CmExactly(CAT_BODY)]),
+  new CmSequence([new CmCategory(CAT_HEAD), new CmCategory(CAT_BODY)]),
   new Set(),
   "https://html.spec.whatwg.org/multipage/semantics.html#the-root-element",
 );

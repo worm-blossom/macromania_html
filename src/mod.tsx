@@ -144,21 +144,29 @@ export type LoggingConfig = {
   "htmlContentModel": LogLevel | null;
 };
 
-const { ConfigLogging, SetCurrentKeys, warn, info, Info, Warn } =
-  configurableLogging<
-    LoggingConfig
-  >(
-    () => ({
-      "verify": "warn",
-      "html": null,
-      "htmlContentModel": null,
-    }),
-    "ConfigHtmlLogging",
-  );
+const {
+  ConfigLogging,
+  SetCurrentKeys,
+  warn,
+  info,
+  Info,
+  Warn,
+  withOtherKeys,
+  logEmptyLine,
+} = configurableLogging<
+  LoggingConfig
+>(
+  () => ({
+    "verify": "warn",
+    "html": null,
+    "htmlContentModel": null,
+  }),
+  "ConfigHtmlLogging",
+);
 
 export { ConfigLogging as ConfigHtmlLogging };
 
 /**
  * For internal use.
  */
-export { Info, info, SetCurrentKeys, Warn, warn };
+export { Info, info, logEmptyLine, SetCurrentKeys, Warn, warn, withOtherKeys };
