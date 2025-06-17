@@ -38,6 +38,5 @@ const dom = new DOMNodeInfo(
     new CmContainsExactlyOne(new CmCategory(CAT_TITLE)),
     new CmContainsAtMostOne(new CmCategory(CAT_BASE)),
   ]),
-  new Set(),
   "https://html.spec.whatwg.org/multipage/semantics.html#the-head-element",
 );

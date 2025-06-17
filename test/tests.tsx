@@ -534,7 +534,7 @@ Deno.test("b", async () => {
 });
 
 Deno.test("base", async () => {
-  await testGlobalNonVoid(Base, "base")();
+  await testGlobalVoid(Base, "base")();
 
   await (async () => {
     const ctx = new Context();
@@ -547,14 +547,14 @@ Deno.test("base", async () => {
     );
     assertEquals(
       got,
-      `<base href="bla" target="_self"></base>`,
+      `<base href="bla" target="_self" />`,
     );
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Base target={{ name: "abc" }}></Base>);
-    assertEquals(got, `<base target="abc"></base>`);
+    assertEquals(got, `<base target="abc" />`);
   })();
 });
 
@@ -972,8 +972,8 @@ Deno.test("head", async () => {
   await assertWarns(
     <Head>
       <Title>bla</Title>
-      <Base>bla</Base>
-      <Base>bla</Base>
+      <Base target="_self" />
+      <Base target="_self" />
     </Head>,
   ); // content model
   await assertWarns(
@@ -990,7 +990,7 @@ Deno.test("head", async () => {
   await assertNoWarning(
     <Head>
       <Title>bla</Title>
-      <Base>bla</Base>
+      <Base target="_self" />
     </Head>,
   );
   await assertNoWarning(
@@ -2389,6 +2389,15 @@ Deno.test("time", async () => {
 
 Deno.test("title", async () => {
   await testGlobalNonVoid(Title, "title")();
+
+  await assertWarns(
+    <Title>
+      <Div>bla</Div>
+    </Title>,
+  ); // content model
+  await assertNoWarning(
+    <Title>bla</Title>,
+  );
 });
 
 Deno.test("tr", async () => {

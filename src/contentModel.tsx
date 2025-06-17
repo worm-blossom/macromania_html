@@ -12,6 +12,7 @@ import {
   info,
   logEmptyLine,
   LoggingConfig,
+  TagProps,
   Warn,
   warn,
   withOtherKeys,
@@ -44,7 +45,10 @@ export abstract class Category {
   /**
    * Returns true iff the given node belongs to this category.
    */
-  abstract belongsToCategory(ctx: Context, node: DOMNode): boolean;
+  abstract belongsToCategory<Props extends TagProps>(
+    ctx: Context,
+    node: DOMNode<Props>,
+  ): boolean;
 }
 
 export class CategorySpecificTag extends Category {
@@ -59,7 +63,10 @@ export class CategorySpecificTag extends Category {
     return `${ctx.fmtCode(this.tag)} tag`;
   }
 
-  override belongsToCategory(_ctx: Context, node: DOMNode): boolean {
+  override belongsToCategory<Props extends TagProps>(
+    _ctx: Context,
+    node: DOMNode<Props>,
+  ): boolean {
     return node.info.tag === this.tag;
   }
 }
@@ -97,7 +104,10 @@ export class CategorySetOfElements extends Category {
     }`;
   }
 
-  override belongsToCategory(_ctx: Context, node: DOMNode): boolean {
+  override belongsToCategory<Props extends TagProps>(
+    _ctx: Context,
+    node: DOMNode<Props>,
+  ): boolean {
     return this.tags.has(node.info.tag);
   }
 }
@@ -112,12 +122,12 @@ export interface ContentModel {
   /**
    * Returns true iff the children are valid. Does not log anything.
    */
-  checkChildren(ctx: Context, children: DOMNode[]): boolean;
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean;
 
   /**
    * Log with the `info` function a human-friendly description of what was expected (and optionally, where things went wrong).
    */
-  expected(ctx: Context, children: DOMNode[]): void;
+  expected(ctx: Context, children: DOMNode<TagProps>[]): void;
 }
 
 /**
@@ -128,18 +138,53 @@ function thingsWentWrongHere(ctx: Context) {
 }
 
 /**
- * Works iff there are no contents
+ * Works iff there are no contents at all
  */
-export class CmEmpty implements ContentModel {
+export class CmNothing implements ContentModel {
   constructor() {
   }
 
-  checkChildren(_ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(_ctx: Context, children: DOMNode<TagProps>[]): boolean {
     return children.length === 0;
   }
 
   expected(ctx: Context) {
-    info(ctx, `no inner html at all`);
+    info(ctx, `no inner content at all`);
+  }
+}
+
+/**
+ * Works iff there are no contained tags (text is okay, however).
+ */
+export class CmNoTags implements ContentModel {
+  constructor() {
+  }
+
+  checkChildren(_ctx: Context, children: DOMNode<TagProps>[]): boolean {
+    return children.length === 0;
+  }
+
+  expected(ctx: Context) {
+    info(ctx, `no inner html elements at all (text content is fine, however)`);
+  }
+}
+
+/**
+ * Always works, because we have not implemented the check.
+ */
+export class CmUnverified implements ContentModel {
+  constructor() {
+  }
+
+  checkChildren(_ctx: Context, _children: DOMNode<TagProps>[]): boolean {
+    return true;
+  }
+
+  expected(ctx: Context) {
+    info(
+      ctx,
+      `anything whatsoever (we do not check this part of the html spec)`,
+    );
   }
 }
 
@@ -153,7 +198,7 @@ export class CmCategory implements ContentModel {
     this.category = category;
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
     return children.length === 1 &&
       this.category.belongsToCategory(ctx, children[0]);
   }
@@ -178,7 +223,7 @@ export class CmContainsExactlyOne implements ContentModel {
     this.inner = inner;
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
     let matches = 0;
 
     children.forEach((child) => {
@@ -190,7 +235,7 @@ export class CmContainsExactlyOne implements ContentModel {
     return matches === 1;
   }
 
-  expected(ctx: Context, children: DOMNode[]) {
+  expected(ctx: Context, children: DOMNode<TagProps>[]) {
     info(
       ctx,
       `exactly one child tag satisfying the following:`,
@@ -243,7 +288,7 @@ export class CmContainsAtMostOne implements ContentModel {
     this.inner = inner;
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
     let matches = 0;
 
     children.forEach((child) => {
@@ -255,7 +300,7 @@ export class CmContainsAtMostOne implements ContentModel {
     return matches <= 1;
   }
 
-  expected(ctx: Context, children: DOMNode[]) {
+  expected(ctx: Context, children: DOMNode<TagProps>[]) {
     info(
       ctx,
       `at most one child tag to satisfy the following:`,
@@ -303,11 +348,11 @@ export class CmChoice implements ContentModel {
     this.options = options;
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
     return this.options.some((opt) => opt.checkChildren(ctx, children));
   }
 
-  expected(ctx: Context, children: DOMNode[]) {
+  expected(ctx: Context, children: DOMNode<TagProps>[]) {
     info(ctx, `any one of the following:`);
     ctx.loggingGroup(() => {
       this.options.forEach((opt) => {
@@ -327,7 +372,7 @@ export class CmSequence implements ContentModel {
     this.sequence = sequence;
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
     if (children.length !== this.sequence.length) {
       return false;
     } else {
@@ -341,7 +386,7 @@ export class CmSequence implements ContentModel {
     return true;
   }
 
-  expected(ctx: Context, children: DOMNode[]) {
+  expected(ctx: Context, children: DOMNode<TagProps>[]) {
     info(ctx, `an exact sequence of the following:`);
     ctx.loggingGroup(() => {
       for (let i = 0; i < this.sequence.length; i++) {
@@ -371,11 +416,11 @@ export class CmZeroOrMore implements ContentModel {
     this.inner = inner;
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
     return children.every((child) => this.inner.checkChildren(ctx, [child]));
   }
 
-  expected(ctx: Context, children: DOMNode[]) {
+  expected(ctx: Context, children: DOMNode<TagProps>[]) {
     info(ctx, `zero or more of the following:`);
     ctx.loggingGroup(() => {
       this.inner.expected(ctx, children);
@@ -393,12 +438,12 @@ export class CmOneOrMore implements ContentModel {
     this.inner = inner;
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
     return children.length > 0 &&
       children.every((child) => this.inner.checkChildren(ctx, [child]));
   }
 
-  expected(ctx: Context, children: DOMNode[]) {
+  expected(ctx: Context, children: DOMNode<TagProps>[]) {
     info(ctx, `one or more of the following:`);
     ctx.loggingGroup(() => {
       this.inner.expected(ctx, children);
@@ -416,11 +461,11 @@ export class CmAnd implements ContentModel {
     this.inner = inner;
   }
 
-  checkChildren(ctx: Context, children: DOMNode[]): boolean {
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
     return this.inner.every((cm) => cm.checkChildren(ctx, children));
   }
 
-  expected(ctx: Context, children: DOMNode[]) {
+  expected(ctx: Context, children: DOMNode<TagProps>[]) {
     const failureIndices: Set<number> = new Set();
 
     this.inner.forEach((cm, i) => {
@@ -447,45 +492,61 @@ export class DOMNodeInfo {
    * E.g. "div".
    */
   tag: string;
-  categories: Set<Category>;
   specLink: string;
 
   constructor(
     tag: string,
     contentModel: ContentModel,
-    categories: Set<Category>,
     specLink: string,
   ) {
     this.tag = tag;
     this.contentModel = contentModel;
-    this.categories = categories;
     this.specLink = specLink;
   }
 }
 
-const dummyNodeInfo = new DOMNodeInfo("dummy", new CmEmpty(), new Set(), "");
+const dummyNodeInfo = new DOMNodeInfo("dummy", new CmNoTags(), "");
 
-type DOMNode = {
-  info: DOMNodeInfo;
-  parent?: DOMNode;
-  children: DOMNode[];
-  etp?: EvaluationTreePosition;
-  definedAt?: DebuggingInformation;
+export type EvaledProps<Props> = {
+  [Attr in keyof Props]?: boolean | number | string;
 };
 
-const [TreeScope, getCurrentDOMNode] = Context.createScopedState<DOMNode>(
-  (parent?: DOMNode) => {
+type DOMNode<Props extends TagProps> = {
+  info: DOMNodeInfo;
+  parent?: DOMNode<TagProps>;
+  children: DOMNode<TagProps>[];
+  etp?: EvaluationTreePosition;
+  definedAt?: DebuggingInformation;
+  attrs?: Props;
+  evaledAttrs?: EvaledProps<Props>;
+};
+
+const [TreeScope, getCurrentDOMNode] = Context.createScopedState<
+  DOMNode<TagProps>
+>(
+  (parent?: DOMNode<TagProps>) => {
     return { parent, info: dummyNodeInfo, children: [] };
   },
 );
 
+export type AttrRendering<Props> = {
+  [Attr in keyof Props]: (
+    ctx: Context,
+    attr: Required<Props>[Attr],
+  ) => Expression;
+};
+
 /**
  * To be the outermost expression returned by each statically typed html macro. Builds up a tree structure for verifying html (and performs verification related to content models).
  */
-export function BuildVerificationDOM(
-  { children, dom }: {
+// TODO rename this
+export function BuildVerificationDOM<Attrs extends TagProps>(
+  { children, dom, isVoid, attrs, attrRendering }: {
     children?: Children;
     dom: DOMNodeInfo;
+    attrs: Attrs;
+    attrRendering: AttrRendering<Attrs>;
+    isVoid?: boolean;
   },
 ): Expression {
   return (
@@ -496,6 +557,8 @@ export function BuildVerificationDOM(
           node.info = dom;
           node.etp = ctx.getEvaluationTreePosition();
           node.definedAt = ctx.getCurrentDebuggingInformation();
+          node.evaledAttrs = {};
+          node.attrs = attrs;
 
           return (
             <SetCurrentKeys keys={["verify", dom.tag as (keyof LoggingConfig)]}>
@@ -554,12 +617,106 @@ export function BuildVerificationDOM(
                   return evaled;
                 }}
               >
-                {children}
+                {/* Render the tag and its attributes. */}
+                {isVoid
+                  ? (
+                    <>
+                      {"<"}
+                      {dom.tag}
+                      <RenderAttrs
+                        attrs={attrs}
+                        attrRendering={attrRendering}
+                        node={node}
+                      />
+                      {" />"}
+                    </>
+                  )
+                  : (
+                    <>
+                      {"<"}
+                      {dom.tag}
+                      <RenderAttrs
+                        attrs={attrs}
+                        attrRendering={attrRendering}
+                        node={node}
+                      />
+                      {">"}
+                      {children}
+                      {"</"}
+                      {dom.tag}
+                      {">"}
+                    </>
+                  )}
               </map>
             </SetCurrentKeys>
           );
         }}
       />
     </TreeScope>
+  );
+}
+
+function RenderAttrs<Attrs extends TagProps>(
+  { attrs, attrRendering, node }: {
+    attrs: Attrs;
+    attrRendering: AttrRendering<Attrs>;
+    node: DOMNode<Attrs>;
+  },
+): Expression {
+  return (
+    <effect
+      fun={(ctx) => {
+        const exps = [];
+        let first = true;
+
+        for (const attr in attrs) {
+          if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
+            const attrVal = attrs[attr];
+
+            if (typeof attrVal === "boolean" && !attrVal) {
+              node.evaledAttrs![attr] = attrVal;
+              continue;
+            }
+
+            if (!first) {
+              exps.push(" ");
+              first = false;
+            }
+
+            let attrName: string = attr;
+            switch (attrName) {
+              case "clazz":
+                attrName = "class";
+                break;
+
+              default:
+                break;
+            }
+
+            if (typeof attrVal === "boolean") {
+              node.evaledAttrs![attr] = attrVal;
+              exps.push(attrName);
+            } else if (
+              typeof attrVal === "number" || typeof attrVal === "string"
+            ) {
+              node.evaledAttrs![attr] = attrVal;
+              exps.push(<>{attrName}="{`${attrVal}`}"</>);
+            } else {
+              exps.push(
+                <map
+                  fun={(_ctx, evaled) => {
+                    node.evaledAttrs![attr] = evaled;
+                    return evaled;
+                  }}
+                >
+                  {attrRendering[attr](ctx, attrVal)}
+                </map>,
+              );
+            }
+          }
+        }
+        return <fragment x={exps} />;
+      }}
+    />
   );
 }

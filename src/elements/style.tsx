@@ -1,8 +1,13 @@
-import { Expression, Children } from "macromania";
+import { Children, Expression } from "macromania";
 import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderSpaceSeparatedList } from "../renderUtils.tsx";
 import { PossiblyBlockingToken } from "../shared.tsx";
+import {
+  BuildVerificationDOM,
+  CmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Style} macro.
@@ -27,14 +32,22 @@ export function Style(
   props: StyleProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="style"
-      attrs={<RenderStyleAttributes attrs={props} />}
-    >
-      {props.children}
-    </RenderNonVoidElement>
+    <BuildVerificationDOM dom={dom}>
+      <RenderNonVoidElement
+        name={dom.tag}
+        attrs={<RenderStyleAttributes attrs={props} />}
+      >
+        {props.children}
+      </RenderNonVoidElement>
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "style",
+  new CmUnverified(),
+  "https://html.spec.whatwg.org/multipage/semantics.html#the-style-element",
+);
 
 function RenderStyleAttributes(
   { attrs }: { attrs?: StyleProps },

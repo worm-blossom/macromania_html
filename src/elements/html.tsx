@@ -1,5 +1,8 @@
-import { Children, // @ts-types="../../../macromania/mod.ts"
-Context, Expression } from "macromania";
+import {
+  Children, // @ts-types="../../../macromania/mod.ts"
+  Context,
+  Expression,
+} from "macromania";
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderNonVoidElement } from "../renderUtils.tsx";
 import {
@@ -33,6 +36,5 @@ export function Html(
 const dom = new DOMNodeInfo(
   "html",
   new CmSequence([new CmCategory(CAT_HEAD), new CmCategory(CAT_BODY)]),
-  new Set(),
   "https://html.spec.whatwg.org/multipage/semantics.html#the-root-element",
 );

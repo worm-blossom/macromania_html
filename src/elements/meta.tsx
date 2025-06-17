@@ -3,6 +3,7 @@ import { RenderExpression, RenderVoidElement } from "../renderUtils.tsx";
 
 import { RenderGlobalAttributes, TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
+import { BuildVerificationDOM, DOMNodeInfo, CmNothing } from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Meta} macro.
@@ -52,12 +53,20 @@ export function Meta(
   props: MetaProps,
 ): Expression {
   return (
-    <RenderVoidElement
-      name="meta"
-      attrs={<RenderMetaAttributes attrs={props} />}
-    />
+    <BuildVerificationDOM dom={dom}>
+      <RenderVoidElement
+        name={dom.tag}
+        attrs={<RenderMetaAttributes attrs={props} />}
+      />
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "meta",
+  new CmNothing(),
+  "https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element",
+);
 
 function RenderMetaAttributes(
   { attrs }: { attrs?: MetaProps },

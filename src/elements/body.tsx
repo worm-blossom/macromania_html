@@ -9,10 +9,19 @@ export function Body(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
+    <BuildVerificationDOM dom={dom}>
+      
     <RenderNonVoidElement
-      name="body"
+      name={dom.tag}
       attrs={<RenderGlobalAttributes attrs={props} />}
       children={props.children}
     />
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "body",
+  new CmNothing(),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-body-element",
+);

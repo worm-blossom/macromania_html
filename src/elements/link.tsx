@@ -10,6 +10,11 @@ import type { FetchPriority, ReferrerPolicy } from "../shared.tsx";
 import { RenderGlobalAttributes, type TagProps } from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
 import type { CrossOrigin, PossiblyBlockingToken } from "../shared.tsx";
+import {
+  BuildVerificationDOM,
+  CmNothing,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Link} macro.
@@ -90,12 +95,20 @@ export function Link(
   props: LinkProps,
 ): Expression {
   return (
-    <RenderVoidElement
-      name="link"
-      attrs={<RenderLinkAttributes attrs={props} />}
-    />
+    <BuildVerificationDOM dom={dom}>
+      <RenderVoidElement
+        name="link"
+        attrs={<RenderLinkAttributes attrs={props} />}
+      />
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "link",
+  new CmNothing(),
+  "https://html.spec.whatwg.org/multipage/semantics.html#the-link-element",
+);
 
 function RenderLinkAttributes(
   { attrs }: { attrs?: LinkProps },

@@ -2,7 +2,7 @@
  * Global attributes.
  */
 
-import { Expression } from "macromania";
+import { Context, Expression } from "macromania";
 import { RenderYesNo } from "./renderUtils.tsx";
 import { RenderDynamicAttributes } from "./renderUtils.tsx";
 import { EscapeHtml, RenderNumber } from "./renderUtils.tsx";
@@ -15,6 +15,7 @@ import {
   RenderSpaceSeparatedList,
   RenderTrueFalse,
 } from "./renderUtils.tsx";
+import { AttrRendering } from "./contentModel.tsx";
 
 /**
  * The global attributes that are common to and may be specified on all HTML elements.
@@ -176,6 +177,12 @@ export type TagProps = {
   dynamicAttributes?: DynamicAttributes;
 };
 
+export const renderGlobalAttributes: AttrRendering<TagProps> = {
+  accesskey: (_ctx: Context, attr: Expression | Expression[]) => (
+    <RenderSpaceSeparatedList value={attr} />
+  ),
+};
+
 export function RenderGlobalAttributes(
   { attrs }: { attrs?: TagProps },
 ): Expression {
@@ -185,12 +192,6 @@ export function RenderGlobalAttributes(
 
   return (
     <>
-      {attrs.accesskey !== undefined
-        ? <RenderSpaceSeparatedList attr="accesskey" value={attrs.accesskey} />
-        : ""}
-      {attrs.autocapitalize !== undefined
-        ? <RenderEnum attr="autocapitalize" value={attrs.autocapitalize} />
-        : ""}
       {attrs.autofocus !== undefined
         ? <RenderBoolean attr="autofocus" value={attrs.autofocus} />
         : ""}
@@ -284,6 +285,115 @@ export function RenderGlobalAttributes(
     </>
   );
 }
+
+// export function RenderGlobalAttributes(
+//   { attrs }: { attrs?: TagProps },
+// ): Expression {
+//   if (attrs === undefined) {
+//     return "";
+//   }
+
+//   return (
+//     <>
+//       {attrs.accesskey !== undefined
+//         ? <RenderSpaceSeparatedList attr="accesskey" value={attrs.accesskey} />
+//         : ""}
+//       {attrs.autocapitalize !== undefined
+//         ? <RenderEnum attr="autocapitalize" value={attrs.autocapitalize} />
+//         : ""}
+//       {attrs.autofocus !== undefined
+//         ? <RenderBoolean attr="autofocus" value={attrs.autofocus} />
+//         : ""}
+//       {attrs.clazz !== undefined
+//         ? <RenderSpaceSeparatedList attr="class" value={attrs.clazz} />
+//         : ""}
+//       {attrs.contenteditable !== undefined
+//         ? (
+//           <RenderBooleanOrEnum
+//             attr="contenteditable"
+//             value={attrs.contenteditable}
+//           />
+//         )
+//         : ""}
+//       {attrs.data !== undefined ? <RenderData data={attrs.data} /> : ""}
+//       {attrs.dir !== undefined
+//         ? <RenderEnum attr="dir" value={attrs.dir} />
+//         : ""}
+//       {attrs.draggable !== undefined
+//         ? <RenderTrueFalse attr="draggable" value={attrs.draggable} />
+//         : ""}
+//       {attrs.enterkeyhint !== undefined
+//         ? <RenderEnum attr="enterkeyhint" value={attrs.enterkeyhint} />
+//         : ""}
+//       {attrs.exportparts !== undefined
+//         ? <RenderExportparts parts={attrs.exportparts} />
+//         : ""}
+//       {attrs.hidden !== undefined
+//         ? <RenderEnum attr="hidden" value={attrs.hidden} />
+//         : ""}
+//       {attrs.id !== undefined
+//         ? <RenderExpression attr="id" value={attrs.id} />
+//         : ""}
+//       {attrs.inert !== undefined
+//         ? <RenderBoolean attr="inert" value={attrs.inert} />
+//         : ""}
+//       {attrs.inputmode !== undefined
+//         ? <RenderEnum attr="inputmode" value={attrs.inputmode} />
+//         : ""}
+//       {attrs.is !== undefined
+//         ? <RenderExpression attr="is" value={attrs.is} />
+//         : ""}
+//       {attrs.itemid !== undefined
+//         ? <RenderExpression attr="itemid" value={attrs.itemid} />
+//         : ""}
+//       {attrs.itemprop !== undefined
+//         ? <RenderSpaceSeparatedList attr="itemprop" value={attrs.itemprop} />
+//         : ""}
+//       {attrs.itemref !== undefined
+//         ? <RenderSpaceSeparatedList attr="itemref" value={attrs.itemref} />
+//         : ""}
+//       {attrs.itemscope !== undefined
+//         ? <RenderBoolean attr="itemscope" value={attrs.itemscope} />
+//         : ""}
+//       {attrs.itemtype !== undefined
+//         ? <RenderSpaceSeparatedList attr="itemtype" value={attrs.itemtype} />
+//         : ""}
+//       {attrs.lang !== undefined
+//         ? <RenderExpression attr="lang" value={attrs.lang} />
+//         : ""}
+//       {attrs.nonce !== undefined
+//         ? <RenderExpression attr="nonce" value={attrs.nonce} />
+//         : ""}
+//       {attrs.part !== undefined
+//         ? <RenderSpaceSeparatedList attr="part" value={attrs.part} />
+//         : ""}
+//       {attrs.popover !== undefined
+//         ? <RenderEnum attr="popover" value={attrs.popover} />
+//         : ""}
+//       {attrs.slot !== undefined
+//         ? <RenderExpression attr="slot" value={attrs.slot} />
+//         : ""}
+//       {attrs.spellcheck !== undefined
+//         ? <RenderTrueFalse attr="spellcheck" value={attrs.spellcheck} />
+//         : ""}
+//       {attrs.style !== undefined
+//         ? <RenderExpression attr="style" value={attrs.style} />
+//         : ""}
+//       {attrs.tabindex !== undefined
+//         ? <RenderNumber attr="tabindex" value={attrs.tabindex} />
+//         : ""}
+//       {attrs.title !== undefined
+//         ? <RenderExpression attr="title" value={attrs.title} />
+//         : ""}
+//       {attrs.translate !== undefined
+//         ? <RenderYesNo attr="translate" value={attrs.translate} />
+//         : ""}
+//       {attrs.dynamicAttributes !== undefined
+//         ? <RenderDynamicAttributes attrs={attrs.dynamicAttributes} />
+//         : ""}
+//     </>
+//   );
+// }
 
 function RenderData(
   { data }: { data: Record<string, Expression> },
