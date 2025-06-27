@@ -31,6 +31,7 @@ export function Map(
       children={props.children}
     />
   );
+  // TODO call setCurrentlyInsideMapElement (careful: handle nesting correctly, dont naively set to `false` in lifecycle post)
 }
 
 function RenderMapAttributes(

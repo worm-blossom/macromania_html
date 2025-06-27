@@ -1,10 +1,5 @@
-import {
-  Children, // @ts-types="../../../macromania/mod.ts"
-  Context,
-  Expression,
-} from "macromania";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderNonVoidElement } from "../renderUtils.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
   CAT_BODY,
@@ -23,12 +18,12 @@ export function Html(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <BuildVerificationDOM dom={dom}>
-      <RenderNonVoidElement
-        name={dom.tag}
-        attrs={<RenderGlobalAttributes attrs={props} />}
-        children={props.children}
-      />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
     </BuildVerificationDOM>
   );
 }

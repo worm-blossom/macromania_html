@@ -1,4 +1,4 @@
-import { Expression, Children } from "macromania";
+import { Children, Expression } from "macromania";
 
 function escapeHtmlString(raw: string): string {
   return raw.replaceAll(/&|<|>|"|'/g, (match) => {
@@ -52,7 +52,7 @@ export function RenderAttribute(
 }
 
 export function RenderSpaceSeparatedList(
-  { attr, value }: { attr: string; value: Expression[] | Expression },
+  { value }: { value: Expression[] | Expression },
 ): Expression {
   const actualExps: Expression[] = [];
 
@@ -71,11 +71,7 @@ export function RenderSpaceSeparatedList(
     actualExps.push(value);
   }
 
-  return (
-    <RenderAttribute attr={attr}>
-      {actualExps}
-    </RenderAttribute>
-  );
+  return <fragment x={actualExps} />;
 }
 
 export function RenderBoolean(
@@ -112,18 +108,6 @@ export function RenderBooleanOrEnum(
   } else {
     return <RenderEnum attr={attr} value={value} />;
   }
-}
-
-export function RenderYesNo(
-  { attr, value }: { attr: string; value: boolean },
-): Expression {
-  return <RenderEnum attr={attr} value={value ? "yes" : "no"} />;
-}
-
-export function RenderTrueFalse(
-  { attr, value }: { attr: string; value: boolean },
-): Expression {
-  return <RenderEnum attr={attr} value={value ? "true" : "false"} />;
 }
 
 export function RenderExpression(

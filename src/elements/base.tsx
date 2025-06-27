@@ -1,17 +1,8 @@
-import { Children, Expression } from "macromania";
-import {
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import {
-  NavigableTargetNameOrKeyword,
-  RenderNavigableTargetNameOrKeyword,
-} from "../aOrArea.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+import type { Expression } from "macromania";
+import type { NavigableTargetNameOrKeyword } from "../aOrArea.tsx";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CmNoTags,
   CmNothing,
   DOMNodeInfo,
 } from "../contentModel.tsx";
@@ -47,12 +38,12 @@ export function Base(
   props: BaseProps,
 ): Expression {
   return (
-    <BuildVerificationDOM dom={dom}>
-      <RenderVoidElement
-        name={dom.tag}
-        attrs={<RenderBaseAttributes attrs={props} />}
-      />
-    </BuildVerificationDOM>
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+      isVoid
+    />
   );
 }
 
@@ -61,23 +52,3 @@ const dom = new DOMNodeInfo(
   new CmNothing(),
   "https://html.spec.whatwg.org/multipage/semantics.html#the-base-element",
 );
-
-function RenderBaseAttributes(
-  { attrs }: { attrs?: BaseProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.href !== undefined
-        ? <RenderExpression attr="href" value={attrs.href} />
-        : ""}
-      {attrs.target !== undefined
-        ? <RenderNavigableTargetNameOrKeyword target={attrs.target} />
-        : ""}
-    </>
-  );
-}

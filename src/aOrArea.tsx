@@ -65,7 +65,7 @@ export type AOrAreaLinkProps = {
   /**
    * The [rel attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-rel) on [a](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element) and [area](https://html.spec.whatwg.org/multipage/image-maps.html#the-area-element) elements controls what kinds of links the elements create.
    */
-  rel?: AOrAreaLinkType;
+  rel?: AOrAreaLinkType | AOrAreaLinkType[];
   /**
    * The [referrerpolicy attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-referrerpolicy) sets the [referrer policy](https://w3c.github.io/webappsec-referrer-policy/#referrer-policy) used when [following hyperlinks](https://html.spec.whatwg.org/multipage/links.html#following-hyperlinks-2).
    */

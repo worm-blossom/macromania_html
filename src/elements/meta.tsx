@@ -1,9 +1,10 @@
 import type { Expression } from "macromania";
-import { RenderExpression, RenderVoidElement } from "../renderUtils.tsx";
-
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderEnum } from "../renderUtils.tsx";
-import { BuildVerificationDOM, DOMNodeInfo, CmNothing } from "../contentModel.tsx";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  CmNothing,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Meta} macro.
@@ -53,12 +54,12 @@ export function Meta(
   props: MetaProps,
 ): Expression {
   return (
-    <BuildVerificationDOM dom={dom}>
-      <RenderVoidElement
-        name={dom.tag}
-        attrs={<RenderMetaAttributes attrs={props} />}
-      />
-    </BuildVerificationDOM>
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+      isVoid
+    />
   );
 }
 
@@ -67,32 +68,3 @@ const dom = new DOMNodeInfo(
   new CmNothing(),
   "https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element",
 );
-
-function RenderMetaAttributes(
-  { attrs }: { attrs?: MetaProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.name !== undefined
-        ? <RenderEnum attr="name" value={attrs.name} />
-        : ""}
-      {attrs.httpEquiv !== undefined
-        ? <RenderEnum attr="http-equiv" value={attrs.httpEquiv} />
-        : ""}
-      {attrs.content !== undefined
-        ? <RenderExpression attr="content" value={attrs.content} />
-        : ""}
-      {attrs.charset !== undefined
-        ? <RenderEnum attr="charset" value={attrs.charset} />
-        : ""}
-      {attrs.media !== undefined
-        ? <RenderExpression attr="media" value={attrs.media} />
-        : ""}
-    </>
-  );
-}

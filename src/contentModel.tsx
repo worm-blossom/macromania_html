@@ -8,6 +8,8 @@ import {
 } from "macromania";
 
 import {
+  DynamicAttributes,
+  EscapeHtml,
   Info,
   info,
   logEmptyLine,
@@ -19,6 +21,27 @@ import {
 } from "./mod.tsx";
 import { SetCurrentKeys } from "./mod.tsx";
 import { fail } from "@std/assert/fail";
+import { isLinkAllowedInBody } from "./elements/link.tsx";
+
+type VerificationState = {
+  currentlyInsideMapElement: boolean;
+};
+
+const [getVerificationState, _] = Context.createState<VerificationState>(
+  () => ({
+    currentlyInsideMapElement: false,
+  }),
+);
+
+function isCurrentlyInsideMapElement(ctx: Context): boolean {
+  const state = getVerificationState(ctx);
+  return state.currentlyInsideMapElement;
+}
+
+export function setCurrentlyInsideMapElement(ctx: Context, newVal: boolean) {
+  const state = getVerificationState(ctx);
+  state.currentlyInsideMapElement = newVal;
+}
 
 /**
  * https://html.spec.whatwg.org/multipage/dom.html#content-categories
@@ -91,24 +114,67 @@ export const CAT_BASE = new CategorySpecificTag(
 export class CategorySetOfElements extends Category {
   setName: string;
   tags: Set<string>;
+  special: Set<
+    [string, string, (ctx: Context, node: DOMNode<TagProps>) => boolean]
+  >;
+  both:
+    (string | [
+      string, /* tag name*/
+      string, /* condition */
+      (ctx: Context, node: DOMNode<TagProps>) => boolean,
+    ])[];
 
-  constructor(specURL: string, setName: string, tags: string[]) {
+  constructor(
+    specURL: string,
+    setName: string,
+    tags:
+      (string | [
+        string,
+        string,
+        (ctx: Context, node: DOMNode<TagProps>) => boolean,
+      ])[],
+  ) {
     super(specURL);
     this.setName = setName;
-    this.tags = new Set(tags);
+    this.tags = new Set();
+    this.special = new Set();
+    this.both = tags;
+
+    for (const candidate of tags) {
+      if (typeof candidate === "string") {
+        this.tags.add(candidate);
+      } else {
+        this.special.add(candidate);
+      }
+    }
   }
 
   override name(ctx: Context): string {
     return `${this.setName} content, i.e., one of the following tags: ${
-      Array.from(this.tags.keys().map((tag) => ctx.fmtCode(tag))).join(", ")
+      Array.from(
+        this.both.map((tag) =>
+          typeof tag === "string"
+            ? ctx.fmtCode(tag)
+            : `${ctx.fmtCode(tag[0])} (${tag[1]})`
+        ),
+      ).join(", ")
     }`;
   }
 
   override belongsToCategory<Props extends TagProps>(
-    _ctx: Context,
+    ctx: Context,
     node: DOMNode<Props>,
   ): boolean {
-    return this.tags.has(node.info.tag);
+    if (this.tags.has(node.info.tag)) {
+      return true;
+    } else {
+      for (const [_tag, _condition, predicate] of this.special.keys()) {
+        if (predicate(ctx, node)) {
+          return true;
+        }
+      }
+      return false;
+    }
   }
 }
 
@@ -116,6 +182,107 @@ export const CAT_METADATA_CONTENT = new CategorySetOfElements(
   "https://html.spec.whatwg.org/multipage/dom.html#metadata-content-2",
   "metadata",
   ["base", "link", "meta", "noscript", "script", "style", "template", "title"],
+);
+
+export const CAT_FLOW_CONTENT = new CategorySetOfElements(
+  "https://html.spec.whatwg.org/multipage/dom.html#flow-content-2",
+  "flow",
+  [
+    "a",
+    "abbr",
+    "address",
+    ["area", "(if it is a descendant of a map element)", (ctx, _node) => {
+      return isCurrentlyInsideMapElement(ctx);
+    }],
+    "article",
+    "audio",
+    "b",
+    "bdi",
+    "bdo",
+    "block",
+    "quote",
+    "br",
+    "canvas",
+    "cite",
+    "code",
+    "data",
+    "datalist",
+    "del",
+    "details",
+    "dfn",
+    "dialog",
+    "div",
+    "dl",
+    "em",
+    "embed",
+    "fieldset",
+    "figure",
+    "footer",
+    "form",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "header",
+    "hgroup",
+    "hr",
+    "i",
+    "iframe",
+    "img",
+    "input",
+    "ins",
+    "kbd",
+    "label",
+    [
+      "link",
+      "(if it is allowed in the body, see https://html.spec.whatwg.org/multipage/semantics.html#allowed-in-the-body )",
+      (_ctx, node) => {
+        return isLinkAllowedInBody(node);
+      },
+    ],
+    "main",
+    "map",
+    "mark",
+    "menu",
+    ["meta", "(if the itemprop attribute is present", (_ctx, node) => {
+      return node.attrs!.itemprop !== undefined;
+    }],
+    "meter",
+    "nav",
+    "noscript",
+    "object",
+    "ol",
+    "output",
+    "p",
+    "picture",
+    "pre",
+    "progress",
+    "q",
+    "ruby",
+    "s",
+    "samp",
+    "script",
+    "search",
+    "section",
+    "select",
+    "slot",
+    "small",
+    "span",
+    "strong",
+    "sub",
+    "sup",
+    "table",
+    "template",
+    "textarea",
+    "time",
+    "u",
+    "ul",
+    "var",
+    "video",
+    "wbr",
+  ],
 );
 
 export interface ContentModel {
@@ -511,7 +678,7 @@ export type EvaledProps<Props> = {
   [Attr in keyof Props]?: boolean | number | string;
 };
 
-type DOMNode<Props extends TagProps> = {
+export type DOMNode<Props extends TagProps> = {
   info: DOMNodeInfo;
   parent?: DOMNode<TagProps>;
   children: DOMNode<TagProps>[];
@@ -701,6 +868,23 @@ function RenderAttrs<Attrs extends TagProps>(
             ) {
               node.evaledAttrs![attr] = attrVal;
               exps.push(<>{attrName}="{`${attrVal}`}"</>);
+            } else if (attr === "data") {
+              for (const key in attrVal) {
+                exps.push(
+                  <>{`data-${key}`}="{attrVal[key]}"</>,
+                );
+              }
+            } else if (attr === "dynamicAttributes") {
+              for (const key in (attrVal as DynamicAttributes)) {
+                exps.push(
+                  <>
+                    {key}="<EscapeHtml>
+                      {(attrVal as DynamicAttributes)[key]}
+                    </EscapeHtml>"
+                  </>,
+                );
+                exps.push(" ");
+              }
             } else {
               exps.push(
                 <map
@@ -709,7 +893,11 @@ function RenderAttrs<Attrs extends TagProps>(
                     return evaled;
                   }}
                 >
-                  {attrRendering[attr](ctx, attrVal)}
+                  {attrName}="<EscapeHtml>
+                    {attrRendering[attr]
+                      ? attrRendering[attr](ctx, attrVal)
+                      : attrVal as Expression}
+                  </EscapeHtml>"
                 </map>,
               );
             }
@@ -719,4 +907,28 @@ function RenderAttrs<Attrs extends TagProps>(
       }}
     />
   );
+}
+
+export function RenderDynamicAttributes(
+  { attrs }: { attrs?: DynamicAttributes },
+): Expression {
+  if (attrs === undefined) {
+    return "";
+  }
+
+  const exps: Expression[] = [];
+
+  for (const key in attrs) {
+    exps.push(" ");
+    exps.push(key);
+    exps.push(`="`);
+    exps.push(
+      <EscapeHtml>
+        {attrs[key]}
+      </EscapeHtml>,
+    );
+    exps.push(`"`);
+  }
+
+  return <>{exps}</>;
 }

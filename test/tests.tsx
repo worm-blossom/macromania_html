@@ -257,13 +257,13 @@ Deno.test("boolean-or-enum attribute rendering", async () => {
 Deno.test("not boolean but true-false-enum rendering", async () => {
   await (async () => {
     const ctx = new Context();
-    const got = await ctx.evaluate(<Br draggable />);
+    const got = await ctx.evaluate(<Br draggable="true" />);
     assertEquals(got, `<br draggable="true" />`);
   })();
 
   await (async () => {
     const ctx = new Context();
-    const got = await ctx.evaluate(<Br draggable={false} />);
+    const got = await ctx.evaluate(<Br draggable="false" />);
     assertEquals(got, `<br draggable="false" />`);
   })();
 });
@@ -328,7 +328,7 @@ Deno.test("global attributes", async () => {
         "bar-baz": <Br />,
       }}
       dir="rtl"
-      draggable
+      draggable="true"
       enterkeyhint="go"
       exportparts={["f"]}
       hidden="hidden"
@@ -346,11 +346,11 @@ Deno.test("global attributes", async () => {
       part={["f"]}
       popover="auto"
       slot="f"
-      spellcheck
+      spellcheck="true"
       style="f"
       tabindex={2}
       title="f"
-      translate
+      translate="yes"
     />,
   );
   assertEquals(
@@ -578,6 +578,86 @@ Deno.test("blockquote", async () => {
 
 Deno.test("body", async () => {
   await testGlobalNonVoid(Body, "body")();
+
+  await assertWarns(
+    <Body>
+      <Area />
+    </Body>,
+  ); // content model
+  await assertNoWarning(<Area />); // assert the above works as intended
+
+  await assertWarns(
+    <Body>
+      <Link />
+    </Body>,
+  ); // content model
+  await assertNoWarning(<Link />); // assert the above works as intended
+
+  await assertWarns(
+    <Body>
+      <Link rel={["preload", "alternate", "prefetch"]} />
+    </Body>,
+  ); // content model
+  await assertNoWarning(<Link rel={["preload", "alternate", "prefetch"]} />); // assert the above works as intended
+
+  await assertWarns(
+    <Body>
+      <Meta />
+    </Body>,
+  ); // content model
+  await assertNoWarning(<Meta />); // assert the above works as intended
+
+  await assertWarns(
+    <Body>
+      <Title>foo</Title>
+    </Body>,
+  ); // content model
+
+  await assertNoWarning(<Body></Body>);
+  await assertNoWarning(<Body>bla</Body>);
+  await assertNoWarning(
+    <Body>
+      <Div></Div>
+    </Body>,
+  );
+  await assertNoWarning(
+    <Body>
+      bla<Div></Div> bla
+    </Body>,
+  );
+  await assertNoWarning(
+    <Body>
+      <Div></Div>
+      <Div></Div>
+    </Body>,
+  );
+  await assertNoWarning(
+    <Map name="foo">
+      <Body>
+        <Area />
+      </Body>
+    </Map>,
+  );
+  await assertNoWarning(
+    <Body>
+      <Link itemprop="foo" />
+    </Body>,
+  );
+  await assertNoWarning(
+    <Body>
+      <Link rel="preload" />
+    </Body>,
+  );
+  await assertNoWarning(
+    <Body>
+      <Link rel={["preload", "prefetch"]} />
+    </Body>,
+  );
+  await assertNoWarning(
+    <Body>
+      <Meta itemprop="foo" />
+    </Body>,
+  );
 });
 
 Deno.test("br", async () => {

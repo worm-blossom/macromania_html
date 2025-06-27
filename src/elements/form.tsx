@@ -1,4 +1,4 @@
-import { Expression, Children } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,
@@ -41,7 +41,7 @@ export type FormProps = {
   name?: Expression;
   novalidate?: boolean;
   target?: Expression;
-  rel?: FormRel;
+  rel?: FormRel | FormRel[];
 } & TagProps;
 
 /**

@@ -1,8 +1,10 @@
-import { Children, Expression } from "macromania";
-import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderSpaceSeparatedList } from "../renderUtils.tsx";
-import { PossiblyBlockingToken } from "../shared.tsx";
+import type { Children, Expression } from "macromania";
+import {
+  attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  renderGlobalAttributes,
+  type TagProps,
+} from "../global.tsx";
+import type { PossiblyBlockingToken } from "../shared.tsx";
 import {
   BuildVerificationDOM,
   CmUnverified,
@@ -32,13 +34,12 @@ export function Style(
   props: StyleProps & { children?: Children },
 ): Expression {
   return (
-    <BuildVerificationDOM dom={dom}>
-      <RenderNonVoidElement
-        name={dom.tag}
-        attrs={<RenderStyleAttributes attrs={props} />}
-      >
-        {props.children}
-      </RenderNonVoidElement>
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderStyleAttributes}
+    >
+      {props.children}
     </BuildVerificationDOM>
   );
 }
@@ -49,22 +50,7 @@ const dom = new DOMNodeInfo(
   "https://html.spec.whatwg.org/multipage/semantics.html#the-style-element",
 );
 
-function RenderStyleAttributes(
-  { attrs }: { attrs?: StyleProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.media !== undefined
-        ? <RenderExpression attr="media" value={attrs.media} />
-        : ""}
-      {attrs.blocking !== undefined
-        ? <RenderSpaceSeparatedList attr="blocking" value={attrs.blocking} />
-        : ""}
-    </>
-  );
-}
+const renderStyleAttributes = {
+  ...renderGlobalAttributes,
+  blocking: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+};

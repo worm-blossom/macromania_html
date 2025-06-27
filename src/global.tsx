@@ -3,7 +3,6 @@
  */
 
 import { Context, Expression } from "macromania";
-import { RenderYesNo } from "./renderUtils.tsx";
 import { RenderDynamicAttributes } from "./renderUtils.tsx";
 import { EscapeHtml, RenderNumber } from "./renderUtils.tsx";
 import {
@@ -13,7 +12,6 @@ import {
   RenderEnum,
   RenderExpression,
   RenderSpaceSeparatedList,
-  RenderTrueFalse,
 } from "./renderUtils.tsx";
 import { AttrRendering } from "./contentModel.tsx";
 
@@ -67,7 +65,7 @@ export type TagProps = {
   /**
    * The [draggable attribute](https://html.spec.whatwg.org/multipage/dnd.html#attr-draggable).
    */
-  draggable?: boolean;
+  draggable?: "true" | "false";
   /**
    * The [enterkeyhint attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint) is an enumerated attribute that specifies what action label (or icon) to present for the enter key on virtual keyboards. This allows authors to customize the presentation of the enter key in order to make it more helpful for users.
    */
@@ -154,7 +152,7 @@ export type TagProps = {
   /**
    * The [spellcheck attribute](https://html.spec.whatwg.org/multipage/interaction.html#attr-spellcheck).
    */
-  spellcheck?: boolean;
+  spellcheck?: "true" | "false";
   /**
    * The [style attribute](https://html.spec.whatwg.org/multipage/dom.html#attr-style).
    */
@@ -170,7 +168,7 @@ export type TagProps = {
   /**
    * The [translate attribute](https://html.spec.whatwg.org/multipage/dom.html#attr-translate) is used to specify whether an element's attribute values and the values of its [Text](https://dom.spec.whatwg.org/#interface-text) node children are to be translated when the page is localized, or whether to leave them unchanged.
    */
-  translate?: boolean;
+  translate?: "yes" | "no";
   /**
    * User-supplied, dynamic attributes. These allow to render arbitrary attributes not covered by the statically typed API.
    */
@@ -178,10 +176,43 @@ export type TagProps = {
 };
 
 export const renderGlobalAttributes: AttrRendering<TagProps> = {
-  accesskey: (_ctx: Context, attr: Expression | Expression[]) => (
-    <RenderSpaceSeparatedList value={attr} />
-  ),
+  accesskey: attrOrderedSetOfUniqueSpaceSeparatedTokens,
+  clazz: attrSetOfSpaceSeparatedTokens,
+  exportparts: (
+    _ctx: Context,
+    attr: (Expression | [Expression, Expression])[],
+  ) => <RenderExportparts parts={attr} />,
+  itemprop: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  itemref: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  itemtype: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  part: attrSetOfSpaceSeparatedTokens,
 };
+
+// https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#set-of-space-separated-tokens
+export function attrSetOfSpaceSeparatedTokens(
+  _ctx: Context,
+  attr: Expression | Expression[],
+): Expression {
+  return <RenderSpaceSeparatedList value={attr} />;
+}
+
+// https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#unordered-set-of-unique-space-separated-tokens
+export function attrUnorderedSetOfUniqueSpaceSeparatedTokens(
+  _ctx: Context,
+  attr: Expression | Expression[],
+): Expression {
+  return <RenderSpaceSeparatedList value={attr} />;
+}
+
+// https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#ordered-set-of-unique-space-separated-tokens
+export function attrOrderedSetOfUniqueSpaceSeparatedTokens(
+  _ctx: Context,
+  attr: Expression | Expression[],
+): Expression {
+  return <RenderSpaceSeparatedList value={attr} />;
+}
+
+// TODO can be deleted after refactoring everything.
 
 export function RenderGlobalAttributes(
   { attrs }: { attrs?: TagProps },
@@ -192,11 +223,17 @@ export function RenderGlobalAttributes(
 
   return (
     <>
+      {attrs.accesskey !== undefined
+        ? <RenderSpaceSeparatedList value={attrs.accesskey} />
+        : ""}
+      {attrs.autocapitalize !== undefined
+        ? <RenderEnum attr="autocapitalize" value={attrs.autocapitalize} />
+        : ""}
       {attrs.autofocus !== undefined
         ? <RenderBoolean attr="autofocus" value={attrs.autofocus} />
         : ""}
       {attrs.clazz !== undefined
-        ? <RenderSpaceSeparatedList attr="class" value={attrs.clazz} />
+        ? <RenderSpaceSeparatedList value={attrs.clazz} />
         : ""}
       {attrs.contenteditable !== undefined
         ? (
@@ -211,7 +248,7 @@ export function RenderGlobalAttributes(
         ? <RenderEnum attr="dir" value={attrs.dir} />
         : ""}
       {attrs.draggable !== undefined
-        ? <RenderTrueFalse attr="draggable" value={attrs.draggable} />
+        ? <RenderEnum attr="draggable" value={attrs.draggable} />
         : ""}
       {attrs.enterkeyhint !== undefined
         ? <RenderEnum attr="enterkeyhint" value={attrs.enterkeyhint} />
@@ -238,16 +275,16 @@ export function RenderGlobalAttributes(
         ? <RenderExpression attr="itemid" value={attrs.itemid} />
         : ""}
       {attrs.itemprop !== undefined
-        ? <RenderSpaceSeparatedList attr="itemprop" value={attrs.itemprop} />
+        ? <RenderSpaceSeparatedList value={attrs.itemprop} />
         : ""}
       {attrs.itemref !== undefined
-        ? <RenderSpaceSeparatedList attr="itemref" value={attrs.itemref} />
+        ? <RenderSpaceSeparatedList value={attrs.itemref} />
         : ""}
       {attrs.itemscope !== undefined
         ? <RenderBoolean attr="itemscope" value={attrs.itemscope} />
         : ""}
       {attrs.itemtype !== undefined
-        ? <RenderSpaceSeparatedList attr="itemtype" value={attrs.itemtype} />
+        ? <RenderSpaceSeparatedList value={attrs.itemtype} />
         : ""}
       {attrs.lang !== undefined
         ? <RenderExpression attr="lang" value={attrs.lang} />
@@ -256,7 +293,7 @@ export function RenderGlobalAttributes(
         ? <RenderExpression attr="nonce" value={attrs.nonce} />
         : ""}
       {attrs.part !== undefined
-        ? <RenderSpaceSeparatedList attr="part" value={attrs.part} />
+        ? <RenderSpaceSeparatedList value={attrs.part} />
         : ""}
       {attrs.popover !== undefined
         ? <RenderEnum attr="popover" value={attrs.popover} />
@@ -265,7 +302,7 @@ export function RenderGlobalAttributes(
         ? <RenderExpression attr="slot" value={attrs.slot} />
         : ""}
       {attrs.spellcheck !== undefined
-        ? <RenderTrueFalse attr="spellcheck" value={attrs.spellcheck} />
+        ? <RenderEnum attr="spellcheck" value={attrs.spellcheck} />
         : ""}
       {attrs.style !== undefined
         ? <RenderExpression attr="style" value={attrs.style} />
@@ -277,7 +314,7 @@ export function RenderGlobalAttributes(
         ? <RenderExpression attr="title" value={attrs.title} />
         : ""}
       {attrs.translate !== undefined
-        ? <RenderYesNo attr="translate" value={attrs.translate} />
+        ? <RenderEnum attr="translate" value={attrs.translate} />
         : ""}
       {attrs.dynamicAttributes !== undefined
         ? <RenderDynamicAttributes attrs={attrs.dynamicAttributes} />
@@ -285,115 +322,6 @@ export function RenderGlobalAttributes(
     </>
   );
 }
-
-// export function RenderGlobalAttributes(
-//   { attrs }: { attrs?: TagProps },
-// ): Expression {
-//   if (attrs === undefined) {
-//     return "";
-//   }
-
-//   return (
-//     <>
-//       {attrs.accesskey !== undefined
-//         ? <RenderSpaceSeparatedList attr="accesskey" value={attrs.accesskey} />
-//         : ""}
-//       {attrs.autocapitalize !== undefined
-//         ? <RenderEnum attr="autocapitalize" value={attrs.autocapitalize} />
-//         : ""}
-//       {attrs.autofocus !== undefined
-//         ? <RenderBoolean attr="autofocus" value={attrs.autofocus} />
-//         : ""}
-//       {attrs.clazz !== undefined
-//         ? <RenderSpaceSeparatedList attr="class" value={attrs.clazz} />
-//         : ""}
-//       {attrs.contenteditable !== undefined
-//         ? (
-//           <RenderBooleanOrEnum
-//             attr="contenteditable"
-//             value={attrs.contenteditable}
-//           />
-//         )
-//         : ""}
-//       {attrs.data !== undefined ? <RenderData data={attrs.data} /> : ""}
-//       {attrs.dir !== undefined
-//         ? <RenderEnum attr="dir" value={attrs.dir} />
-//         : ""}
-//       {attrs.draggable !== undefined
-//         ? <RenderTrueFalse attr="draggable" value={attrs.draggable} />
-//         : ""}
-//       {attrs.enterkeyhint !== undefined
-//         ? <RenderEnum attr="enterkeyhint" value={attrs.enterkeyhint} />
-//         : ""}
-//       {attrs.exportparts !== undefined
-//         ? <RenderExportparts parts={attrs.exportparts} />
-//         : ""}
-//       {attrs.hidden !== undefined
-//         ? <RenderEnum attr="hidden" value={attrs.hidden} />
-//         : ""}
-//       {attrs.id !== undefined
-//         ? <RenderExpression attr="id" value={attrs.id} />
-//         : ""}
-//       {attrs.inert !== undefined
-//         ? <RenderBoolean attr="inert" value={attrs.inert} />
-//         : ""}
-//       {attrs.inputmode !== undefined
-//         ? <RenderEnum attr="inputmode" value={attrs.inputmode} />
-//         : ""}
-//       {attrs.is !== undefined
-//         ? <RenderExpression attr="is" value={attrs.is} />
-//         : ""}
-//       {attrs.itemid !== undefined
-//         ? <RenderExpression attr="itemid" value={attrs.itemid} />
-//         : ""}
-//       {attrs.itemprop !== undefined
-//         ? <RenderSpaceSeparatedList attr="itemprop" value={attrs.itemprop} />
-//         : ""}
-//       {attrs.itemref !== undefined
-//         ? <RenderSpaceSeparatedList attr="itemref" value={attrs.itemref} />
-//         : ""}
-//       {attrs.itemscope !== undefined
-//         ? <RenderBoolean attr="itemscope" value={attrs.itemscope} />
-//         : ""}
-//       {attrs.itemtype !== undefined
-//         ? <RenderSpaceSeparatedList attr="itemtype" value={attrs.itemtype} />
-//         : ""}
-//       {attrs.lang !== undefined
-//         ? <RenderExpression attr="lang" value={attrs.lang} />
-//         : ""}
-//       {attrs.nonce !== undefined
-//         ? <RenderExpression attr="nonce" value={attrs.nonce} />
-//         : ""}
-//       {attrs.part !== undefined
-//         ? <RenderSpaceSeparatedList attr="part" value={attrs.part} />
-//         : ""}
-//       {attrs.popover !== undefined
-//         ? <RenderEnum attr="popover" value={attrs.popover} />
-//         : ""}
-//       {attrs.slot !== undefined
-//         ? <RenderExpression attr="slot" value={attrs.slot} />
-//         : ""}
-//       {attrs.spellcheck !== undefined
-//         ? <RenderTrueFalse attr="spellcheck" value={attrs.spellcheck} />
-//         : ""}
-//       {attrs.style !== undefined
-//         ? <RenderExpression attr="style" value={attrs.style} />
-//         : ""}
-//       {attrs.tabindex !== undefined
-//         ? <RenderNumber attr="tabindex" value={attrs.tabindex} />
-//         : ""}
-//       {attrs.title !== undefined
-//         ? <RenderExpression attr="title" value={attrs.title} />
-//         : ""}
-//       {attrs.translate !== undefined
-//         ? <RenderYesNo attr="translate" value={attrs.translate} />
-//         : ""}
-//       {attrs.dynamicAttributes !== undefined
-//         ? <RenderDynamicAttributes attrs={attrs.dynamicAttributes} />
-//         : ""}
-//     </>
-//   );
-// }
 
 function RenderData(
   { data }: { data: Record<string, Expression> },
@@ -433,5 +361,5 @@ function RenderExportparts(
     first = false;
   }
 
-  return <>{" "}exportparts="{exps}"</>;
+  return <fragment x={exps} />;
 }

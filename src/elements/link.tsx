@@ -1,18 +1,16 @@
-import type { Expression } from "macromania";
-import {
-  EscapeHtml,
-  RenderBoolean,
-  RenderExpression,
-  RenderSpaceSeparatedList,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
+import type { Context, Expression } from "macromania";
+import { EscapeHtml } from "../renderUtils.tsx";
 import type { FetchPriority, ReferrerPolicy } from "../shared.tsx";
-import { RenderGlobalAttributes, type TagProps } from "../global.tsx";
-import { RenderEnum } from "../renderUtils.tsx";
+import {
+  attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  renderGlobalAttributes,
+  type TagProps,
+} from "../global.tsx";
 import type { CrossOrigin, PossiblyBlockingToken } from "../shared.tsx";
 import {
   BuildVerificationDOM,
   CmNothing,
+  type DOMNode,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -33,7 +31,7 @@ export type LinkProps = {
   /**
    * The [rel attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-rel) indicates relationship between the document containing the hyperlink and the destination resource.
    */
-  rel?: LinkLinkType; // TODO https://html.spec.whatwg.org/multipage/links.html#linkTypes
+  rel?: LinkLinkType | LinkLinkType[];
   /**
    * The [media attribute](https://html.spec.whatwg.org/multipage/semantics.html#attr-link-media) says which media the resource applies to. The value must be a valid [media query list](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-media-query-list).
    */
@@ -95,12 +93,12 @@ export function Link(
   props: LinkProps,
 ): Expression {
   return (
-    <BuildVerificationDOM dom={dom}>
-      <RenderVoidElement
-        name="link"
-        attrs={<RenderLinkAttributes attrs={props} />}
-      />
-    </BuildVerificationDOM>
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderLinkAttributes}
+      isVoid
+    />
   );
 }
 
@@ -110,60 +108,40 @@ const dom = new DOMNodeInfo(
   "https://html.spec.whatwg.org/multipage/semantics.html#the-link-element",
 );
 
-function RenderLinkAttributes(
-  { attrs }: { attrs?: LinkProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
+const bodyOkRels = [
+  "dns-prefetch",
+  "modulepreload",
+  "pingback",
+  "preconnect",
+  "prefetch",
+  "preload",
+  "stylesheet",
+];
+
+export function isLinkAllowedInBody(node: DOMNode<LinkProps>): boolean {
+  if (node.attrs!.itemprop !== undefined) {
+    return true;
   }
 
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.href !== undefined
-        ? <RenderExpression attr="href" value={attrs.href} />
-        : ""}
-      {attrs.rel !== undefined
-        ? <RenderEnum attr="rel" value={attrs.rel} />
-        : ""}
-      {attrs.media !== undefined
-        ? <RenderExpression attr="media" value={attrs.media} />
-        : ""}
-      {attrs.integrity !== undefined
-        ? <RenderExpression attr="integrity" value={attrs.integrity} />
-        : ""}
-      {attrs.hreflang !== undefined
-        ? <RenderExpression attr="hreflang" value={attrs.hreflang} />
-        : ""}
-      {attrs.type !== undefined
-        ? <RenderExpression attr="type" value={attrs.type} />
-        : ""}
-      {attrs.referrerpolicy !== undefined
-        ? <RenderEnum attr="referrerpolicy" value={attrs.referrerpolicy} />
-        : ""}
-      {attrs.crossorigin !== undefined
-        ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
-        : ""}
-      {attrs.sizes !== undefined ? <RenderSizes sizes={attrs.sizes} /> : ""}
-      {attrs.imagesrcset !== undefined
-        ? <RenderExpression attr="imagesrcset" value={attrs.imagesrcset} />
-        : ""}
-      {attrs.imagesizes !== undefined
-        ? <RenderExpression attr="imagesizes" value={attrs.imagesizes} />
-        : ""}
-      {attrs.as !== undefined ? <RenderEnum attr="as" value={attrs.as} /> : ""}
-      {attrs.blocking !== undefined
-        ? <RenderSpaceSeparatedList attr="blocking" value={attrs.blocking} />
-        : ""}
-      {attrs.disabled !== undefined
-        ? <RenderBoolean attr="disabled" value={attrs.disabled} />
-        : ""}
-      {attrs.fetchpriority !== undefined
-        ? <RenderEnum attr="fetchpriority" value={attrs.fetchpriority} />
-        : ""}
-    </>
-  );
+  const rel = node.attrs!.rel;
+
+  if (rel === undefined) {
+    return false;
+  } else if (typeof rel === "string") {
+    return bodyOkRels.includes(rel);
+  } else {
+    return rel.every((relKind) => bodyOkRels.includes(relKind));
+  }
 }
+
+const renderLinkAttributes = {
+  ...renderGlobalAttributes,
+  sizes: (_ctx: Context, sizes: SizeEntry[] | SizeEntry) => {
+    return <RenderSizes sizes={sizes} />;
+  },
+  blocking: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  rel: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+};
 
 /**
  * https://fetch.spec.whatwg.org/#concept-potential-destination
@@ -229,7 +207,7 @@ function RenderSizes(
     first = false;
   }
 
-  return <>{" "}sizes="{exps}"</>;
+  return <>{exps}</>;
 }
 
 /**
