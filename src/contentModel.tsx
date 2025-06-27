@@ -20,16 +20,17 @@ import {
   withOtherKeys,
 } from "./mod.tsx";
 import { SetCurrentKeys } from "./mod.tsx";
-import { fail } from "@std/assert/fail";
 import { isLinkAllowedInBody } from "./elements/link.tsx";
 
 type VerificationState = {
   currentlyInsideMapElement: boolean;
+  currentlyInsideHeaderOrFooter: boolean;
 };
 
 const [getVerificationState, _] = Context.createState<VerificationState>(
   () => ({
     currentlyInsideMapElement: false,
+    currentlyInsideHeaderOrFooter: false,
   }),
 );
 
@@ -41,6 +42,19 @@ function isCurrentlyInsideMapElement(ctx: Context): boolean {
 export function setCurrentlyInsideMapElement(ctx: Context, newVal: boolean) {
   const state = getVerificationState(ctx);
   state.currentlyInsideMapElement = newVal;
+}
+
+export function isCurrentlyInsideHeaderOrFooter(ctx: Context): boolean {
+  const state = getVerificationState(ctx);
+  return state.currentlyInsideHeaderOrFooter;
+}
+
+export function setCurrentlyInsideHeaderOrFooter(
+  ctx: Context,
+  newVal: boolean,
+) {
+  const state = getVerificationState(ctx);
+  state.currentlyInsideHeaderOrFooter = newVal;
 }
 
 /**
@@ -117,22 +131,20 @@ export class CategorySetOfElements extends Category {
   special: Set<
     [string, string, (ctx: Context, node: DOMNode<TagProps>) => boolean]
   >;
-  both:
-    (string | [
-      string, /* tag name*/
-      string, /* condition */
-      (ctx: Context, node: DOMNode<TagProps>) => boolean,
-    ])[];
+  both: (string | [
+    string, /* tag name*/
+    string, /* condition */
+    (ctx: Context, node: DOMNode<TagProps>) => boolean,
+  ])[];
 
   constructor(
     specURL: string,
     setName: string,
-    tags:
-      (string | [
-        string,
-        string,
-        (ctx: Context, node: DOMNode<TagProps>) => boolean,
-      ])[],
+    tags: (string | [
+      string,
+      string,
+      (ctx: Context, node: DOMNode<TagProps>) => boolean,
+    ])[],
   ) {
     super(specURL);
     this.setName = setName;
@@ -199,8 +211,7 @@ export const CAT_FLOW_CONTENT = new CategorySetOfElements(
     "b",
     "bdi",
     "bdo",
-    "block",
-    "quote",
+    "blockquote",
     "br",
     "canvas",
     "cite",
@@ -279,6 +290,77 @@ export const CAT_FLOW_CONTENT = new CategorySetOfElements(
     "time",
     "u",
     "ul",
+    "var",
+    "video",
+    "wbr",
+  ],
+);
+
+export const CAT_PHRASING_CONTENT = new CategorySetOfElements(
+  "https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2",
+  "phrasing",
+  [
+    "a",
+    "abbr",
+    ["area", "(if it is a descendant of a map element)", (ctx, _node) => {
+      return isCurrentlyInsideMapElement(ctx);
+    }],
+    "audio",
+    "b",
+    "bdi",
+    "bdo",
+    "br",
+    "button",
+    "canvas",
+    "cite",
+    "code",
+    "data",
+    "datalist",
+    "del",
+    "dfn",
+    "em",
+    "embed",
+    "i",
+    "iframe",
+    "img",
+    "input",
+    "ins",
+    "kbd",
+    "label",
+    [
+      "link",
+      "(if it is allowed in the body, see https://html.spec.whatwg.org/multipage/semantics.html#allowed-in-the-body )",
+      (_ctx, node) => {
+        return isLinkAllowedInBody(node);
+      },
+    ],
+    "map",
+    "mark",
+    ["meta", "(if the itemprop attribute is present", (_ctx, node) => {
+      return node.attrs!.itemprop !== undefined;
+    }],
+    "meter",
+    "noscript",
+    "object",
+    "output",
+    "picture",
+    "progress",
+    "q",
+    "ruby",
+    "s",
+    "samp",
+    "script",
+    "select",
+    "slot",
+    "small",
+    "span",
+    "strong",
+    "sub",
+    "sup",
+    "template",
+    "textarea",
+    "time",
+    "u",
     "var",
     "video",
     "wbr",

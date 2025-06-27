@@ -1,6 +1,12 @@
-import { Expression, Children } from "macromania";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderNonVoidElement } from "../renderUtils.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_PHRASING_CONTENT,
+  CmCategory,
+  CmZeroOrMore,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * The [h1 element](https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements) represents a heading for its section.
@@ -11,13 +17,21 @@ export function H1(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="h1"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom1}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom1 = new DOMNodeInfo(
+  "h1",
+  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+);
 
 /**
  * The [h2 element](https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements) represents a heading for its section.
@@ -28,13 +42,21 @@ export function H2(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="h2"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom2}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom2 = new DOMNodeInfo(
+  "h2",
+  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+);
 
 /**
  * The [h3 element](https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements) represents a heading for its section.
@@ -45,13 +67,21 @@ export function H3(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="h3"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom3}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom3 = new DOMNodeInfo(
+  "h3",
+  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+);
 
 /**
  * The [h4 element](https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements) represents a heading for its section.
@@ -62,13 +92,21 @@ export function H4(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="h4"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom4}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom4 = new DOMNodeInfo(
+  "h4",
+  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+);
 
 /**
  * The [h5 element](https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements) represents a heading for its section.
@@ -79,13 +117,21 @@ export function H5(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="h5"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom5}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom5 = new DOMNodeInfo(
+  "h5",
+  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+);
 
 /**
  * The [h6 element](https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements) represents a heading for its section.
@@ -96,10 +142,18 @@ export function H6(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="h6"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom6}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom6 = new DOMNodeInfo(
+  "h6",
+  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+);

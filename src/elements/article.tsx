@@ -1,6 +1,12 @@
-import { Expression, Children } from "macromania";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderNonVoidElement } from "../renderUtils.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_FLOW_CONTENT,
+  CmCategory,
+  CmZeroOrMore,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * The [article element](https://html.spec.whatwg.org/multipage/sections.html#the-article-element) represents a complete, or self-contained, composition in a document, page, application, or site and that is, in principle, independently distributable or reusable, e.g. in syndication. This could be a forum post, a magazine or newspaper article, a blog entry, a user-submitted comment, an interactive widget or gadget, or any other independent item of content.
@@ -11,10 +17,18 @@ export function Article(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="article"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "article",
+  new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-article-element",
+);

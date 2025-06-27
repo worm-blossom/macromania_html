@@ -1,4 +1,4 @@
-import { Children, Expression } from "macromania";
+import type { Children, Expression } from "macromania";
 import {
   RenderBoolean,
   RenderEnum,

@@ -946,6 +946,27 @@ Deno.test("figure", async () => {
 
 Deno.test("footer", async () => {
   await testGlobalNonVoid(Footer, "footer")();
+
+  await assertWarns(
+    <Footer>
+      <Div>
+        <Footer></Footer>
+      </Div>
+    </Footer>,
+  ); // content model
+  await assertWarns(
+    <Footer>
+      <Div>
+        <Footer></Footer>
+      </Div>
+    </Footer>,
+  ); // content model
+
+  await assertNoWarning(
+    <Footer>
+      <Div></Div>
+    </Footer>,
+  );
 });
 
 Deno.test("form", async () => {
@@ -1083,10 +1104,59 @@ Deno.test("head", async () => {
 
 Deno.test("header", async () => {
   await testGlobalNonVoid(Header, "header")();
+
+  await assertWarns(
+    <Header>
+      <Div>
+        <Header></Header>
+      </Div>
+    </Header>,
+  ); // content model
+  await assertWarns(
+    <Header>
+      <Div>
+        <Footer></Footer>
+      </Div>
+    </Header>,
+  ); // content model
+
+  await assertNoWarning(
+    <Header>
+      <Div></Div>
+    </Header>,
+  );
 });
 
 Deno.test("hgroup", async () => {
   await testGlobalNonVoid(Hgroup, "hgroup")();
+
+  await assertWarns(
+    <Hgroup></Hgroup>,
+  ); // content model
+
+  await assertWarns(
+    <Hgroup>
+      <H1></H1>
+      <H1></H1>
+    </Hgroup>,
+  ); // content model
+
+  await assertNoWarning(
+    <Hgroup>
+      <H6></H6>
+    </Hgroup>,
+  );
+  await assertNoWarning(
+    <Hgroup>
+      <P></P>
+      <Script></Script>
+      <P></P>
+      <H1></H1>
+      <P></P>
+      <Script></Script>
+      <P></P>
+    </Hgroup>,
+  );
 });
 
 Deno.test("hr", async () => {

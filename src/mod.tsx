@@ -134,6 +134,7 @@ export type LoggingConfig = {
    * More specific logging options overwrite this one.
    */
   "verify": LogLevel;
+
   /**
    * Set the logging level for all verification of the `html` tag.
    */
@@ -142,6 +143,186 @@ export type LoggingConfig = {
    * Set the logging level for content model verification of the `html` tag.
    */
   "htmlContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `head` tag.
+   */
+  "head": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `head` tag.
+   */
+  "headContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `base` tag.
+   */
+  "base": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `base` tag.
+   */
+  "baseContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `link` tag.
+   */
+  "link": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `link` tag.
+   */
+  "linkContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `meta` tag.
+   */
+  "meta": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `meta` tag.
+   */
+  "metaContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `style` tag.
+   */
+  "style": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `style` tag.
+   */
+  "styleContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `body` tag.
+   */
+  "body": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `body` tag.
+   */
+  "bodyContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `article` tag.
+   */
+  "article": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `article` tag.
+   */
+  "articleContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `section` tag.
+   */
+  "section": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `section` tag.
+   */
+  "sectionContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `nav` tag.
+   */
+  "nav": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `nav` tag.
+   */
+  "navContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `aside` tag.
+   */
+  "aside": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `aside` tag.
+   */
+  "asideContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `h1` tag.
+   */
+  "h1": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `h1` tag.
+   */
+  "h1ContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `h2` tag.
+   */
+  "h2": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `h2` tag.
+   */
+  "h2ContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `h3` tag.
+   */
+  "h3": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `h3` tag.
+   */
+  "h3ContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `h4` tag.
+   */
+  "h4": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `h4` tag.
+   */
+  "h4ContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `h5` tag.
+   */
+  "h5": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `h5` tag.
+   */
+  "h5ContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `h6` tag.
+   */
+  "h6": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `h6` tag.
+   */
+  "h6ContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `hgroup` tag.
+   */
+  "hgroup": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `hgroup` tag.
+   */
+  "hgroupContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `header` tag.
+   */
+  "header": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `header` tag.
+   */
+  "headerContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `footer` tag.
+   */
+  "footer": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `footer` tag.
+   */
+  "footerContentModel": LogLevel | null;
+
+  /**
+   * Set the logging level for all verification of the `address` tag.
+   */
+  "address": LogLevel | null;
+  /**
+   * Set the logging level for content model verification of the `address` tag.
+   */
+  "addressContentModel": LogLevel | null;
 };
 
 const {
@@ -160,6 +341,46 @@ const {
     "verify": "warn",
     "html": null,
     "htmlContentModel": null,
+    head: null,
+    headContentModel: null,
+    base: null,
+    baseContentModel: null,
+    link: null,
+    linkContentModel: null,
+    meta: null,
+    metaContentModel: null,
+    style: null,
+    styleContentModel: null,
+    body: null,
+    bodyContentModel: null,
+    article: null,
+    articleContentModel: null,
+    section: null,
+    sectionContentModel: null,
+    nav: null,
+    navContentModel: null,
+    aside: null,
+    asideContentModel: null,
+    h1: null,
+    h1ContentModel: null,
+    h2: null,
+    h2ContentModel: null,
+    h3: null,
+    h3ContentModel: null,
+    h4: null,
+    h4ContentModel: null,
+    h5: null,
+    h5ContentModel: null,
+    h6: null,
+    h6ContentModel: null,
+    hgroup: null,
+    hgroupContentModel: null,
+    header: null,
+    headerContentModel: null,
+    footer: null,
+    footerContentModel: null,
+    address: null,
+    addressContentModel: null,
   }),
   "ConfigHtmlLogging",
 );

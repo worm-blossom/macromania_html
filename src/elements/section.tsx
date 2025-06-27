@@ -1,6 +1,12 @@
-import { Expression, Children } from "macromania";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderNonVoidElement } from "../renderUtils.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_FLOW_CONTENT,
+  CmCategory,
+  CmZeroOrMore,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * The [section element](https://html.spec.whatwg.org/multipage/sections.html#the-section-element) represents a generic section of a document or application. A section, in this context, is a thematic grouping of content, typically with a heading.
@@ -9,10 +15,18 @@ export function Section(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="section"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "section",
+  new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/sections.html#the-section-element",
+);
