@@ -1,4 +1,4 @@
-import { Expression, Children } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   EscapeHtml,
   RenderBoolean,
@@ -7,9 +7,20 @@ import {
   RenderSpaceSeparatedList,
 } from "../renderUtils.tsx";
 
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+import {
+  RenderGlobalAttributes,
+  renderGlobalAttributes,
+  TagProps,
+} from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
 import { CrossOrigin } from "../shared.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_FLOW_CONTENT,
+  CmCategory,
+  CmZeroOrMore,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Blockquote} macro.
@@ -32,27 +43,18 @@ export function Blockquote(
   props: BlockquoteProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="blockquote"
-      attrs={<RenderBlockquoteAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderBlockquoteAttributes(
-  { attrs }: { attrs?: BlockquoteProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.cite !== undefined
-        ? <RenderExpression attr="cite" value={attrs.cite} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "blockquote",
+  new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-blockquote-element",
+);

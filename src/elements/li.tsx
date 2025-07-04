@@ -1,16 +1,12 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  EscapeHtml,
-  RenderBoolean,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderSpaceSeparatedList,
-} from "../renderUtils.tsx";
-
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin } from "../shared.tsx";
+  BuildVerificationDOM,
+  CAT_FLOW_CONTENT,
+  CmCategory,
+  CmZeroOrMore,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Li} macro.
@@ -31,27 +27,18 @@ export function Li(
   props: LiProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="li"
-      attrs={<RenderLiAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderLiAttributes(
-  { attrs }: { attrs?: LiProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.value !== undefined
-        ? <RenderNumber attr="value" value={attrs.value} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "li",
+  new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
+  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-p-element",
+);

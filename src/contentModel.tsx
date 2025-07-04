@@ -24,13 +24,11 @@ import { isLinkAllowedInBody } from "./elements/link.tsx";
 
 type VerificationState = {
   currentlyInsideMapElement: boolean;
-  currentlyInsideHeaderOrFooter: boolean;
 };
 
 const [getVerificationState, _] = Context.createState<VerificationState>(
   () => ({
     currentlyInsideMapElement: false,
-    currentlyInsideHeaderOrFooter: false,
   }),
 );
 
@@ -42,19 +40,6 @@ function isCurrentlyInsideMapElement(ctx: Context): boolean {
 export function setCurrentlyInsideMapElement(ctx: Context, newVal: boolean) {
   const state = getVerificationState(ctx);
   state.currentlyInsideMapElement = newVal;
-}
-
-export function isCurrentlyInsideHeaderOrFooter(ctx: Context): boolean {
-  const state = getVerificationState(ctx);
-  return state.currentlyInsideHeaderOrFooter;
-}
-
-export function setCurrentlyInsideHeaderOrFooter(
-  ctx: Context,
-  newVal: boolean,
-) {
-  const state = getVerificationState(ctx);
-  state.currentlyInsideHeaderOrFooter = newVal;
 }
 
 /**
@@ -123,6 +108,10 @@ export const CAT_TITLE = new CategorySpecificTag(
 export const CAT_BASE = new CategorySpecificTag(
   "https://html.spec.whatwg.org/multipage/semantics.html#the-base-element",
   "base",
+);
+export const CAT_LI = new CategorySpecificTag(
+  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element",
+  "li",
 );
 
 export class CategorySetOfElements extends Category {
@@ -194,6 +183,59 @@ export const CAT_METADATA_CONTENT = new CategorySetOfElements(
   "https://html.spec.whatwg.org/multipage/dom.html#metadata-content-2",
   "metadata",
   ["base", "link", "meta", "noscript", "script", "style", "template", "title"],
+);
+
+export const CAT_HEADER_OR_FOOTER = new CategorySetOfElements(
+  "https://html.spec.whatwg.org/multipage/sections.html#the-header-element",
+  "header or footer",
+  ["header", "footer"],
+);
+
+export const CAT_SCRIPT_SUPPORTING = new CategorySetOfElements(
+  "https://html.spec.whatwg.org/multipage/dom.html#script-supporting-elements-2",
+  "script-supporting",
+  ["script", "template"],
+);
+
+export const CAT_NOT_IN_ADDRESS = new CategorySetOfElements(
+  "https://html.spec.whatwg.org/multipage/sections.html#the-address-element",
+  "heading content, sectioning content, header, footer, or address",
+  [
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "hgroup",
+    "article",
+    "aside",
+    "nav",
+    "section",
+    "header",
+    "footer",
+    "address",
+  ],
+);
+
+export const CAT_NOT_IN_DT = new CategorySetOfElements(
+  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-dt-element",
+  "heading content, sectioning content, header, or footer",
+  [
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "hgroup",
+    "article",
+    "aside",
+    "nav",
+    "section",
+    "header",
+    "footer",
+  ],
 );
 
 export const CAT_FLOW_CONTENT = new CategorySetOfElements(
@@ -438,7 +480,7 @@ export class CmUnverified implements ContentModel {
 }
 
 /**
- * Works iff there is exactly one child and its categories include this `category` (object identity, not just equality).
+ * Works iff there is exactly one child and its categories include this `category`.
  */
 export class CmCategory implements ContentModel {
   category: Category;
@@ -456,6 +498,33 @@ export class CmCategory implements ContentModel {
     info(
       ctx,
       `one ${this.category.name(ctx)} (see ${
+        ctx.fmtURL(this.category.specifiedAt())
+      } )`,
+    );
+  }
+}
+
+/**
+ * Works iff no descendant belongs to this `category`.
+ */
+export class CmNoDescendantOfCategory implements ContentModel {
+  category: Category;
+
+  constructor(category: Category) {
+    this.category = category;
+  }
+
+  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
+    return children.every((child) => {
+      !this.category.belongsToCategory(ctx, child) &&
+        this.checkChildren(ctx, child.children);
+    });
+  }
+
+  expected(ctx: Context) {
+    info(
+      ctx,
+      `no nested ${this.category.name(ctx)} (see ${
         ctx.fmtURL(this.category.specifiedAt())
       } )`,
     );
@@ -701,7 +770,7 @@ export class CmOneOrMore implements ContentModel {
 }
 
 /**
- * Works iff there is at least one child and all the children correspond to the `inner` content model.
+ * Works iff the children conform to all `inner` content models.
  */
 export class CmAnd implements ContentModel {
   inner: ContentModel[];

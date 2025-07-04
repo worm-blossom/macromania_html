@@ -473,6 +473,34 @@ Deno.test("abbr", async () => {
 
 Deno.test("address", async () => {
   await testGlobalNonVoid(Address, "address")();
+
+  await assertWarns(
+    <Address>
+      <Div>
+        <Footer></Footer>
+      </Div>
+    </Address>,
+  ); // content model
+  await assertWarns(
+    <Address>
+      <Div>
+        <Article></Article>
+      </Div>
+    </Address>,
+  ); // content model
+  await assertWarns(
+    <Address>
+      <Div>
+        <H3></H3>
+      </Div>
+    </Address>,
+  ); // content model
+
+  await assertNoWarning(
+    <Address>
+      <Div></Div>
+    </Address>,
+  );
 });
 
 Deno.test("article", async () => {
@@ -876,6 +904,150 @@ Deno.test("div", async () => {
 
 Deno.test("dl", async () => {
   await testGlobalNonVoid(Dl, "dl")();
+
+  await assertWarns(
+    <Dl>
+      <P></P>
+    </Dl>,
+  ); // content model
+  await assertWarns(
+    <Dl>
+      <Div></Div>
+      <Dt></Dt>
+      <Dd></Dd>
+    </Dl>,
+  ); // content model
+  await assertWarns(
+    <Dl>
+      <Dt></Dt>
+      <Dd></Dd>
+      <Div></Div>
+    </Dl>,
+  ); // content model
+  await assertWarns(
+    <Dl>
+      <Dt></Dt>
+      <Dt></Dt>
+    </Dl>,
+  ); // content model
+  await assertWarns(
+    <Dl>
+      <Dt></Dt>
+      <Dd></Dd>
+      <Dt></Dt>
+    </Dl>,
+  ); // content model
+  await assertWarns(
+    <Dl>
+      <Dd></Dd>
+    </Dl>,
+  ); // content model
+
+  await assertNoWarning(
+    <Dl>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Div></Div>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Script></Script>
+      <Div></Div>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Div></Div>
+      <Script></Script>
+      <Div></Div>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Div></Div>
+      <Script></Script>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Dt></Dt>
+      <Dl></Dl>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Dt></Dt>
+      <Dt></Dt>
+      <Dl></Dl>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Dt></Dt>
+      <Dl></Dl>
+      <Dl></Dl>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Dt></Dt>
+      <Dl></Dl>
+      <Dt></Dt>
+      <Dt></Dt>
+      <Dl></Dl>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Script></Script>
+      <Dt></Dt>
+      <Script></Script>
+      <Dl></Dl>
+      <Script></Script>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Script></Script>
+      <Dt></Dt>
+      <Script></Script>
+      <Dt></Dt>
+      <Script></Script>
+      <Dl></Dl>
+      <Script></Script>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Script></Script>
+      <Dt></Dt>
+      <Script></Script>
+      <Dl></Dl>
+      <Script></Script>
+      <Dl></Dl>
+      <Script></Script>
+    </Dl>,
+  );
+  await assertNoWarning(
+    <Dl>
+      <Script></Script>
+      <Dt></Dt>
+      <Script></Script>
+      <Dl></Dl>
+      <Script></Script>
+      <Script></Script>
+      <Dt></Dt>
+      <Script></Script>
+      <Dt></Dt>
+      <Script></Script>
+      <Script></Script>
+      <Dl></Dl>
+      <Script></Script>
+    </Dl>,
+  );
 });
 
 Deno.test("dt", async () => {
@@ -942,6 +1114,66 @@ Deno.test("figcaption", async () => {
 
 Deno.test("figure", async () => {
   await testGlobalNonVoid(Figure, "figure")();
+
+  await assertWarns(
+    <Figure>
+      <Body></Body>
+    </Figure>,
+  ); // content model
+  await assertWarns(
+    <Figure>
+      <Figcaption></Figcaption>
+      <Figcaption></Figcaption>
+    </Figure>,
+  ); // content model
+
+  await assertNoWarning(
+    <Figure></Figure>,
+  );
+  await assertNoWarning(
+    <Figure>
+      <P></P>
+    </Figure>,
+  );
+  await assertNoWarning(
+    <Figure>
+      <Figcaption></Figcaption>
+      <P></P>
+    </Figure>,
+  );
+  await assertNoWarning(
+    <Figure>
+      <P></P>
+      <Figcaption></Figcaption>
+    </Figure>,
+  );
+  await assertNoWarning(
+    <Figure>
+      <Figcaption></Figcaption>
+      <P></P>
+      <P></P>
+    </Figure>,
+  );
+  await assertNoWarning(
+    <Figure>
+      <P></P>
+      <Figcaption></Figcaption>
+      <P></P>
+    </Figure>,
+  );
+  await assertNoWarning(
+    <Figure>
+      <P></P>
+      <P></P>
+      <Figcaption></Figcaption>
+    </Figure>,
+  );
+  await assertNoWarning(
+    <Figure>
+      <P></P>
+      <P></P>
+    </Figure>,
+  );
 });
 
 Deno.test("footer", async () => {
@@ -1800,6 +2032,58 @@ Deno.test("link", async () => {
 
 Deno.test("main", async () => {
   await testGlobalNonVoid(Main, "main")();
+
+  await assertWarns(
+    <Blockquote>
+      <Main></Main>
+    </Blockquote>,
+  ); // content model
+  await assertWarns(
+    <Blockquote>
+      <Div>
+        <Main></Main>
+      </Div>
+    </Blockquote>,
+  ); // content model
+  await assertWarns(
+    <Div>
+      <Blockquote>
+        <Main></Main>
+      </Blockquote>
+    </Div>,
+  ); // content model
+
+  await assertNoWarning(
+    <Main></Main>,
+  );
+  await assertNoWarning(
+    <Div>
+      <Main></Main>
+    </Div>,
+  );
+  await assertNoWarning(
+    <Div>
+      <Div>
+        <P></P>
+        <Main></Main>
+      </Div>
+    </Div>,
+  );
+  await assertNoWarning(
+    <Html>
+      <Head>
+        <Title>foo</Title>
+      </Head>
+      <Body>
+        <Div>
+          <Div>
+            <P></P>
+            <Main></Main>
+          </Div>
+        </Div>
+      </Body>
+    </Html>,
+  );
 });
 
 Deno.test("mark", async () => {

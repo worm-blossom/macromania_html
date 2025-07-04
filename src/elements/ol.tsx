@@ -1,4 +1,4 @@
-import { Expression, Children } from "macromania";
+import { Children, Expression } from "macromania";
 import {
   EscapeHtml,
   RenderBoolean,
@@ -8,9 +8,22 @@ import {
   RenderSpaceSeparatedList,
 } from "../renderUtils.tsx";
 
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+import {
+  RenderGlobalAttributes,
+  renderGlobalAttributes,
+  TagProps,
+} from "../global.tsx";
 import { RenderEnum } from "../renderUtils.tsx";
 import { CrossOrigin } from "../shared.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_LI,
+  CAT_SCRIPT_SUPPORTING,
+  CmCategory,
+  CmChoice,
+  CmZeroOrMore,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Ol} macro.
@@ -61,33 +74,25 @@ export function Ol(
   props: OlProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="ol"
-      attrs={<RenderOlAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderOlAttributes(
-  { attrs }: { attrs?: OlProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.reversed !== undefined
-        ? <RenderBoolean attr="reversed" value={attrs.reversed} />
-        : ""}
-      {attrs.start !== undefined
-        ? <RenderNumber attr="start" value={attrs.start} />
-        : ""}
-      {attrs.type !== undefined
-        ? <RenderEnum attr="type" value={attrs.type} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "ol",
+  new CmZeroOrMore(
+    new CmZeroOrMore(
+      new CmChoice([
+        new CmCategory(CAT_LI),
+        new CmCategory(CAT_SCRIPT_SUPPORTING),
+      ]),
+    ),
+  ),
+  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element",
+);
