@@ -69,10 +69,10 @@ function divContentModel(
       warn(
         ctx,
         `When a ${ctx.fmtCode("dl")} tag has a ${
-          ctx.fmtCode("dt")
-        } child tag, then its final child tag must be a ${
-          ctx.fmtCode("dd")
-        } tag.`,
+          ctx.fmtCode("div")
+        } child tag, then the final child tag of the ${
+          ctx.fmtCode("div")
+        } must be a ${ctx.fmtCode("dd")} tag.`,
       );
       ctx.loggingGroup(() => {
         info(

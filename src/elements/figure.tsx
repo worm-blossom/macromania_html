@@ -74,7 +74,7 @@ function figureContentModel(
         }
       }
     } else {
-      const result = CAT_FLOW_CONTENT(ctx, node);
+      const result = CAT_FLOW_CONTENT(ctx, child);
 
       if (result === true) {
         if (noMoreFlowContentAllowed) {
@@ -112,6 +112,7 @@ function figureContentModel(
         }
       } else {
         logContentModelViolation(ctx, node, child);
+        return false;
       }
     }
   }
