@@ -1,14 +1,10 @@
 import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { FormEnctype, FormMethod } from "./form.tsx";
-import { PopoverTargetAction } from "./input.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Select} macro.
@@ -32,50 +28,17 @@ export function Select(
   props: SelectProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="select"
-      attrs={<RenderSelectAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderSelectAttributes(
-  { attrs }: { attrs?: SelectProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.autocomplete !== undefined
-        ? (
-          <RenderExpression
-            attr="autocomplete"
-            value={attrs.autocomplete}
-          />
-        )
-        : ""}
-      {attrs.disabled !== undefined
-        ? <RenderBoolean attr="disabled" value={attrs.disabled} />
-        : ""}
-      {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={attrs.form} />
-        : ""}
-      {attrs.multiple !== undefined
-        ? <RenderBoolean attr="multiple" value={attrs.multiple} />
-        : ""}
-      {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={attrs.name} />
-        : ""}
-      {attrs.required !== undefined
-        ? <RenderBoolean attr="required" value={attrs.required} />
-        : ""}
-      {attrs.size !== undefined
-        ? <RenderNumber attr="size" value={attrs.size} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "select",
+  cmUnverified,
+);

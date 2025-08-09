@@ -1,14 +1,12 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import type { FormEnctype, FormMethod } from "./form.tsx";
+import type { PopoverTargetAction } from "./input.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderChildren,
-  RenderNonVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { FormEnctype, FormMethod } from "./form.tsx";
-import { PopoverTargetAction } from "./input.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 export type ButtonType = "submit" | "reset" | "button";
 
@@ -41,86 +39,17 @@ export function Button(
   props: ButtonProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="button"
-      attrs={<RenderButtonAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderButtonAttributes(
-  { attrs }: { attrs?: ButtonProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.command !== undefined
-        ? <RenderChildren attr="command" value={attrs.command} />
-        : ""}
-      {attrs.commandfor !== undefined
-        ? <RenderChildren attr="commandfor" value={attrs.commandfor} />
-        : ""}
-      {attrs.disabled !== undefined
-        ? <RenderBoolean attr="disabled" value={attrs.disabled} />
-        : ""}
-      {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={attrs.form} />
-        : ""}
-      {attrs.formaction !== undefined
-        ? (
-          <RenderExpression
-            attr="formaction"
-            value={attrs.formaction}
-          />
-        )
-        : ""}
-      {attrs.formenctype !== undefined
-        ? <RenderEnum attr="formenctype" value={attrs.formenctype} />
-        : ""}
-      {attrs.formmethod !== undefined
-        ? <RenderEnum attr="formmethod" value={attrs.formmethod} />
-        : ""}
-      {attrs.formnovalidate !== undefined
-        ? <RenderBoolean attr="formnovalidate" value={attrs.formnovalidate} />
-        : ""}
-      {attrs.formtarget !== undefined
-        ? (
-          <RenderExpression
-            attr="formtarget"
-            value={attrs.formtarget}
-          />
-        )
-        : ""}
-      {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={attrs.name} />
-        : ""}
-      {attrs.popovertarget !== undefined
-        ? (
-          <RenderExpression
-            attr="popovertarget"
-            value={attrs.popovertarget}
-          />
-        )
-        : ""}
-      {attrs.popovertargetaction !== undefined
-        ? (
-          <RenderEnum
-            attr="popovertargetaction"
-            value={attrs.popovertargetaction}
-          />
-        )
-        : ""}
-      {attrs.type_ !== undefined
-        ? <RenderExpression attr="type" value={attrs.type_} />
-        : ""}
-      {attrs.value !== undefined
-        ? <RenderExpression attr="value" value={attrs.value} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "button",
+  cmUnverified,
+);

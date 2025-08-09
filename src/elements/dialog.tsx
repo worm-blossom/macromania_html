@@ -1,11 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  cmAllFlow,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 export type DialogClosedBy = "any" | "closerequest" | "none";
 
@@ -32,30 +31,17 @@ export function Dialog(
   props: DialogProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="dialog"
-      attrs={<RenderDialogAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderDialogAttributes(
-  { attrs }: { attrs?: DialogProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.closedby !== undefined
-        ? <RenderEnum attr="closedby" value={attrs.closedby} />
-        : ""}
-      {attrs.open !== undefined
-        ? <RenderBoolean attr="open" value={attrs.open} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "strong",
+  cmAllFlow,
+);

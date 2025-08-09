@@ -44,3 +44,17 @@ We have not yet implemented content model checking for the following elements:
 - audio
 - table
 - colgroup
+- label
+- button
+- select
+- datalist
+- optgroup
+- option
+- fieldset
+- legend
+- details
+- summary
+- script
+- noscript
+- template
+- canvas

@@ -1,14 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { FormEnctype, FormMethod } from "./form.tsx";
-import { PopoverTargetAction } from "./input.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Optgroup} macro.
@@ -27,29 +23,17 @@ export function Optgroup(
   props: OptgroupProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="optgroup"
-      attrs={<RenderOptgroupAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderOptgroupAttributes(
-  { attrs }: { attrs?: OptgroupProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      {attrs.disabled !== undefined
-        ? <RenderBoolean attr="disabled" value={attrs.disabled} />
-        : ""}
-      {attrs.label !== undefined
-        ? <RenderExpression attr="label" value={attrs.label} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "optgroup",
+  cmUnverified,
+);

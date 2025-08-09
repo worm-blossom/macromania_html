@@ -1,13 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Label} macro.
@@ -28,27 +25,17 @@ export function Label(
   props: LabelProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="label"
-      attrs={<RenderLabelAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderLabelAttributes(
-  { attrs }: { attrs?: LabelProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.for_ !== undefined
-        ? <RenderExpression attr="for" value={attrs.for_} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "label",
+  cmUnverified,
+);

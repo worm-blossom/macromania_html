@@ -109,6 +109,9 @@ export const CAT_BASE = singleTagCategory("base");
 export const CAT_LI = singleTagCategory("li");
 export const CAT_DFN = singleTagCategory("dfn");
 export const CAT_TABLE = singleTagCategory("table");
+export const CAT_FORM = singleTagCategory("form");
+export const CAT_PROGRESS = singleTagCategory("progress");
+export const CAT_METER = singleTagCategory("meter");
 
 export function choiceCategory(
   cats: CheckElement<TagProps>[],
@@ -399,6 +402,7 @@ export const CAT_PHRASING_CONTENT = choiceCategory([
   singleTagCategory("samp"),
   singleTagCategory("script"),
   singleTagCategory("select"),
+  singleTagCategory("selectedcontent"),
   singleTagCategory("slot"),
   singleTagCategory("small"),
   singleTagCategory("span"),

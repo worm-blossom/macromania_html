@@ -85,6 +85,7 @@ import {
   Search,
   Section,
   Select,
+  Selectedcontent,
   Slot,
   Small,
   Source,
@@ -2404,7 +2405,7 @@ Deno.test("script", async () => {
 
   await (async () => {
     const ctx = new Context();
-    const got = await ctx.evaluate(<Script type={{ data: "foo" }}></Script>);
+    const got = await ctx.evaluate(<Script type="foo"></Script>);
     assertEquals(got, `<script type="foo"></script>`);
   })();
 
@@ -2511,6 +2512,10 @@ Deno.test("select", async () => {
     );
     assertEquals(got, `<select size="3"></select>`);
   })();
+});
+
+Deno.test("selectedcontent", async () => {
+  await testGlobalVoid(Selectedcontent, "selectedcontent")();
 });
 
 Deno.test("slot", async () => {
