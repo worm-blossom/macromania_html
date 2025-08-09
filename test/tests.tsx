@@ -1528,7 +1528,9 @@ Deno.test("html", async () => {
   await assertWarns(<Html></Html>); // content model
   await assertWarns(
     <Html>
-      <Head></Head>
+      <Head>
+        <Title>foo</Title>
+      </Head>
     </Html>,
   ); // content model
   await assertWarns(
@@ -1539,6 +1541,7 @@ Deno.test("html", async () => {
   await assertWarns(
     <Html>
       <Head>
+        <Title>foo</Title>
       </Head>
       <Body></Body>
       <Body></Body>
@@ -1547,6 +1550,7 @@ Deno.test("html", async () => {
   await assertWarns(
     <Html>
       <Head>
+        <Title>foo</Title>
       </Head>
       <Div></Div>
       <Body></Body>
@@ -1554,7 +1558,9 @@ Deno.test("html", async () => {
   ); // content model
   await assertNoWarning(
     <Html>
-      <Head></Head>
+      <Head>
+        <Title>foo</Title>
+      </Head>
       <Body></Body>
     </Html>,
   );

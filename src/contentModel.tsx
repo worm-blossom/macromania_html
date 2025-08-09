@@ -563,7 +563,6 @@ export function cmSequence(
             )
           }`,
         );
-        logEmptyLine(ctx, "warn");
       });
 
       return false;
@@ -987,8 +986,8 @@ export function BuildVerificationDOM<Attrs extends TagProps>(
                     childA,
                     childB,
                   ) => (childA.etp!.isStrictlyEarlierThan(childB.etp!)
-                    ? -1
-                    : 1)
+                    ? 1
+                    : -1)
                   );
 
                   // Now, check our content model.
