@@ -419,7 +419,7 @@ Deno.test("a", async () => {
         referrerpolicy="origin"
         rel="prev"
         target="_self"
-        type="txt"
+        type_="txt"
       >
       </A>,
     );

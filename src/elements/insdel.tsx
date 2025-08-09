@@ -1,15 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  EscapeHtml,
-  RenderBoolean,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderSpaceSeparatedList,
-} from "../renderUtils.tsx";
-
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin } from "../shared.tsx";
+  BuildVerificationDOM,
+  cmTransparent,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Ins} and {@linkcode Del} macro.
@@ -25,7 +20,7 @@ export type InsDelProps = {
   cite?: Expression;
   /**
    * The [datetime attribute](https://html.spec.whatwg.org/multipage/edits.html#attr-mod-datetime) may be used to specify the time and date of the change.
-   * 
+   *
    * If present, the [datetime attribute](https://html.spec.whatwg.org/multipage/edits.html#attr-mod-datetime)'s value must be a [valid date string with optional time](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-date-string-with-optional-time).
    */
   datetime?: Expression;
@@ -38,45 +33,39 @@ export function Ins(
   props: InsDelProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="ins"
-      attrs={<RenderInsDelAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={insDom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const insDom = new DOMNodeInfo(
+  "dinsel",
+  cmTransparent,
+);
 
 /**
  * The [del element](https://html.spec.whatwg.org/multipage/edits.html#the-del-element) represents a removal from the document.
  */
 export function Del(
-    props: InsDelProps & { children?: Children },
-  ): Expression {
-    return (
-      <RenderNonVoidElement
-        name="del"
-        attrs={<RenderInsDelAttributes attrs={props} />}
-        children={props.children}
-      />
-    );
-  }
-
-function RenderInsDelAttributes(
-  { attrs }: { attrs?: InsDelProps },
+  props: InsDelProps & { children?: Children },
 ): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
   return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.cite !== undefined
-        ? <RenderExpression attr="cite" value={attrs.cite} />
-        : ""}
-        {attrs.datetime !== undefined
-        ? <RenderExpression attr="datetime" value={attrs.datetime} />
-        : ""}
-    </>
+    <BuildVerificationDOM
+      dom={delDom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const delDom = new DOMNodeInfo(
+  "del",
+  cmTransparent,
+);

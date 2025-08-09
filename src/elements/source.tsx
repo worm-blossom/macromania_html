@@ -1,14 +1,10 @@
 import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { CrossOrigin, FetchPriority } from "../shared.tsx";
+  BuildVerificationDOM,
+  cmTrivial,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Source} macro.
@@ -54,44 +50,16 @@ export function Source(
   props: SourceProps & { children?: Children },
 ): Expression {
   return (
-    <RenderVoidElement
-      name="source"
-      attrs={<RenderSourceAttributes attrs={props} />}
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+      isVoid
     />
   );
 }
 
-function RenderSourceAttributes(
-  { attrs }: { attrs?: SourceProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.type !== undefined
-        ? <RenderExpression attr="type" value={attrs.type} />
-        : ""}
-      {attrs.media !== undefined
-        ? <RenderExpression attr="media" value={attrs.media} />
-        : ""}
-      {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={attrs.src} />
-        : ""}
-      {attrs.srcset !== undefined
-        ? <RenderExpression attr="srcset" value={attrs.srcset} />
-        : ""}
-      {attrs.sizes !== undefined
-        ? <RenderExpression attr="sizes" value={attrs.sizes} />
-        : ""}
-      {attrs.width !== undefined
-        ? <RenderNumber attr="width" value={attrs.width} />
-        : ""}
-      {attrs.height !== undefined
-        ? <RenderNumber attr="height" value={attrs.height} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "source",
+  cmTrivial,
+);

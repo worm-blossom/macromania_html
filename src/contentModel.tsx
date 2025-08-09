@@ -107,6 +107,8 @@ export const CAT_BODY = singleTagCategory("body");
 export const CAT_TITLE = singleTagCategory("title");
 export const CAT_BASE = singleTagCategory("base");
 export const CAT_LI = singleTagCategory("li");
+export const CAT_DFN = singleTagCategory("dfn");
+export const CAT_TABLE = singleTagCategory("table");
 
 export function choiceCategory(
   cats: CheckElement<TagProps>[],
@@ -151,6 +153,35 @@ export const CAT_LI_OR_SCRIPT_SUPPORTING = choiceCategory([
   singleTagCategory("li"),
   singleTagCategory("script"),
   singleTagCategory("template"),
+]);
+
+export const CAT_TD_OR_TH_OR_SCRIPT_SUPPORTING = choiceCategory([
+  singleTagCategory("td"),
+  singleTagCategory("th"),
+  singleTagCategory("script"),
+  singleTagCategory("template"),
+]);
+
+export const CAT_TR_OR_SCRIPT_SUPPORTING = choiceCategory([
+  singleTagCategory("tr"),
+  singleTagCategory("script"),
+  singleTagCategory("template"),
+]);
+
+export const CAT_NOT_IN_TH = choiceCategory([
+  singleTagCategory("header"),
+  singleTagCategory("footer"),
+  singleTagCategory("article"),
+  singleTagCategory("aside"),
+  singleTagCategory("nav"),
+  singleTagCategory("section"),
+  singleTagCategory("h1"),
+  singleTagCategory("h2"),
+  singleTagCategory("h3"),
+  singleTagCategory("h4"),
+  singleTagCategory("h5"),
+  singleTagCategory("h6"),
+  singleTagCategory("hgroup"),
 ]);
 
 export const CAT_NOT_IN_ADDRESS = choiceCategory([
@@ -766,6 +797,21 @@ export function cmUnverified(
 }
 
 /**
+ * Delegates to the content model of the parent node (or automatically passing verification if there is none).
+ */
+export function cmTransparent(
+  ctx: Context,
+  node: DOMNode<TagProps>,
+): boolean {
+  if (node.parent === undefined) {
+    return true;
+  } else {
+    const parentCM = node.parent.info.checkContentModel;
+    return parentCM(ctx, node);
+  }
+}
+
+/**
  * Passes verification iff no strict descendant passes the given `forbiddenCm` check.
  */
 export function cmNoDescendant(
@@ -1033,6 +1079,9 @@ function RenderAttrs<Attrs extends TagProps>(
             switch (attrName) {
               case "clazz":
                 attrName = "class";
+                break;
+              case "type_":
+                attrName = "type";
                 break;
 
               default:

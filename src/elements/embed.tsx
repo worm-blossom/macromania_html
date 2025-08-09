@@ -1,14 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { CrossOrigin, FetchPriority } from "../shared.tsx";
+  BuildVerificationDOM,
+  cmTrivial,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Embed} macro.
@@ -41,35 +37,16 @@ export function Embed(
   props: EmbedProps & { children?: Children },
 ): Expression {
   return (
-    <RenderVoidElement
-      name="embed"
-      attrs={<RenderEmbedAttributes attrs={props} />}
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+      isVoid
     />
   );
 }
 
-function RenderEmbedAttributes(
-  { attrs }: { attrs?: EmbedProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={attrs.src} />
-        : ""}
-      {attrs.type_ !== undefined
-        ? <RenderExpression attr="type" value={attrs.type_} />
-        : ""}
-      {attrs.width !== undefined
-        ? <RenderNumber attr="width" value={attrs.width} />
-        : ""}
-      {attrs.height !== undefined
-        ? <RenderNumber attr="height" value={attrs.height} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "embed",
+  cmTrivial,
+);

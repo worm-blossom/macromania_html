@@ -1,14 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { CrossOrigin, FetchPriority } from "../shared.tsx";
+  BuildVerificationDOM,
+  cmTransparent,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Object} macro.
@@ -49,42 +45,17 @@ export function Object(
   props: ObjectProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="object"
-      attrs={<RenderObjectAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderObjectAttributes(
-  { attrs }: { attrs?: ObjectProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.data_ !== undefined
-        ? <RenderExpression attr="data" value={attrs.data_} />
-        : ""}
-      {attrs.type_ !== undefined
-        ? <RenderExpression attr="type" value={attrs.type_} />
-        : ""}
-      {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={attrs.name} />
-        : ""}
-      {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={attrs.form} />
-        : ""}
-      {attrs.width !== undefined
-        ? <RenderNumber attr="width" value={attrs.width} />
-        : ""}
-      {attrs.height !== undefined
-        ? <RenderNumber attr="height" value={attrs.height} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "object",
+  cmTransparent,
+);

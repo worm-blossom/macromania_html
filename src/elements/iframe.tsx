@@ -1,14 +1,14 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { CrossOrigin, FetchPriority } from "../shared.tsx";
+  attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  renderGlobalAttributes,
+  type TagProps,
+} from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  cmTrivial,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * The allowed values for the [sandbox attribute](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox).
@@ -97,61 +97,21 @@ export function Iframe(
   props: IframeProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="iframe"
-      attrs={<RenderIframeAttributes attrs={props} />}
-      children={props.children}
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderIframeAttributes}
+      isVoid
     />
   );
 }
 
-function RenderIframeAttributes(
-  { attrs }: { attrs?: IframeProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
+const dom = new DOMNodeInfo(
+  "iframe",
+  cmTrivial,
+);
 
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={attrs.src} />
-        : ""}
-      {attrs.srcdoc !== undefined
-        ? <RenderExpression attr="srcdoc" value={attrs.srcdoc} />
-        : ""}
-      {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={attrs.name} />
-        : ""}
-      {attrs.sandbox !== undefined
-        ? (
-          <RenderExpression
-            attr="sandbox"
-            value={Array.isArray(attrs.sandbox)
-              ? attrs.sandbox.join(" ")
-              : attrs.sandbox}
-          />
-        )
-        : ""}
-      {attrs.allow !== undefined
-        ? <RenderExpression attr="allow" value={attrs.allow} />
-        : ""}
-      {attrs.allowfullscreen !== undefined
-        ? <RenderBoolean attr="allowfullscreen" value={attrs.allowfullscreen} />
-        : ""}
-      {attrs.width !== undefined
-        ? <RenderNumber attr="width" value={attrs.width} />
-        : ""}
-      {attrs.height !== undefined
-        ? <RenderNumber attr="height" value={attrs.height} />
-        : ""}
-      {attrs.referrerpolicy !== undefined
-        ? <RenderEnum attr="referrerpolicy" value={attrs.referrerpolicy} />
-        : ""}
-      {attrs.loading !== undefined
-        ? <RenderEnum attr="loading" value={attrs.loading} />
-        : ""}
-    </>
-  );
-}
+const renderIframeAttributes = {
+  ...renderGlobalAttributes,
+  sandbox: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+};

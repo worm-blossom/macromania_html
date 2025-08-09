@@ -1,6 +1,10 @@
-import { Expression, Children } from "macromania";
-import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  cmAllPhrasing,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Q} macro.
@@ -23,27 +27,17 @@ export function Q(
   props: QProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="q"
-      attrs={<RenderQAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderQAttributes(
-  { attrs }: { attrs?: QProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.cite !== undefined
-        ? <RenderExpression attr="cite" value={attrs.cite} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "q",
+  cmAllPhrasing,
+);

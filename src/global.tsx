@@ -212,6 +212,14 @@ export function attrOrderedSetOfUniqueSpaceSeparatedTokens(
   return <RenderSpaceSeparatedList value={attr} />;
 }
 
+// https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#set-of-space-separated-tokens
+export function attrValidListOfFloatingPointNumbers(
+  _ctx: Context,
+  attr: number[],
+): Expression {
+  return attr.map((coord) => `${coord}`).join(",");
+}
+
 // TODO can be deleted after refactoring everything.
 
 export function RenderGlobalAttributes(

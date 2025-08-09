@@ -25,3 +25,22 @@ The statically typed API is based off the
 [living standard](https://html.spec.whatwg.org/multipage/).
 
 There are no statically typed macros for SVG and MathML.
+
+## Documentation TODOS
+
+- omitting outer html
+- custom attributes
+- configuring the html checker
+
+## Content Model Omissions
+
+We have not yet implemented content model checking for the following elements:
+
+- style
+- ruby
+- time
+- picture
+- video
+- audio
+- table
+- colgroup

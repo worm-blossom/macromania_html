@@ -1,6 +1,10 @@
-import { Expression, Children } from "macromania";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderNonVoidElement } from "../renderUtils.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  cmAllPhrasing,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * The [rt element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-rt-element) marks the ruby text component of a ruby annotation. When it is the child of a [ruby element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-ruby-element), it doesn't represent anything itself, but the [ruby element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-ruby-element) uses it as part of determining what *it* represents.
@@ -9,10 +13,17 @@ export function Rt(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="rt"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "rt",
+  cmAllPhrasing,
+);

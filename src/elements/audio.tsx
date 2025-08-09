@@ -1,14 +1,11 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import type { CrossOrigin, Preload } from "../shared.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { CrossOrigin, FetchPriority, Preload } from "../shared.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Audio} macro.
@@ -53,45 +50,17 @@ export function Audio(
   props: AudioProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="audio"
-      attrs={<RenderAudioAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderAudioAttributes(
-  { attrs }: { attrs?: AudioProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={attrs.src} />
-        : ""}
-      {attrs.crossorigin !== undefined
-        ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
-        : ""}
-      {attrs.preload !== undefined
-        ? <RenderEnum attr="preload" value={attrs.preload} />
-        : ""}
-      {attrs.autoplay !== undefined
-        ? <RenderBoolean attr="autoplay" value={attrs.autoplay} />
-        : ""}
-      {attrs.loop !== undefined
-        ? <RenderBoolean attr="loop" value={attrs.loop} />
-        : ""}
-      {attrs.muted !== undefined
-        ? <RenderBoolean attr="muted" value={attrs.muted} />
-        : ""}
-      {attrs.controls !== undefined
-        ? <RenderBoolean attr="controls" value={attrs.controls} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "audio",
+  cmUnverified,
+);

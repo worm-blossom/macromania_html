@@ -1,13 +1,17 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderChildren,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderSpaceSeparatedList,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  renderGlobalAttributes,
+  type TagProps,
+} from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_NOT_IN_TH,
+  cmAllFlow,
+  cmAnd,
+  cmNoDescendant,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Th} macro.
@@ -44,39 +48,22 @@ export function Th(
   props: ThProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="th"
-      attrs={<RenderThAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderThAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderThAttributes(
-  { attrs }: { attrs?: ThProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
+const renderThAttributes = {
+  ...renderGlobalAttributes,
+  headers: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+};
 
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.colspan !== undefined
-        ? <RenderNumber attr="colspan" value={attrs.colspan} />
-        : ""}
-      {attrs.rowspan !== undefined
-        ? <RenderNumber attr="rowspan" value={attrs.rowspan} />
-        : ""}
-      {attrs.headers !== undefined
-        ? <RenderSpaceSeparatedList attr="headers" value={attrs.headers} />
-        : ""}
-      {attrs.scope !== undefined
-        ? <RenderEnum attr="scope" value={attrs.scope} />
-        : ""}
-      {attrs.abbr !== undefined
-        ? <RenderChildren attr="abbr" value={attrs.abbr} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "th",
+  cmAnd([cmAllFlow, cmNoDescendant(CAT_NOT_IN_TH)]),
+);
