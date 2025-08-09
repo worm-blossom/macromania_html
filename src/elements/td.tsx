@@ -1,13 +1,14 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderSpaceSeparatedList,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  renderGlobalAttributes,
+  type TagProps,
+} from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  cmAllFlow,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Td} macro.
@@ -36,33 +37,22 @@ export function Td(
   props: TdProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="td"
-      attrs={<RenderTdAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderTdAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderTdAttributes(
-  { attrs }: { attrs?: TdProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
+const renderTdAttributes = {
+  ...renderGlobalAttributes,
+  headers: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+};
 
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.colspan !== undefined
-        ? <RenderNumber attr="colspan" value={attrs.colspan} />
-        : ""}
-      {attrs.rowspan !== undefined
-        ? <RenderNumber attr="rowspan" value={attrs.rowspan} />
-        : ""}
-      {attrs.headers !== undefined
-        ? <RenderSpaceSeparatedList attr="headers" value={attrs.headers} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "td",
+  cmAllFlow,
+);

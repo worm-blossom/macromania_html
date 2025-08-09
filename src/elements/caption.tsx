@@ -1,6 +1,13 @@
-import { Expression, Children } from "macromania";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderNonVoidElement } from "../renderUtils.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_TABLE,
+  cmAllPhrasing,
+  cmAnd,
+  cmNoDescendant,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * The [caption element](https://html.spec.whatwg.org/multipage/tables.html#the-caption-element) represents the title of the [table](https://html.spec.whatwg.org/multipage/tables.html#the-table-element) that is its parent, if it has a parent and that is a [table element](https://html.spec.whatwg.org/multipage/tables.html#the-table-element).
@@ -11,10 +18,17 @@ export function Caption(
   props: TagProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="caption"
-      attrs={<RenderGlobalAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
+
+const dom = new DOMNodeInfo(
+  "caption",
+  cmAnd([cmAllPhrasing, cmNoDescendant(CAT_TABLE)]),
+);

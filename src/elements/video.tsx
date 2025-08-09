@@ -1,13 +1,11 @@
 import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import type { CrossOrigin, Preload } from "../shared.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { CrossOrigin, Preload } from "../shared.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Video} macro.
@@ -68,57 +66,17 @@ export function Video(
   props: VideoProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="video"
-      attrs={<RenderVideoAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderVideoAttributes(
-  { attrs }: { attrs?: VideoProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={attrs.src} />
-        : ""}
-      {attrs.crossorigin !== undefined
-        ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
-        : ""}
-      {attrs.poster !== undefined
-        ? <RenderExpression attr="poster" value={attrs.poster} />
-        : ""}
-      {attrs.preload !== undefined
-        ? <RenderEnum attr="preload" value={attrs.preload} />
-        : ""}
-      {attrs.autoplay !== undefined
-        ? <RenderBoolean attr="autoplay" value={attrs.autoplay} />
-        : ""}
-      {attrs.playsinline !== undefined
-        ? <RenderBoolean attr="playsinline" value={attrs.playsinline} />
-        : ""}
-      {attrs.loop !== undefined
-        ? <RenderBoolean attr="loop" value={attrs.loop} />
-        : ""}
-      {attrs.muted !== undefined
-        ? <RenderBoolean attr="muted" value={attrs.muted} />
-        : ""}
-      {attrs.controls !== undefined
-        ? <RenderBoolean attr="controls" value={attrs.controls} />
-        : ""}
-      {attrs.width !== undefined
-        ? <RenderNumber attr="width" value={attrs.width} />
-        : ""}
-      {attrs.height !== undefined
-        ? <RenderNumber attr="height" value={attrs.height} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "video",
+  cmUnverified,
+);

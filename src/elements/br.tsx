@@ -1,17 +1,28 @@
-import { Expression } from "macromania";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderVoidElement } from "../renderUtils.tsx";
+import type { Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  cmTrivial,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * The [br element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-br-element) represents a line break.
  */
 export function Br(
-  attrs: TagProps,
+  props: TagProps,
 ): Expression {
   return (
-    <RenderVoidElement
-      name="br"
-      attrs={<RenderGlobalAttributes attrs={attrs} />}
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+      isVoid
     />
   );
 }
+
+const dom = new DOMNodeInfo(
+  "br",
+  cmTrivial,
+);

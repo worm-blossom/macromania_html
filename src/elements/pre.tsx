@@ -2,9 +2,7 @@ import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_PHRASING_CONTENT,
-  CmCategory,
-  CmZeroOrMore,
+  cmAllPhrasing,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -27,6 +25,5 @@ export function Pre(
 
 const dom = new DOMNodeInfo(
   "pre",
-  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-pre-element",
+  cmAllPhrasing,
 );

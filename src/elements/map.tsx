@@ -1,10 +1,12 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  cmTransparent,
+  DOMNodeInfo,
+  isCurrentlyInsideMapElement,
+  setCurrentlyInsideMapElement,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Map} macro.
@@ -25,26 +27,35 @@ export function Map(
   props: MapProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="map"
-      attrs={<RenderMapAttributes attrs={props} />}
-      children={props.children}
+    <effect
+      fun={(_ctx) => {
+        let previouslyInMap = false;
+
+        return (
+          <lifecycle
+            pre={(ctx) => {
+              previouslyInMap = isCurrentlyInsideMapElement(ctx);
+              setCurrentlyInsideMapElement(ctx, true);
+            }}
+            post={(ctx) => {
+              setCurrentlyInsideMapElement(ctx, previouslyInMap);
+            }}
+          >
+            <BuildVerificationDOM
+              dom={dom}
+              attrs={props}
+              attrRendering={renderGlobalAttributes}
+            >
+              {props.children}
+            </BuildVerificationDOM>
+          </lifecycle>
+        );
+      }}
     />
   );
-  // TODO call setCurrentlyInsideMapElement (careful: handle nesting correctly, dont naively set to `false` in lifecycle post)
 }
 
-function RenderMapAttributes(
-  { attrs }: { attrs?: MapProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      <RenderExpression attr="name" value={attrs.name} />
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "map",
+  cmTransparent,
+);

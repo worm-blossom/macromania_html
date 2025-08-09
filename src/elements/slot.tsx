@@ -1,11 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  cmTransparent,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Slot} macro.
@@ -26,27 +25,17 @@ export function Slot(
   props: SlotProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="slot"
-      attrs={<RenderSlotAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderSlotAttributes(
-  { attrs }: { attrs?: SlotProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={attrs.name} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "slot",
+  cmTransparent,
+);

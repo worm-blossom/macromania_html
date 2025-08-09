@@ -1,14 +1,10 @@
 import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { FormEnctype, FormMethod } from "./form.tsx";
-import { PopoverTargetAction } from "./input.tsx";
+  BuildVerificationDOM,
+  cmNoChildElements,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Textarea} macro.
@@ -38,87 +34,17 @@ export function Textarea(
   props: TextareaProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="textarea"
-      attrs={<RenderTextareaAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderTextareaAttributes(
-  { attrs }: { attrs?: TextareaProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      {attrs.autocomplete !== undefined
-        ? (
-          <RenderExpression
-            attr="autocomplete"
-            value={attrs.autocomplete}
-          />
-        )
-        : ""}
-      {attrs.cols !== undefined
-        ? <RenderNumber attr="cols" value={attrs.cols} />
-        : ""}
-      {attrs.dirname !== undefined
-        ? (
-          <RenderExpression
-            attr="dirname"
-            value={attrs.dirname}
-          />
-        )
-        : ""}
-      {attrs.disabled !== undefined
-        ? <RenderBoolean attr="disabled" value={attrs.disabled} />
-        : ""}
-      {attrs.form !== undefined
-        ? (
-          <RenderExpression
-            attr="form"
-            value={attrs.form}
-          />
-        )
-        : ""}
-      {attrs.maxlength !== undefined
-        ? <RenderNumber attr="maxlength" value={attrs.maxlength} />
-        : ""}
-      {attrs.minlength !== undefined
-        ? <RenderNumber attr="minlength" value={attrs.minlength} />
-        : ""}
-      {attrs.name !== undefined
-        ? (
-          <RenderExpression
-            attr="name"
-            value={attrs.name}
-          />
-        )
-        : ""}
-      {attrs.placeholder !== undefined
-        ? (
-          <RenderExpression
-            attr="placeholder"
-            value={attrs.placeholder}
-          />
-        )
-        : ""}
-      {attrs.readonly !== undefined
-        ? <RenderBoolean attr="readonly" value={attrs.readonly} />
-        : ""}
-      {attrs.required !== undefined
-        ? <RenderBoolean attr="required" value={attrs.required} />
-        : ""}
-      {attrs.rows !== undefined
-        ? <RenderNumber attr="rows" value={attrs.rows} />
-        : ""}
-      {attrs.wrap !== undefined
-        ? <RenderEnum attr="wrap" value={attrs.wrap} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "textarea",
+  cmNoChildElements,
+);

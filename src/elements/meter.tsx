@@ -1,14 +1,13 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { FormEnctype, FormMethod } from "./form.tsx";
-import { PopoverTargetAction } from "./input.tsx";
+  BuildVerificationDOM,
+  CAT_METER,
+  cmAllPhrasing,
+  cmAnd,
+  cmNoDescendant,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Meter} macro.
@@ -31,39 +30,17 @@ export function Meter(
   props: MeterProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="meter"
-      attrs={<RenderMeterAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderMeterAttributes(
-  { attrs }: { attrs?: MeterProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderNumber attr="value" value={attrs.value} />
-      {attrs.min !== undefined
-        ? <RenderNumber attr="min" value={attrs.min} />
-        : ""}
-      {attrs.max !== undefined
-        ? <RenderNumber attr="max" value={attrs.max} />
-        : ""}
-      {attrs.low !== undefined
-        ? <RenderNumber attr="low" value={attrs.low} />
-        : ""}
-      {attrs.high !== undefined
-        ? <RenderNumber attr="high" value={attrs.high} />
-        : ""}
-      {attrs.optimum !== undefined
-        ? <RenderNumber attr="optimum" value={attrs.optimum} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "meter",
+  cmAnd([cmAllPhrasing, cmNoDescendant(CAT_METER)]),
+);

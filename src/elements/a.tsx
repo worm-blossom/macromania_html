@@ -1,6 +1,17 @@
-import { Expression, Children } from "macromania";
-import { AOrAreaLinkProps, RenderAOrAreaAttributes } from "../aOrArea.tsx";
-import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
+import type {
+  Children, // @ts-types="../../../macromania/mod.ts"
+  Context,
+  Expression,
+} from "macromania";
+import { type AOrAreaLinkProps, renderAOrAreaAttributes } from "../aOrArea.tsx";
+import {
+  BuildVerificationDOM,
+  CAT_INTERACTIVE_CONTENT,
+  cmNoDescendant,
+  cmTransparent,
+  type DOMNode,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode A} macro.
@@ -15,7 +26,7 @@ export type AProps = AOrAreaLinkProps & {
   /**
    * The [type attribute](https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-type), if present, gives the [MIME type](https://mimesniff.spec.whatwg.org/#mime-type) of the linked resource. It is purely advisory. The value must be a [valid MIME type string](https://mimesniff.spec.whatwg.org/#valid-mime-type). User agents must not consider the type attribute authoritative — upon fetching the resource, user agents must not use metadata included in the link to the resource to determine its type.
    */
-  type?: Expression;
+  type_?: Expression;
 };
 
 /**
@@ -25,30 +36,49 @@ export function A(
   props: AProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="a"
-      attrs={<RenderAAttributes attrs={props} />}
-      children={props.children}
-    />
-  );
-}
-
-export function RenderAAttributes(
-  { attrs }: { attrs?: AProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderAOrAreaAttributes attrs={attrs} />
-      {attrs.hreflang !== undefined
-        ? <RenderExpression attr="hreflang" value={attrs.hreflang} />
-        : ""}
-      {attrs.type !== undefined
-        ? <RenderExpression attr="type" value={attrs.type} />
-        : ""}
-    </>
+    <BuildVerificationDOM
+      dom={new DOMNodeInfo(
+        "a",
+        (ctx: Context, node: DOMNode<AProps>) => {
+          // Content model: Transparent, but there must be no interactive content descendant, a element descendant, or descendant with the tabindex attribute specified.
+          if (
+            cmNoDescendant(
+              (_ctx: Context, node: DOMNode<AProps>) => {
+                return node.info.tag === "a";
+              },
+              `An ${ctx.fmtCode("a")} tag must not have another ${
+                ctx.fmtCode("a")
+              } tag as a descendant.`,
+            )
+          ) {
+            return false;
+          } else if (
+            cmNoDescendant(
+              (_ctx: Context, node: DOMNode<AProps>) => {
+                return node.evaledAttrs!["tabindex"] !== undefined;
+              },
+              `An ${ctx.fmtCode("a")} tag must not have descendants whose ${
+                ctx.fmtCode("tabindex")
+              } attribute is set.`,
+            )
+          ) {
+            return false;
+          } else if (
+            cmNoDescendant(
+              CAT_INTERACTIVE_CONTENT,
+              `An ${ctx.fmtCode("a")} tag must not interactive descendants.`,
+            )
+          ) {
+            return false;
+          } else {
+            return cmTransparent(ctx, node);
+          }
+        },
+      )}
+      attrs={props}
+      attrRendering={renderAOrAreaAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }

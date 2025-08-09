@@ -1,12 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Canvas} macro.
@@ -31,30 +29,17 @@ export function Canvas(
   props: CanvasProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="canvas"
-      attrs={<RenderCanvasAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderCanvasAttributes(
-  { attrs }: { attrs?: CanvasProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.width !== undefined
-        ? <RenderNumber attr="width" value={attrs.width} />
-        : ""}
-      {attrs.height !== undefined
-        ? <RenderNumber attr="height" value={attrs.height} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "canvas",
+  cmUnverified,
+);

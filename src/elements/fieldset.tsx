@@ -1,14 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { FormEnctype, FormMethod } from "./form.tsx";
-import { PopoverTargetAction } from "./input.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Fieldset} macro.
@@ -28,32 +24,17 @@ export function Fieldset(
   props: FieldsetProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="fieldset"
-      attrs={<RenderFieldsetAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderFieldsetAttributes(
-  { attrs }: { attrs?: FieldsetProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      {attrs.disabled !== undefined
-        ? <RenderBoolean attr="disabled" value={attrs.disabled} />
-        : ""}
-      {attrs.form !== undefined
-        ? <RenderExpression attr="form" value={attrs.form} />
-        : ""}
-      {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={attrs.name} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "fieldset",
+  cmUnverified,
+);

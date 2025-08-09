@@ -1,15 +1,14 @@
-import type { Children, Expression } from "macromania";
+import type { Children, Context, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
   CAT_BASE,
   CAT_METADATA_CONTENT,
   CAT_TITLE,
-  CmAnd,
-  CmCategory,
-  CmContainsAtMostOne,
-  CmContainsExactlyOne,
-  CmOneOrMore,
+  cmAllChildrenPass,
+  cmAnd,
+  cmAtMostOneChild,
+  cmExactlyOneChild,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -32,10 +31,17 @@ export function Head(
 
 const dom = new DOMNodeInfo(
   "head",
-  new CmAnd([
-    new CmOneOrMore(new CmCategory(CAT_METADATA_CONTENT)),
-    new CmContainsExactlyOne(new CmCategory(CAT_TITLE)),
-    new CmContainsAtMostOne(new CmCategory(CAT_BASE)),
-  ]),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-head-element",
+  cmAnd(
+    [
+      cmAllChildrenPass(CAT_METADATA_CONTENT),
+      cmExactlyOneChild(
+        CAT_TITLE,
+        (ctx: Context) => `${ctx.fmtCode("title")} tag`,
+      ),
+      cmAtMostOneChild(
+        CAT_BASE,
+        (ctx: Context) => `${ctx.fmtCode("base")} tag`,
+      ),
+    ],
+  ),
 );

@@ -1,14 +1,13 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { FormEnctype, FormMethod } from "./form.tsx";
-import { PopoverTargetAction } from "./input.tsx";
+  BuildVerificationDOM,
+  CAT_PROGRESS,
+  cmAllPhrasing,
+  cmAnd,
+  cmNoDescendant,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Progress} macro.
@@ -27,29 +26,17 @@ export function Progress(
   props: ProgressProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="progress"
-      attrs={<RenderProgressAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderProgressAttributes(
-  { attrs }: { attrs?: ProgressProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      {attrs.value !== undefined
-        ? <RenderNumber attr="value" value={attrs.value} />
-        : ""}
-      {attrs.max !== undefined
-        ? <RenderNumber attr="max" value={attrs.max} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "progress",
+  cmAnd([cmAllPhrasing, cmNoDescendant(CAT_PROGRESS)]),
+);

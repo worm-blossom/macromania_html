@@ -2,9 +2,7 @@ import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_FLOW_CONTENT,
-  CmCategory,
-  CmZeroOrMore,
+  cmAllFlow,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -18,7 +16,10 @@ export function Article(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "article",
+        cmAllFlow,
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
     >
@@ -26,9 +27,3 @@ export function Article(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "article",
-  new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-article-element",
-);

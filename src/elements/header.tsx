@@ -2,12 +2,10 @@ import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_FLOW_CONTENT,
   CAT_HEADER_OR_FOOTER,
-  CmAnd,
-  CmCategory,
-  CmNoDescendantOfCategory,
-  CmZeroOrMore,
+  cmAllFlow,
+  cmAnd,
+  cmNoDescendant,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -30,9 +28,8 @@ export function Header(
 
 const dom = new DOMNodeInfo(
   "header",
-  new CmAnd([
-    new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
-    new CmNoDescendantOfCategory(CAT_HEADER_OR_FOOTER),
+  cmAnd([
+    cmAllFlow,
+    cmNoDescendant(CAT_HEADER_OR_FOOTER),
   ]),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-header-element",
 );

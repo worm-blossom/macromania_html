@@ -1,12 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Colgroup} macro.
@@ -27,27 +25,17 @@ export function Colgroup(
   props: ColgroupProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="colgroup"
-      attrs={<RenderColgroupAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderColgroupAttributes(
-  { attrs }: { attrs?: ColgroupProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.span !== undefined
-        ? <RenderNumber attr="span" value={attrs.span} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "colgroup",
+  cmUnverified,
+);

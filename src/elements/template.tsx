@@ -1,10 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderNonVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Template} macro.
@@ -33,43 +33,17 @@ export function Template(
   props: TemplateProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="template"
-      attrs={<RenderTemplateAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderTemplateAttributes(
-  { attrs }: { attrs?: TemplateProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.shadowrootmode !== undefined
-        ? <RenderEnum attr="shadowrootmode" value={attrs.shadowrootmode} />
-        : ""}
-      {attrs.shadowrootdelegatesfocus !== undefined
-        ? (
-          <RenderBoolean
-            attr="shadowrootdelegatesfocus"
-            value={attrs.shadowrootdelegatesfocus}
-          />
-        )
-        : ""}
-      {attrs.shadowrootclonable !== undefined
-        ? (
-          <RenderBoolean
-            attr="shadowrootclonable"
-            value={attrs.shadowrootclonable}
-          />
-        )
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "template",
+  cmUnverified,
+);

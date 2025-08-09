@@ -1,14 +1,11 @@
 import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import type { CrossOrigin, FetchPriority } from "../shared.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { CrossOrigin, FetchPriority } from "../shared.tsx";
+  BuildVerificationDOM,
+  cmTrivial,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Img} macro.
@@ -79,62 +76,16 @@ export function Img(
   props: ImgProps & { children?: Children },
 ): Expression {
   return (
-    <RenderVoidElement
-      name="img"
-      attrs={<RenderImgAttributes attrs={props} />}
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+      isVoid
     />
   );
 }
 
-function RenderImgAttributes(
-  { attrs }: { attrs?: ImgProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.alt !== undefined
-        ? <RenderExpression attr="alt" value={attrs.alt} />
-        : ""}
-      {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={attrs.src} />
-        : ""}
-      {attrs.srcset !== undefined
-        ? <RenderExpression attr="srcset" value={attrs.srcset} />
-        : ""}
-      {attrs.sizes !== undefined
-        ? <RenderExpression attr="sizes" value={attrs.sizes} />
-        : ""}
-      {attrs.crossorigin !== undefined
-        ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
-        : ""}
-      {attrs.usemap !== undefined
-        ? <RenderExpression attr="usemap" value={attrs.usemap} />
-        : ""}
-      {attrs.ismap !== undefined
-        ? <RenderBoolean attr="ismap" value={attrs.ismap} />
-        : ""}
-      {attrs.width !== undefined
-        ? <RenderNumber attr="width" value={attrs.width} />
-        : ""}
-      {attrs.height !== undefined
-        ? <RenderNumber attr="height" value={attrs.height} />
-        : ""}
-      {attrs.referrerpolicy !== undefined
-        ? <RenderEnum attr="referrerpolicy" value={attrs.referrerpolicy} />
-        : ""}
-      {attrs.decoding !== undefined
-        ? <RenderEnum attr="decoding" value={attrs.decoding} />
-        : ""}
-      {attrs.loading !== undefined
-        ? <RenderEnum attr="loading" value={attrs.loading} />
-        : ""}
-      {attrs.fetchpriority !== undefined
-        ? <RenderEnum attr="fetchpriority" value={attrs.fetchpriority} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "img",
+  cmTrivial,
+);

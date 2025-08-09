@@ -1,27 +1,10 @@
-import { Children, Expression } from "macromania";
-import {
-  EscapeHtml,
-  RenderBoolean,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderSpaceSeparatedList,
-} from "../renderUtils.tsx";
+import type { Children, Expression } from "macromania";
 
-import {
-  RenderGlobalAttributes,
-  renderGlobalAttributes,
-  TagProps,
-} from "../global.tsx";
-import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin } from "../shared.tsx";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_LI,
-  CAT_SCRIPT_SUPPORTING,
-  CmCategory,
-  CmChoice,
-  CmZeroOrMore,
+  CAT_LI_OR_SCRIPT_SUPPORTING,
+  cmAllChildrenPass,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -86,13 +69,5 @@ export function Ol(
 
 const dom = new DOMNodeInfo(
   "ol",
-  new CmZeroOrMore(
-    new CmZeroOrMore(
-      new CmChoice([
-        new CmCategory(CAT_LI),
-        new CmCategory(CAT_SCRIPT_SUPPORTING),
-      ]),
-    ),
-  ),
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element",
+  cmAllChildrenPass(CAT_LI_OR_SCRIPT_SUPPORTING),
 );

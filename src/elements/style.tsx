@@ -7,7 +7,7 @@ import {
 import type { PossiblyBlockingToken } from "../shared.tsx";
 import {
   BuildVerificationDOM,
-  CmUnverified,
+  cmUnverified,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -46,8 +46,7 @@ export function Style(
 
 const dom = new DOMNodeInfo(
   "style",
-  new CmUnverified(),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-style-element",
+  cmUnverified,
 );
 
 const renderStyleAttributes = {

@@ -3,7 +3,7 @@ import type { NavigableTargetNameOrKeyword } from "../aOrArea.tsx";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CmNothing,
+  cmTrivial,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -39,16 +39,13 @@ export function Base(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "base",
+        cmTrivial,
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
       isVoid
     />
   );
 }
-
-const dom = new DOMNodeInfo(
-  "base",
-  new CmNothing(),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-base-element",
-);

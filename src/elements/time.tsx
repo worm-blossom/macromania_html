@@ -1,6 +1,10 @@
-import { Expression, Children } from "macromania";
-import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Time} macro.
@@ -21,27 +25,17 @@ export function Time(
   props: TimeProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="time"
-      attrs={<RenderTimeAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderTimeAttributes(
-  { attrs }: { attrs?: TimeProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.datetime !== undefined
-        ? <RenderExpression attr="datetime" value={attrs.datetime} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "time",
+  cmUnverified,
+);

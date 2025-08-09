@@ -1,10 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderExpression,
-  RenderNonVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Details} macro.
@@ -29,30 +29,17 @@ export function Details(
   props: DetailsProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="details"
-      attrs={<RenderDetailsAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderDetailsAttributes(
-  { attrs }: { attrs?: DetailsProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={attrs.name} />
-        : ""}
-      {attrs.open !== undefined
-        ? <RenderBoolean attr="open" value={attrs.open} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "details",
+  cmUnverified,
+);

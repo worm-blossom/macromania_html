@@ -1,13 +1,13 @@
 // Common code for `<a>` and `<area>` elements, see https://html.spec.whatwg.org/multipage/links.html#links-created-by-a-and-area-elements
 
-import { Expression } from "macromania";
+import type { Expression } from "macromania";
 import {
-  RenderEnum,
-  RenderExpression,
-  RenderSpaceSeparatedList,
-} from "./renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "./global.tsx";
-import { ReferrerPolicy } from "./shared.tsx";
+  attrSetOfSpaceSeparatedTokens,
+  attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  renderGlobalAttributes,
+  type TagProps,
+} from "./global.tsx";
+import type { ReferrerPolicy } from "./shared.tsx";
 
 /**
  * A [valid navigable target name or keyword](https://html.spec.whatwg.org/multipage/document-sequences.html#valid-navigable-target-name-or-keyword) is any string that is either a [valid navigable target name](https://html.spec.whatwg.org/multipage/document-sequences.html#valid-navigable-target-name) or that is an ASCII case-insensitive match for one of: `_blank`, `_self`, `_parent`, or `_top`.
@@ -17,7 +17,7 @@ export type NavigableTargetNameOrKeyword =
   | "_self"
   | "_parent"
   | "_top"
-  | { name: Expression };
+  | Expression;
 
 /**
  * A [link type](https://html.spec.whatwg.org/multipage/links.html#linkTypes) that is allowed on [a](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element) and [area](https://html.spec.whatwg.org/multipage/image-maps.html#the-area-element) elements.
@@ -72,44 +72,8 @@ export type AOrAreaLinkProps = {
   referrerpolicy?: ReferrerPolicy;
 } & TagProps;
 
-export function RenderAOrAreaAttributes(
-  { attrs }: { attrs?: AOrAreaLinkProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.download !== undefined
-        ? <RenderExpression attr="download" value={attrs.download} />
-        : ""}
-      {attrs.href !== undefined
-        ? <RenderExpression attr="href" value={attrs.href} />
-        : ""}
-      {attrs.ping !== undefined
-        ? <RenderSpaceSeparatedList attr="ping" value={attrs.ping} />
-        : ""}
-      {attrs.referrerpolicy !== undefined
-        ? <RenderEnum attr="referrerpolicy" value={attrs.referrerpolicy} />
-        : ""}
-      {attrs.rel !== undefined
-        ? <RenderEnum attr="rel" value={attrs.rel} />
-        : ""}
-      {attrs.target !== undefined
-        ? <RenderNavigableTargetNameOrKeyword target={attrs.target} />
-        : ""}
-    </>
-  );
-}
-
-export function RenderNavigableTargetNameOrKeyword(
-  { target }: { target: NavigableTargetNameOrKeyword },
-): Expression {
-  if (typeof target === "string") {
-    return <RenderEnum attr="target" value={target} />;
-  } else {
-    return <RenderExpression attr="target" value={target.name} />;
-  }
-}
+export const renderAOrAreaAttributes = {
+  ...renderGlobalAttributes,
+  ping: attrSetOfSpaceSeparatedTokens,
+  rel: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+};

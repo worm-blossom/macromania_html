@@ -2,7 +2,7 @@ import type { Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CmNothing,
+  cmTrivial,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -24,6 +24,5 @@ export function Hr(
 
 const dom = new DOMNodeInfo(
   "hr",
-  new CmNothing(),
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-hr-element",
+  cmTrivial,
 );

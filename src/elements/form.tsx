@@ -1,13 +1,13 @@
 import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+  BuildVerificationDOM,
+  CAT_FORM,
+  cmAllFlow,
+  cmAnd,
+  cmNoDescendant,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 export type FormRel =
   | "external"
@@ -51,51 +51,17 @@ export function Form(
   props: FormProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="form"
-      attrs={<RenderFormAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderFormAttributes(
-  { attrs }: { attrs?: FormProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.acceptCharset !== undefined
-        ? <RenderEnum attr="accept-charset" value={attrs.acceptCharset} />
-        : ""}
-      {attrs.action !== undefined
-        ? <RenderExpression attr="action" value={attrs.action} />
-        : ""}
-      {attrs.autocomplete !== undefined
-        ? <RenderEnum attr="autocomplete" value={attrs.autocomplete} />
-        : ""}
-      {attrs.enctype !== undefined
-        ? <RenderEnum attr="enctype" value={attrs.enctype} />
-        : ""}
-      {attrs.method !== undefined
-        ? <RenderEnum attr="method" value={attrs.method} />
-        : ""}
-      {attrs.name !== undefined
-        ? <RenderExpression attr="name" value={attrs.name} />
-        : ""}
-      {attrs.novalidate !== undefined
-        ? <RenderBoolean attr="novalidate" value={attrs.novalidate} />
-        : ""}
-      {attrs.target !== undefined
-        ? <RenderExpression attr="target" value={attrs.target} />
-        : ""}
-      {attrs.rel !== undefined
-        ? <RenderEnum attr="rel" value={attrs.rel} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "form",
+  cmAnd([cmAllFlow, cmNoDescendant(CAT_FORM)]),
+);

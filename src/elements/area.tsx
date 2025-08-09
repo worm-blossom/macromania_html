@@ -1,13 +1,11 @@
-import { Expression, Children } from "macromania";
-import { AOrAreaLinkProps, RenderAOrAreaAttributes } from "../aOrArea.tsx";
+import type { Expression } from "macromania";
+import { type AOrAreaLinkProps, renderAOrAreaAttributes } from "../aOrArea.tsx";
 import {
-  RenderAttribute,
-  RenderEnum,
-  RenderExpression,
-  RenderChildren,
-  RenderNonVoidElement,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
+  BuildVerificationDOM,
+  cmTrivial,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
+import { attrValidListOfFloatingPointNumbers } from "../global.tsx";
 
 export type AreaShape = /**
    * Designates a circle, using exactly three integers in the [coords attribute](https://html.spec.whatwg.org/multipage/image-maps.html#attr-area-coords).
@@ -54,32 +52,19 @@ export function Area(
   props: AreaProps,
 ): Expression {
   return (
-    <RenderVoidElement
-      name="area"
-      attrs={<RenderAreaAttributes attrs={props} />}
+    <BuildVerificationDOM
+      dom={new DOMNodeInfo(
+        "area",
+        cmTrivial,
+      )}
+      attrs={props}
+      attrRendering={renderAreaAttributes}
+      isVoid
     />
   );
 }
 
-export function RenderAreaAttributes(
-  { attrs }: { attrs: AreaProps },
-): Expression {
-  return (
-    <>
-      <RenderAOrAreaAttributes attrs={attrs} />
-      {attrs.alt !== undefined
-        ? <RenderChildren attr="alt" value={attrs.alt} />
-        : ""}
-      {attrs.coords !== undefined
-        ? (
-          <RenderAttribute attr="coords">
-            {attrs.coords.map((coord) => `${coord}`).join(",")}
-          </RenderAttribute>
-        )
-        : ""}
-      {attrs.shape !== undefined
-        ? <RenderEnum attr="shape" value={attrs.shape} />
-        : ""}
-    </>
-  );
-}
+const renderAreaAttributes = {
+  ...renderAOrAreaAttributes,
+  coords: attrValidListOfFloatingPointNumbers,
+};

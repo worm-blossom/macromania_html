@@ -91,6 +91,7 @@ export { Script, type ScriptProps } from "./elements/script.tsx";
 export { Search } from "./elements/search.tsx";
 export { Section } from "./elements/section.tsx";
 export { Select } from "./elements/select.tsx";
+export { Selectedcontent } from "./elements/selectedcontent.tsx";
 export { Slot } from "./elements/slot.tsx";
 export { Small } from "./elements/small.tsx";
 export { Source } from "./elements/source.tsx";

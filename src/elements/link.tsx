@@ -9,7 +9,7 @@ import {
 import type { CrossOrigin, PossiblyBlockingToken } from "../shared.tsx";
 import {
   BuildVerificationDOM,
-  CmNothing,
+  cmTrivial,
   type DOMNode,
   DOMNodeInfo,
 } from "../contentModel.tsx";
@@ -94,19 +94,16 @@ export function Link(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "link",
+        cmTrivial,
+      )}
       attrs={props}
       attrRendering={renderLinkAttributes}
       isVoid
     />
   );
 }
-
-const dom = new DOMNodeInfo(
-  "link",
-  new CmNothing(),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-link-element",
-);
 
 const bodyOkRels = [
   "dns-prefetch",

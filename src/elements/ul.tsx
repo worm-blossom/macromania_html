@@ -1,12 +1,9 @@
-import { Children, Expression } from "macromania";
+import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_LI,
-  CAT_SCRIPT_SUPPORTING,
-  CmCategory,
-  CmChoice,
-  CmZeroOrMore,
+  CAT_LI_OR_SCRIPT_SUPPORTING,
+  cmAllChildrenPass,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -31,13 +28,5 @@ export function Ul(
 
 const dom = new DOMNodeInfo(
   "ul",
-  new CmZeroOrMore(
-    new CmZeroOrMore(
-      new CmChoice([
-        new CmCategory(CAT_LI),
-        new CmCategory(CAT_SCRIPT_SUPPORTING),
-      ]),
-    ),
-  ),
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-ul-element",
+  cmAllChildrenPass(CAT_LI_OR_SCRIPT_SUPPORTING),
 );

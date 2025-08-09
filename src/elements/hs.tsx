@@ -2,9 +2,7 @@ import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_PHRASING_CONTENT,
-  CmCategory,
-  CmZeroOrMore,
+  cmAllPhrasing,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -29,8 +27,7 @@ export function H1(
 
 const dom1 = new DOMNodeInfo(
   "h1",
-  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+  cmAllPhrasing,
 );
 
 /**
@@ -54,8 +51,7 @@ export function H2(
 
 const dom2 = new DOMNodeInfo(
   "h2",
-  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+  cmAllPhrasing,
 );
 
 /**
@@ -79,8 +75,7 @@ export function H3(
 
 const dom3 = new DOMNodeInfo(
   "h3",
-  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+  cmAllPhrasing,
 );
 
 /**
@@ -104,8 +99,7 @@ export function H4(
 
 const dom4 = new DOMNodeInfo(
   "h4",
-  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+  cmAllPhrasing,
 );
 
 /**
@@ -129,8 +123,7 @@ export function H5(
 
 const dom5 = new DOMNodeInfo(
   "h5",
-  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+  cmAllPhrasing,
 );
 
 /**
@@ -154,6 +147,5 @@ export function H6(
 
 const dom6 = new DOMNodeInfo(
   "h6",
-  new CmZeroOrMore(new CmCategory(CAT_PHRASING_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements",
+  cmAllPhrasing,
 );

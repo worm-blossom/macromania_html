@@ -1,6 +1,10 @@
-import { Expression, Children } from "macromania";
-import { RenderExpression, RenderNonVoidElement } from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
+import {
+  BuildVerificationDOM,
+  cmAllPhrasing,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Data} macro.
@@ -21,25 +25,17 @@ export function Data(
   props: DataProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="data"
-      attrs={<RenderDataAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderDataAttributes(
-  { attrs }: { attrs?: DataProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      <RenderExpression attr="value" value={attrs.value} />
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "data",
+  cmAllPhrasing,
+);

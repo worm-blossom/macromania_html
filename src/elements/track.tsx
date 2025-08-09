@@ -1,14 +1,10 @@
-import type { Children, Expression } from "macromania";
+import type { Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-  RenderVoidElement,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { CrossOrigin, FetchPriority, Preload } from "../shared.tsx";
+  BuildVerificationDOM,
+  cmTrivial,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 export type TrackKind =
   /**
@@ -67,36 +63,16 @@ export function Track(
   props: TrackProps,
 ): Expression {
   return (
-    <RenderVoidElement
-      name="track"
-      attrs={<RenderTrackAttributes attrs={props} />}
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+      isVoid
     />
   );
 }
 
-function RenderTrackAttributes(
-  { attrs }: { attrs?: TrackProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.kind !== undefined
-        ? <RenderEnum attr="kind" value={attrs.kind} />
-        : ""}
-      <RenderExpression attr="src" value={attrs.src} />
-      {attrs.srclang !== undefined
-        ? <RenderExpression attr="srclang" value={attrs.srclang} />
-        : ""}
-      {attrs.label !== undefined
-        ? <RenderExpression attr="label" value={attrs.label} />
-        : ""}
-      {attrs.default !== undefined
-        ? <RenderBoolean attr="default" value={attrs.default} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "track",
+  cmTrivial,
+);

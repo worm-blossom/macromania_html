@@ -1,15 +1,16 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import type { PossiblyBlockingToken, ReferrerPolicy } from "../shared.tsx";
 import {
-  EscapeHtml,
-  RenderBoolean,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderSpaceSeparatedList,
-} from "../renderUtils.tsx";
-import { PossiblyBlockingToken, ReferrerPolicy } from "../shared.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin, FetchPriority } from "../shared.tsx";
+  attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+  renderGlobalAttributes,
+  type TagProps,
+} from "../global.tsx";
+import type { CrossOrigin, FetchPriority } from "../shared.tsx";
+import {
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Script} macro.
@@ -29,7 +30,7 @@ export type ScriptProps = {
    * - Setting the attribute to `"importmap"` means that the script is an [import map](https://html.spec.whatwg.org/multipage/webappapis.html#import-map), containing JSON that will be used to control the behavior of module specifier resolution. Import maps can only be inline, i.e., the [src attribute](https://html.spec.whatwg.org/multipage/scripting.html#attr-script-src) and most other attributes are meaningless and not to be used with them.
    * - Setting the attribute to any other value means that the script is a data block, which is not processed. None of the [script attributes](https://html.spec.whatwg.org/multipage/scripting.html#the-script-element) (except [type](https://html.spec.whatwg.org/multipage/scripting.html#attr-script-type) itself) have any effect on data blocks. Authors must use a valid MIME type string that is not a JavaScript MIME type essence match to denote data blocks.
    */
-  type?: "module" | "importmap" | { data: Expression };
+  type?: "module" | "importmap" | Expression;
   /**
    * The [nomodule attribute](https://html.spec.whatwg.org/multipage/scripting.html#attr-script-nomodule) is a boolean attribute that prevents a script from being executed in user agents that support [module scripts](https://html.spec.whatwg.org/multipage/webappapis.html#module-script). This allows selective execution of [module scripts](https://html.spec.whatwg.org/multipage/webappapis.html#module-script) in modern user agents and [classic scripts](https://html.spec.whatwg.org/multipage/webappapis.html#classic-script) in older user agents. The [nomodule attribute](https://html.spec.whatwg.org/multipage/scripting.html#attr-script-nomodule) must not be specified on module scripts (and will be ignored if it is).
    */
@@ -71,62 +72,22 @@ export function Script(
   props: ScriptProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="script"
-      attrs={<RenderScriptAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderScriptAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderScriptAttributes(
-  { attrs }: { attrs?: ScriptProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
+const renderScriptAttributes = {
+  ...renderGlobalAttributes,
+  blocking: attrUnorderedSetOfUniqueSpaceSeparatedTokens,
+};
 
-  return (
-    <>
-      <RenderGlobalAttributes attrs={attrs} />
-      {attrs.src !== undefined
-        ? <RenderExpression attr="src" value={attrs.src} />
-        : ""}
-      {attrs.type !== undefined ? <RenderType type={attrs.type} /> : ""}
-      {attrs.nomodule !== undefined
-        ? <RenderBoolean attr="nomodule" value={attrs.nomodule} />
-        : ""}
-      {attrs.async !== undefined
-        ? <RenderBoolean attr="async" value={attrs.async} />
-        : ""}
-      {attrs.defer !== undefined
-        ? <RenderBoolean attr="defer" value={attrs.defer} />
-        : ""}
-      {attrs.crossorigin !== undefined
-        ? <RenderEnum attr="crossorigin" value={attrs.crossorigin} />
-        : ""}
-      {attrs.integrity !== undefined
-        ? <RenderExpression attr="integrity" value={attrs.integrity} />
-        : ""}
-      {attrs.referrerpolicy !== undefined
-        ? <RenderEnum attr="referrerpolicy" value={attrs.referrerpolicy} />
-        : ""}
-      {attrs.blocking !== undefined
-        ? <RenderSpaceSeparatedList attr="blocking" value={attrs.blocking} />
-        : ""}
-      {attrs.fetchpriority !== undefined
-        ? <RenderEnum attr="fetchpriority" value={attrs.fetchpriority} />
-        : ""}
-    </>
-  );
-}
-
-function RenderType(
-  { type }: { type: "module" | "importmap" | { data: Expression } },
-): Expression {
-  if (typeof type === "string") {
-    return <RenderEnum attr="type" value={type} />;
-  } else {
-    return <RenderExpression attr="type" value={type.data} />;
-  }
-}
+const dom = new DOMNodeInfo(
+  "script",
+  cmUnverified,
+);

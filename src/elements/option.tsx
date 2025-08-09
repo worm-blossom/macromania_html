@@ -1,14 +1,10 @@
-import { Expression, Children } from "macromania";
+import type { Children, Expression } from "macromania";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
-  RenderBoolean,
-  RenderEnum,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderNumber,
-} from "../renderUtils.tsx";
-import { RenderGlobalAttributes, TagProps } from "../global.tsx";
-import { FormEnctype, FormMethod } from "./form.tsx";
-import { PopoverTargetAction } from "./input.tsx";
+  BuildVerificationDOM,
+  cmUnverified,
+  DOMNodeInfo,
+} from "../contentModel.tsx";
 
 /**
  * Props for the {@linkcode Option} macro.
@@ -29,35 +25,17 @@ export function Option(
   props: OptionProps & { children?: Children },
 ): Expression {
   return (
-    <RenderNonVoidElement
-      name="option"
-      attrs={<RenderOptionAttributes attrs={props} />}
-      children={props.children}
-    />
+    <BuildVerificationDOM
+      dom={dom}
+      attrs={props}
+      attrRendering={renderGlobalAttributes}
+    >
+      {props.children}
+    </BuildVerificationDOM>
   );
 }
 
-function RenderOptionAttributes(
-  { attrs }: { attrs?: OptionProps },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  return (
-    <>
-      {attrs.disabled !== undefined
-        ? <RenderBoolean attr="disabled" value={attrs.disabled} />
-        : ""}
-      {attrs.label !== undefined
-        ? <RenderExpression attr="label" value={attrs.label} />
-        : ""}
-      {attrs.selected !== undefined
-        ? <RenderBoolean attr="selected" value={attrs.selected} />
-        : ""}
-      {attrs.value !== undefined
-        ? <RenderExpression attr="value" value={attrs.value} />
-        : ""}
-    </>
-  );
-}
+const dom = new DOMNodeInfo(
+  "option",
+  cmUnverified,
+);

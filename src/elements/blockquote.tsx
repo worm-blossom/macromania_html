@@ -1,24 +1,9 @@
-import { Children, Expression } from "macromania";
-import {
-  EscapeHtml,
-  RenderBoolean,
-  RenderExpression,
-  RenderNonVoidElement,
-  RenderSpaceSeparatedList,
-} from "../renderUtils.tsx";
+import type { Children, Expression } from "macromania";
 
-import {
-  RenderGlobalAttributes,
-  renderGlobalAttributes,
-  TagProps,
-} from "../global.tsx";
-import { RenderEnum } from "../renderUtils.tsx";
-import { CrossOrigin } from "../shared.tsx";
+import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_FLOW_CONTENT,
-  CmCategory,
-  CmZeroOrMore,
+  cmAllFlow,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -55,6 +40,5 @@ export function Blockquote(
 
 const dom = new DOMNodeInfo(
   "blockquote",
-  new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-blockquote-element",
+  cmAllFlow,
 );

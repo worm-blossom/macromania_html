@@ -2,7 +2,7 @@ import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CmNoTags,
+  cmNoChildElements,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -27,6 +27,5 @@ export function Title(
 
 const dom = new DOMNodeInfo(
   "title",
-  new CmNoTags(),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-title-element",
+  cmNoChildElements,
 );
