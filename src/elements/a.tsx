@@ -7,7 +7,6 @@ import { type AOrAreaLinkProps, renderAOrAreaAttributes } from "../aOrArea.tsx";
 import {
   BuildVerificationDOM,
   CAT_INTERACTIVE_CONTENT,
-  cmAnd,
   cmNoDescendant,
   cmTransparent,
   type DOMNode,
@@ -38,7 +37,44 @@ export function A(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "a",
+        (ctx: Context, node: DOMNode<AProps>) => {
+          // Content model: Transparent, but there must be no interactive content descendant, a element descendant, or descendant with the tabindex attribute specified.
+          if (
+            cmNoDescendant(
+              (_ctx: Context, node: DOMNode<AProps>) => {
+                return node.info.tag === "a";
+              },
+              `An ${ctx.fmtCode("a")} tag must not have another ${
+                ctx.fmtCode("a")
+              } tag as a descendant.`,
+            )
+          ) {
+            return false;
+          } else if (
+            cmNoDescendant(
+              (_ctx: Context, node: DOMNode<AProps>) => {
+                return node.evaledAttrs!["tabindex"] !== undefined;
+              },
+              `An ${ctx.fmtCode("a")} tag must not have descendants whose ${
+                ctx.fmtCode("tabindex")
+              } attribute is set.`,
+            )
+          ) {
+            return false;
+          } else if (
+            cmNoDescendant(
+              CAT_INTERACTIVE_CONTENT,
+              `An ${ctx.fmtCode("a")} tag must not interactive descendants.`,
+            )
+          ) {
+            return false;
+          } else {
+            return cmTransparent(ctx, node);
+          }
+        },
+      )}
       attrs={props}
       attrRendering={renderAOrAreaAttributes}
     >
@@ -46,42 +82,3 @@ export function A(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "a",
-  (ctx: Context, node: DOMNode<AProps>) => {
-    // Content model: Transparent, but there must be no interactive content descendant, a element descendant, or descendant with the tabindex attribute specified.
-    if (
-      cmNoDescendant(
-        (_ctx: Context, node: DOMNode<AProps>) => {
-          return node.info.tag === "a";
-        },
-        `An ${ctx.fmtCode("a")} tag must not have another ${
-          ctx.fmtCode("a")
-        } tag as a descendant.`,
-      )
-    ) {
-      return false;
-    } else if (
-      cmNoDescendant(
-        (_ctx: Context, node: DOMNode<AProps>) => {
-          return node.evaledAttrs!["tabindex"] !== undefined;
-        },
-        `An ${ctx.fmtCode("a")} tag must not have descendants whose ${
-          ctx.fmtCode("tabindex")
-        } attribute is set.`,
-      )
-    ) {
-      return false;
-    } else if (
-      cmNoDescendant(
-        CAT_INTERACTIVE_CONTENT,
-        `An ${ctx.fmtCode("a")} tag must not interactive descendants.`,
-      )
-    ) {
-      return false;
-    } else {
-      return cmTransparent(ctx, node);
-    }
-  },
-);

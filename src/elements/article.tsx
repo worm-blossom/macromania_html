@@ -16,7 +16,10 @@ export function Article(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "article",
+        cmAllFlow,
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
     >
@@ -24,8 +27,3 @@ export function Article(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "article",
-  cmAllFlow,
-);

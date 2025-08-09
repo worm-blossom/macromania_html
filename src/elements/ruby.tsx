@@ -24,6 +24,6 @@ export function Ruby(
 }
 
 const dom = new DOMNodeInfo(
-  "strong",
+  "ruby",
   cmUnverified,
 );

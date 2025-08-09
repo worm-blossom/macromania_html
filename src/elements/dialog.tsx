@@ -42,6 +42,6 @@ export function Dialog(
 }
 
 const dom = new DOMNodeInfo(
-  "strong",
+  "dialog",
   cmAllFlow,
 );

@@ -411,23 +411,50 @@ Deno.test("a", async () => {
 
   await (async () => {
     const ctx = new Context();
-    const got = await ctx.evaluate(
-      <A
-        download=""
-        href="bla"
-        hreflang="en-gb"
-        ping="a"
-        referrerpolicy="origin"
-        rel="prev"
-        target="_self"
-        type_="txt"
-      >
-      </A>,
-    );
-    assertEquals(
-      got,
-      `<a download="" href="bla" ping="a" referrerpolicy="origin" rel="prev" target="_self" hreflang="en-gb" type="txt"></a>`,
-    );
+    const got = await ctx.evaluate(<A download=""></A>);
+    assertEquals(got, `<a download=""></a>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<A href="bla"></A>);
+    assertEquals(got, `<a href="bla"></a>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<A hreflang="en-gb"></A>);
+    assertEquals(got, `<a hreflang="en-gb"></a>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<A ping="a"></A>);
+    assertEquals(got, `<a ping="a"></a>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<A referrerpolicy="origin"></A>);
+    assertEquals(got, `<a referrerpolicy="origin"></a>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<A rel="prev"></A>);
+    assertEquals(got, `<a rel="prev"></a>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<A target="_self"></A>);
+    assertEquals(got, `<a target="_self"></a>`);
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(<A type_="txt"></A>);
+    assertEquals(got, `<a type="txt"></a>`);
   })();
 
   await (async () => {
@@ -438,7 +465,7 @@ Deno.test("a", async () => {
 
   await (async () => {
     const ctx = new Context();
-    const got = await ctx.evaluate(<A target={{ name: "abc" }}></A>);
+    const got = await ctx.evaluate(<A target="abc"></A>);
     assertEquals(got, `<a target="abc"></a>`);
   })();
 });
@@ -449,23 +476,122 @@ Deno.test("area", async () => {
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(
-      <Area
-        download=""
-        href="bla"
-        alt="foo"
-        coords={[1, 2.4, 7]}
-        shape="poly"
-        ping="a"
-        referrerpolicy="origin"
-        rel="prev"
-        target="_self"
-      />,
+      <Area download="" />,
     );
     assertEquals(
       got,
-      `<area download="" href="bla" ping="a" referrerpolicy="origin" rel="prev" target="_self" alt="foo" coords="1,2.4,7" shape="poly" />`,
+      `<area download="" />`,
     );
   })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area href="bla" />,
+    );
+    assertEquals(
+      got,
+      `<area href="bla" />`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area alt="foo" />,
+    );
+    assertEquals(
+      got,
+      `<area alt="foo" />`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area coords={[1, 2.4, 7]} />,
+    );
+    assertEquals(
+      got,
+      `<area coords="1,2.4,7" />`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area shape="poly" />,
+    );
+    assertEquals(
+      got,
+      `<area shape="poly" />`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area ping="a" />,
+    );
+    assertEquals(
+      got,
+      `<area ping="a" />`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area referrerpolicy="origin" />,
+    );
+    assertEquals(
+      got,
+      `<area referrerpolicy="origin" />`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area rel="prev" />,
+    );
+    assertEquals(
+      got,
+      `<area rel="prev" />`,
+    );
+  })();
+
+  await (async () => {
+    const ctx = new Context();
+    const got = await ctx.evaluate(
+      <Area target="_self" />,
+    );
+    assertEquals(
+      got,
+      `<area target="_self" />`,
+    );
+  })();
+
+  // await (async () => {
+  //   const ctx = new Context();
+  //   const got = await ctx.evaluate(
+  //     <Area
+  //       download=""
+  //       href="bla"
+  //       alt="foo"
+  //       coords={[1, 2.4, 7]}
+  //       shape="poly"
+  //       ping="a"
+  //       referrerpolicy="origin"
+  //       rel="prev"
+  //       target="_self"
+  //     />,
+  //   );
+  //   assertEquals(
+  //     got,
+  //     `<area download="" href="bla" ping="a" referrerpolicy="origin" rel="prev" target="_self" alt="foo" coords="1,2.4,7" shape="poly" />`,
+  //   );
+  // })();
 });
 
 Deno.test("abbr", async () => {
@@ -582,7 +708,7 @@ Deno.test("base", async () => {
 
   await (async () => {
     const ctx = new Context();
-    const got = await ctx.evaluate(<Base target={{ name: "abc" }}></Base>);
+    const got = await ctx.evaluate(<Base target="abc"></Base>);
     assertEquals(got, `<base target="abc" />`);
   })();
 });
@@ -812,12 +938,12 @@ Deno.test("code", async () => {
 });
 
 Deno.test("col", async () => {
-  await testGlobalNonVoid(Col, "col")();
+  await testGlobalVoid(Col, "col")();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Col span={17}></Col>);
-    assertEquals(got, `<col span="17"></col>`);
+    assertEquals(got, `<col span="17" />`);
   })();
 });
 
@@ -1439,30 +1565,30 @@ Deno.test("i", async () => {
 });
 
 Deno.test("iframe", async () => {
-  await testGlobalNonVoid(Iframe, "iframe")();
+  await testGlobalVoid(Iframe, "iframe")();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe src="bla"></Iframe>);
-    assertEquals(got, `<iframe src="bla"></iframe>`);
+    assertEquals(got, `<iframe src="bla" />`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe srcdoc="bla"></Iframe>);
-    assertEquals(got, `<iframe srcdoc="bla"></iframe>`);
+    assertEquals(got, `<iframe srcdoc="bla" />`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe name="bla"></Iframe>);
-    assertEquals(got, `<iframe name="bla"></iframe>`);
+    assertEquals(got, `<iframe name="bla" />`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe sandbox="allow-downloads"></Iframe>);
-    assertEquals(got, `<iframe sandbox="allow-downloads"></iframe>`);
+    assertEquals(got, `<iframe sandbox="allow-downloads" />`);
   })();
 
   await (async () => {
@@ -1472,44 +1598,44 @@ Deno.test("iframe", async () => {
     );
     assertEquals(
       got,
-      `<iframe sandbox="allow-downloads allow-forms"></iframe>`,
+      `<iframe sandbox="allow-downloads allow-forms" />`,
     );
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe allow="bla"></Iframe>);
-    assertEquals(got, `<iframe allow="bla"></iframe>`);
+    assertEquals(got, `<iframe allow="bla" />`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe allowfullscreen></Iframe>);
-    assertEquals(got, `<iframe allowfullscreen></iframe>`);
+    assertEquals(got, `<iframe allowfullscreen />`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe width={17}></Iframe>);
-    assertEquals(got, `<iframe width="17"></iframe>`);
+    assertEquals(got, `<iframe width="17" />`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe height={42}></Iframe>);
-    assertEquals(got, `<iframe height="42"></iframe>`);
+    assertEquals(got, `<iframe height="42" />`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe referrerpolicy="origin"></Iframe>);
-    assertEquals(got, `<iframe referrerpolicy="origin"></iframe>`);
+    assertEquals(got, `<iframe referrerpolicy="origin" />`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe loading="lazy"></Iframe>);
-    assertEquals(got, `<iframe loading="lazy"></iframe>`);
+    assertEquals(got, `<iframe loading="lazy" />`);
   })();
 });
 

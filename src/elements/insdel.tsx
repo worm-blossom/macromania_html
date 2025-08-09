@@ -44,7 +44,7 @@ export function Ins(
 }
 
 const insDom = new DOMNodeInfo(
-  "dinsel",
+  "ins",
   cmTransparent,
 );
 

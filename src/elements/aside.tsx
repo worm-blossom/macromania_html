@@ -16,7 +16,10 @@ export function Aside(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "aside",
+        cmAllFlow,
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
     >
@@ -24,8 +27,3 @@ export function Aside(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "aside",
-  cmAllFlow,
-);

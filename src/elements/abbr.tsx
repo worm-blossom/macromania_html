@@ -14,7 +14,10 @@ export function Abbr(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "abbr",
+        cmAllPhrasing,
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
     >
@@ -22,8 +25,3 @@ export function Abbr(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "abbr",
-  cmAllPhrasing,
-);

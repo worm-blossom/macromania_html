@@ -37,6 +37,6 @@ export function Progress(
 }
 
 const dom = new DOMNodeInfo(
-  "strong",
+  "progress",
   cmAnd([cmAllPhrasing, cmNoDescendant(CAT_PROGRESS)]),
 );

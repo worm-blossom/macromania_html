@@ -39,15 +39,13 @@ export function Base(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "base",
+        cmTrivial,
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
       isVoid
     />
   );
 }
-
-const dom = new DOMNodeInfo(
-  "base",
-  cmTrivial,
-);

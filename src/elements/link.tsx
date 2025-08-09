@@ -94,18 +94,16 @@ export function Link(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "link",
+        cmTrivial,
+      )}
       attrs={props}
       attrRendering={renderLinkAttributes}
       isVoid
     />
   );
 }
-
-const dom = new DOMNodeInfo(
-  "link",
-  cmTrivial,
-);
 
 const bodyOkRels = [
   "dns-prefetch",

@@ -17,7 +17,13 @@ export function Address(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "address",
+        cmAnd([
+          cmAllFlow,
+          cmNoDescendant(CAT_NOT_IN_ADDRESS),
+        ]),
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
     >
@@ -25,11 +31,3 @@ export function Address(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "address",
-  cmAnd([
-    cmAllFlow,
-    cmNoDescendant(CAT_NOT_IN_ADDRESS),
-  ]),
-);

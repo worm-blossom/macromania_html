@@ -25,6 +25,6 @@ export function Tfoot(
 }
 
 const dom = new DOMNodeInfo(
-  "tbody",
+  "tfoot",
   cmAllChildrenPass(CAT_TR_OR_SCRIPT_SUPPORTING),
 );

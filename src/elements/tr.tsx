@@ -15,7 +15,10 @@ export function Tr(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "tr",
+        cmAllChildrenPass(CAT_TD_OR_TH_OR_SCRIPT_SUPPORTING),
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
     >
@@ -23,8 +26,3 @@ export function Tr(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "tbody",
-  cmAllChildrenPass(CAT_TD_OR_TH_OR_SCRIPT_SUPPORTING),
-);

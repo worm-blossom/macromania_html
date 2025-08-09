@@ -1,31 +1,29 @@
 import {
-  Children,
+  type Children,
   Context,
   // @ts-types="../../macromania/mod.ts"
-  DebuggingInformation,
-  EvaluationTreePosition,
-  Expression,
+  type DebuggingInformation,
+  type EvaluationTreePosition,
+  type Expression,
 } from "macromania";
 
 import {
-  AProps,
-  DynamicAttributes,
+  type AProps,
+  type DynamicAttributes,
   EscapeHtml,
-  Info,
   info,
   logEmptyLine,
-  LoggingConfig,
-  TagProps,
-  Warn,
+  type LoggingConfig,
+  type TagProps,
   warn,
   withOtherKeys,
 } from "./mod.tsx";
 import { SetCurrentKeys } from "./mod.tsx";
 import { isLinkAllowedInBody } from "./elements/link.tsx";
-import { AudioProps } from "./elements/audio.tsx";
-import { VideoProps } from "./elements/video.tsx";
-import { ImgProps } from "./elements/img.tsx";
-import { InputProps } from "./elements/input.tsx";
+import type { AudioProps } from "./elements/audio.tsx";
+import type { VideoProps } from "./elements/video.tsx";
+import type { ImgProps } from "./elements/img.tsx";
+import type { InputProps } from "./elements/input.tsx";
 
 type VerificationState = {
   currentlyInsideMapElement: boolean;
@@ -1063,10 +1061,13 @@ function RenderAttrs<Attrs extends TagProps>(
     <effect
       fun={(ctx) => {
         const exps = [];
-        let first = true;
 
         for (const attr in attrs) {
           if (Object.prototype.hasOwnProperty.call(attrs, attr)) {
+            if (attr === "children") {
+              continue;
+            }
+
             const attrVal = attrs[attr];
 
             if (typeof attrVal === "boolean" && !attrVal) {
@@ -1074,10 +1075,7 @@ function RenderAttrs<Attrs extends TagProps>(
               continue;
             }
 
-            if (!first) {
-              exps.push(" ");
-              first = false;
-            }
+            exps.push(" ");
 
             let attrName: string = attr;
             switch (attrName) {
@@ -1086,6 +1084,18 @@ function RenderAttrs<Attrs extends TagProps>(
                 break;
               case "type_":
                 attrName = "type";
+                break;
+              case "for_":
+                attrName = "for";
+                break;
+              case "data_":
+                attrName = "data";
+                break;
+              case "httpEquiv":
+                attrName = "http-equiv";
+                break;
+              case "acceptCharset":
+                attrName = "accept-charset";
                 break;
 
               default:
@@ -1101,13 +1111,28 @@ function RenderAttrs<Attrs extends TagProps>(
               node.evaledAttrs![attr] = attrVal;
               exps.push(<>{attrName}="{`${attrVal}`}"</>);
             } else if (attr === "data") {
+              let first = true;
+
               for (const key in attrVal) {
+                if (!first) {
+                  exps.push(" ");
+                }
+                first = false;
+
                 exps.push(
-                  <>{`data-${key}`}="{attrVal[key]}"</>,
+                  <>
+                    {`data-${key}`}="<EscapeHtml>
+                      {attrVal[key] as Expression}
+                    </EscapeHtml>"
+                  </>,
                 );
               }
             } else if (attr === "dynamicAttributes") {
+              exps.pop(); // pops a single whitespace, this is eneded to render correctly if attrVal is an empty record.
+
               for (const key in (attrVal as DynamicAttributes)) {
+                exps.push(" ");
+
                 exps.push(
                   <>
                     {key}="<EscapeHtml>
@@ -1115,7 +1140,6 @@ function RenderAttrs<Attrs extends TagProps>(
                     </EscapeHtml>"
                   </>,
                 );
-                exps.push(" ");
               }
             } else {
               exps.push(
@@ -1139,28 +1163,4 @@ function RenderAttrs<Attrs extends TagProps>(
       }}
     />
   );
-}
-
-export function RenderDynamicAttributes(
-  { attrs }: { attrs?: DynamicAttributes },
-): Expression {
-  if (attrs === undefined) {
-    return "";
-  }
-
-  const exps: Expression[] = [];
-
-  for (const key in attrs) {
-    exps.push(" ");
-    exps.push(key);
-    exps.push(`="`);
-    exps.push(
-      <EscapeHtml>
-        {attrs[key]}
-      </EscapeHtml>,
-    );
-    exps.push(`"`);
-  }
-
-  return <>{exps}</>;
 }

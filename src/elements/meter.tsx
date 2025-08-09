@@ -41,6 +41,6 @@ export function Meter(
 }
 
 const dom = new DOMNodeInfo(
-  "strong",
+  "meter",
   cmAnd([cmAllPhrasing, cmNoDescendant(CAT_METER)]),
 );

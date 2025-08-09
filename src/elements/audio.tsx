@@ -51,7 +51,10 @@ export function Audio(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "audio",
+        cmUnverified,
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
     >
@@ -59,8 +62,3 @@ export function Audio(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "audio",
-  cmUnverified,
-);

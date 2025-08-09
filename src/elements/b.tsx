@@ -14,7 +14,10 @@ export function B(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "b",
+        cmAllPhrasing,
+      )}
       attrs={props}
       attrRendering={renderGlobalAttributes}
     >
@@ -22,8 +25,3 @@ export function B(
     </BuildVerificationDOM>
   );
 }
-
-const dom = new DOMNodeInfo(
-  "b",
-  cmAllPhrasing,
-);

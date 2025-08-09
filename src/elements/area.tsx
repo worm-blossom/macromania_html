@@ -53,7 +53,10 @@ export function Area(
 ): Expression {
   return (
     <BuildVerificationDOM
-      dom={dom}
+      dom={new DOMNodeInfo(
+        "area",
+        cmTrivial,
+      )}
       attrs={props}
       attrRendering={renderAreaAttributes}
       isVoid
@@ -65,8 +68,3 @@ const renderAreaAttributes = {
   ...renderAOrAreaAttributes,
   coords: attrValidListOfFloatingPointNumbers,
 };
-
-const dom = new DOMNodeInfo(
-  "area",
-  cmTrivial,
-);
