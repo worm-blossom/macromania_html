@@ -933,7 +933,13 @@ const [TreeScope, getCurrentDOMNode] = Context.createScopedState<
   DOMNode<TagProps>
 >(
   (parent?: DOMNode<TagProps>) => {
-    return { parent, info: dummyNodeInfo, children: [] };
+    return {
+      parent: (parent !== undefined && parent.info.tag === "dummy")
+        ? undefined
+        : parent,
+      info: dummyNodeInfo,
+      children: [],
+    };
   },
 );
 
@@ -947,7 +953,6 @@ export type AttrRendering<Props extends TagProps> = {
 /**
  * To be the outermost expression returned by each statically typed html macro. Builds up a tree structure for verifying html (and performs verification related to content models).
  */
-// TODO rename this
 export function BuildVerificationDOM<Attrs extends TagProps>(
   { children, dom, isVoid, attrs, attrRendering }: {
     children?: Children;
