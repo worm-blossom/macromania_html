@@ -35,7 +35,7 @@ const [getVerificationState, _] = Context.createState<VerificationState>(
   }),
 );
 
-function isCurrentlyInsideMapElement(ctx: Context): boolean {
+export function isCurrentlyInsideMapElement(ctx: Context): boolean {
   const state = getVerificationState(ctx);
   return state.currentlyInsideMapElement;
 }

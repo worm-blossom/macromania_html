@@ -4,6 +4,8 @@ import {
   BuildVerificationDOM,
   cmTransparent,
   DOMNodeInfo,
+  isCurrentlyInsideMapElement,
+  setCurrentlyInsideMapElement,
 } from "../contentModel.tsx";
 
 /**
@@ -25,13 +27,31 @@ export function Map(
   props: MapProps & { children?: Children },
 ): Expression {
   return (
-    <BuildVerificationDOM
-      dom={dom}
-      attrs={props}
-      attrRendering={renderGlobalAttributes}
-    >
-      {props.children}
-    </BuildVerificationDOM>
+    <effect
+      fun={(_ctx) => {
+        let previouslyInMap = false;
+
+        return (
+          <lifecycle
+            pre={(ctx) => {
+              previouslyInMap = isCurrentlyInsideMapElement(ctx);
+              setCurrentlyInsideMapElement(ctx, true);
+            }}
+            post={(ctx) => {
+              setCurrentlyInsideMapElement(ctx, previouslyInMap);
+            }}
+          >
+            <BuildVerificationDOM
+              dom={dom}
+              attrs={props}
+              attrRendering={renderGlobalAttributes}
+            >
+              {props.children}
+            </BuildVerificationDOM>
+          </lifecycle>
+        );
+      }}
+    />
   );
 }
 
