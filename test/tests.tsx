@@ -1126,6 +1126,13 @@ Deno.test("figure", async () => {
       <Figcaption></Figcaption>
     </Figure>,
   ); // content model
+  await assertWarns(
+    <Figure>
+      <P></P>
+      <Figcaption></Figcaption>
+      <P></P>
+    </Figure>,
+  ); // content model
 
   await assertNoWarning(
     <Figure></Figure>,
@@ -1151,13 +1158,6 @@ Deno.test("figure", async () => {
     <Figure>
       <Figcaption></Figcaption>
       <P></P>
-      <P></P>
-    </Figure>,
-  );
-  await assertNoWarning(
-    <Figure>
-      <P></P>
-      <Figcaption></Figcaption>
       <P></P>
     </Figure>,
   );

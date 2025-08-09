@@ -9,7 +9,7 @@ import {
 import type { CrossOrigin, PossiblyBlockingToken } from "../shared.tsx";
 import {
   BuildVerificationDOM,
-  CmNothing,
+  cmTrivial,
   type DOMNode,
   DOMNodeInfo,
 } from "../contentModel.tsx";
@@ -104,8 +104,7 @@ export function Link(
 
 const dom = new DOMNodeInfo(
   "link",
-  new CmNothing(),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-link-element",
+  cmTrivial,
 );
 
 const bodyOkRels = [

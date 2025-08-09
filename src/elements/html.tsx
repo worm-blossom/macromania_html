@@ -4,8 +4,7 @@ import {
   BuildVerificationDOM,
   CAT_BODY,
   CAT_HEAD,
-  CmCategory,
-  CmSequence,
+  cmSequence,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -30,6 +29,5 @@ export function Html(
 
 const dom = new DOMNodeInfo(
   "html",
-  new CmSequence([new CmCategory(CAT_HEAD), new CmCategory(CAT_BODY)]),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-root-element",
+  cmSequence([CAT_HEAD, CAT_BODY]),
 );

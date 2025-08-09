@@ -2,9 +2,7 @@ import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_FLOW_CONTENT,
-  CmCategory,
-  CmZeroOrMore,
+  cmAllFlow,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -27,6 +25,5 @@ export function Section(
 
 const dom = new DOMNodeInfo(
   "section",
-  new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-section-element",
+  cmAllFlow,
 );

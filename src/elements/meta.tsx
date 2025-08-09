@@ -2,7 +2,7 @@ import type { Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CmNothing,
+  cmTrivial,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -65,6 +65,5 @@ export function Meta(
 
 const dom = new DOMNodeInfo(
   "meta",
-  new CmNothing(),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element",
+  cmTrivial,
 );

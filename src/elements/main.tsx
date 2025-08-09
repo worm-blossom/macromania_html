@@ -2,14 +2,12 @@ import type { Children, Context, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_FLOW_CONTENT,
-  Category,
-  CmAnd,
-  CmCategory,
-  CmZeroOrMore,
+  cmAllFlow,
+  cmAnd,
   type DOMNode,
   DOMNodeInfo,
 } from "../contentModel.tsx";
+import { info, warn } from "../mod.tsx";
 
 /**
  * The [main element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-main-element) represents the dominant contents of the document.
@@ -32,49 +30,55 @@ export function Main(
   );
 }
 
-export class CategoryHierarchicallyCorrectMain extends Category {
-  constructor() {
-    super(
-      "https://html.spec.whatwg.org/multipage/grouping-content.html#hierarchically-correct-main-element",
-    );
-  }
+function cmHierarchicallyCorrectMain(
+  ctx: Context,
+  node: DOMNode<TagProps>,
+): boolean {
+  // A hierarchically correct main element is one whose ancestor elements are limited to html, body, div, form without an accessible name, and autonomous custom elements. Each main element must be a hierarchically correct main element.
 
-  override name(ctx: Context): string {
-    return `hierarchically correct ${
-      ctx.fmtCode("main")
-    } element (we perform a slightly simplified check, we require a ${
-      ctx.fmtCode("main")
-    } element whose ancestor elements are limited to ${ctx.fmtCode("html")}, ${
-      ctx.fmtCode("body")
-    }, ${ctx.fmtCode("div")}, or ${ctx.fmtCode("form")} elements)`;
-  }
+  // We simplify this by allowing all forms, and disallowing autonomous custom elements.
 
-  override belongsToCategory<Props extends TagProps>(
-    _ctx: Context,
-    node: DOMNode<Props>,
-  ): boolean {
-    let n = node.parent;
+  let n = node.parent;
 
-    while (n !== undefined) {
-      if (!["html", "body", "div", "form"].includes(n.info.tag)) {
-        return false;
-      } else {
-        n = n.parent;
-      }
+  while (n !== undefined) {
+    if (!["html", "body", "div", "form"].includes(n.info.tag)) {
+      warn(
+        ctx,
+        `The only allowed ancestors for a ${ctx.fmtCode("main")} tag are ${
+          ctx.fmtCode("html")
+        }, ${ctx.fmtCode("body")}, ${ctx.fmtCode("div")}, or ${
+          ctx.fmtCode("form")
+        } tags.`,
+      );
+
+      ctx.loggingGroup(() => {
+        info(
+          ctx,
+          `Offending ${ctx.fmtCode("main")} tag at ${
+            ctx.fmtDebuggingInformation(
+              node.definedAt!,
+            )
+          }`,
+        );
+        info(
+          ctx,
+          `Offending ancestor ${ctx.fmtCode(n!.info.tag)} tag at ${
+            ctx.fmtDebuggingInformation(
+              n!.definedAt!,
+            )
+          }`,
+        );
+      });
+      return false;
+    } else {
+      n = n.parent;
     }
-
-    return true;
   }
-}
 
-export const CAT_HIERARCHICALLY_CORRECT_MAIN =
-  new CategoryHierarchicallyCorrectMain();
+  return true;
+}
 
 const dom = new DOMNodeInfo(
   "main",
-  new CmAnd([
-    new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
-    new CmCategory(CAT_HIERARCHICALLY_CORRECT_MAIN),
-  ]),
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-main-element",
+  cmAnd([cmAllFlow, cmHierarchicallyCorrectMain]),
 );

@@ -3,11 +3,11 @@ import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
   CAT_FLOW_CONTENT,
-  type ContentModel,
   type DOMNode,
   DOMNodeInfo,
+  logContentModelViolation,
 } from "../contentModel.tsx";
-import { info } from "../mod.tsx";
+import { info, warn } from "../mod.tsx";
 
 /**
  * The [figure element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figure-element) represents some [flow content](https://html.spec.whatwg.org/multipage/dom.html#flow-content-2), optionally with a caption, that is self-contained (like a complete sentence) and is typically referenced as a single unit from the main flow of the document.
@@ -26,49 +26,100 @@ export function Figure(
   );
 }
 
-const figureContentModel: ContentModel = {
-  /**
-   * Returns true iff the children are valid. Does not log anything.
-   */
-  checkChildren: (ctx: Context, children: DOMNode<TagProps>[]) => {
-    // Either: one figcaption element followed by flow content.
-    // Or: flow content followed by one figcaption element.
-    // Or: flow content.
+function figureContentModel(
+  ctx: Context,
+  node: DOMNode<TagProps>,
+): boolean {
+  // Either: one figcaption element followed by flow content.
+  // Or: flow content followed by one figcaption element.
+  // Or: flow content.
 
-    let captionCount = 0;
+  let noMoreFlowContentAllowed = false;
+  let noMoreFigcaptionsAllowed = false;
+  let foundFlowContentAlready = false;
 
-    for (const child of children) {
-      if (child.info.tag === "figcaption") {
-        captionCount += 1;
+  for (const child of node.children) {
+    if (child.info.tag === "figcaption") {
+      if (noMoreFigcaptionsAllowed) {
+        warn(
+          ctx,
+          `Must not nest more than one ${
+            ctx.fmtCode("figcaption")
+          } tag inside a ${ctx.fmtCode("figure")} tag.`,
+        );
 
-        if (captionCount > 1) {
-          return false;
-        }
+        ctx.loggingGroup(() => {
+          info(
+            ctx,
+            `Offending ${ctx.fmtCode("figcaption")} tag at ${
+              ctx.fmtDebuggingInformation(
+                child.definedAt!,
+              )
+            }`,
+          );
+          info(
+            ctx,
+            `Outer ${ctx.fmtCode("figure")} tag at ${
+              ctx.fmtDebuggingInformation(
+                node.definedAt!,
+              )
+            }`,
+          );
+        });
+        return false;
       } else {
-        if (!CAT_FLOW_CONTENT.belongsToCategory(ctx, child)) {
-          return false;
+        noMoreFigcaptionsAllowed = true;
+        if (foundFlowContentAlready) {
+          noMoreFlowContentAllowed = true;
         }
       }
+    } else {
+      const result = CAT_FLOW_CONTENT(ctx, node);
+
+      if (result === true) {
+        if (noMoreFlowContentAllowed) {
+          warn(
+            ctx,
+            `Must not place flow content such as ${
+              ctx.fmtCode(child.info.tag)
+            } tags after a ${ctx.fmtCode("figcaption")} tag inside a ${
+              ctx.fmtCode("figure")
+            } tag, if there was already flow content preceding the ${
+              ctx.fmtCode("figcaption")
+            } tag.`,
+          );
+
+          ctx.loggingGroup(() => {
+            info(
+              ctx,
+              `Offending ${ctx.fmtCode(child.info.tag)} tag at ${
+                ctx.fmtDebuggingInformation(
+                  child.definedAt!,
+                )
+              }`,
+            );
+            info(
+              ctx,
+              `Outer ${ctx.fmtCode("figure")} tag at ${
+                ctx.fmtDebuggingInformation(
+                  node.definedAt!,
+                )
+              }`,
+            );
+          });
+        } else {
+          foundFlowContentAlready = true;
+        }
+      } else {
+        logContentModelViolation(ctx, node, child);
+      }
     }
+  }
 
-    return true;
-  },
-
-  /**
-   * Log with the `info` function a human-friendly description of what was expected (and optionally, where things went wrong).
-   */
-  expected: (ctx: Context, _children: DOMNode<TagProps>[]) => {
-    info(
-      ctx,
-      `any amount of flow content and zero or one ${
-        ctx.fmtCode("figcaption")
-      } elements anywhere`,
-    );
-  },
-};
+  return true;
+}
 
 const dom = new DOMNodeInfo(
   "figure",
   figureContentModel,
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-figure-element",
 );

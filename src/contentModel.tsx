@@ -8,6 +8,7 @@ import {
 } from "macromania";
 
 import {
+  AProps,
   DynamicAttributes,
   EscapeHtml,
   Info,
@@ -21,6 +22,10 @@ import {
 } from "./mod.tsx";
 import { SetCurrentKeys } from "./mod.tsx";
 import { isLinkAllowedInBody } from "./elements/link.tsx";
+import { AudioProps } from "./elements/audio.tsx";
+import { VideoProps } from "./elements/video.tsx";
+import { ImgProps } from "./elements/img.tsx";
+import { InputProps } from "./elements/input.tsx";
 
 type VerificationState = {
   currentlyInsideMapElement: boolean;
@@ -43,794 +48,831 @@ export function setCurrentlyInsideMapElement(ctx: Context, newVal: boolean) {
 }
 
 /**
- * https://html.spec.whatwg.org/multipage/dom.html#content-categories
+ * Call this function to report on invalid content models in content model checks (`DOMNodeInfo.check`) to a child element which should not be there.
  */
-export abstract class Category {
-  protected specURL: string;
+export function logContentModelViolation(
+  ctx: Context,
+  ancestor: DOMNode<TagProps>,
+  offending: DOMNode<TagProps>,
+  elaboration?: string,
+) {
+  warn(
+    ctx,
+    `Must not nest ${ctx.fmtCode(offending.info.tag)} tag inside ${
+      ctx.fmtCode(ancestor.info.tag)
+    } tag${elaboration === undefined ? "." : ` like this.`}`,
+  );
 
-  constructor(specURL: string) {
-    this.specURL = specURL;
-  }
-
-  /**
-   * Returns a hyperlink to the specification of this category in the living standard.
-   */
-  specifiedAt(): string {
-    return this.specURL;
-  }
-
-  /**
-   * Renders a human-friendly name for this category.
-   */
-  abstract name(ctx: Context): string;
-
-  /**
-   * Returns true iff the given node belongs to this category.
-   */
-  abstract belongsToCategory<Props extends TagProps>(
-    ctx: Context,
-    node: DOMNode<Props>,
-  ): boolean;
-}
-
-export class CategorySpecificTag extends Category {
-  tag: string;
-
-  constructor(specURL: string, tag: string) {
-    super(specURL);
-    this.tag = tag;
-  }
-
-  override name(ctx: Context): string {
-    return `${ctx.fmtCode(this.tag)} tag`;
-  }
-
-  override belongsToCategory<Props extends TagProps>(
-    _ctx: Context,
-    node: DOMNode<Props>,
-  ): boolean {
-    return node.info.tag === this.tag;
-  }
-}
-
-export const CAT_HEAD = new CategorySpecificTag(
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-head-element",
-  "head",
-);
-export const CAT_BODY = new CategorySpecificTag(
-  "https://html.spec.whatwg.org/multipage/sections.html#the-body-element",
-  "body",
-);
-export const CAT_TITLE = new CategorySpecificTag(
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-title-element",
-  "title",
-);
-export const CAT_BASE = new CategorySpecificTag(
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-base-element",
-  "base",
-);
-export const CAT_LI = new CategorySpecificTag(
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element",
-  "li",
-);
-
-export class CategorySetOfElements extends Category {
-  setName: string;
-  tags: Set<string>;
-  special: Set<
-    [string, string, (ctx: Context, node: DOMNode<TagProps>) => boolean]
-  >;
-  both: (string | [
-    string, /* tag name*/
-    string, /* condition */
-    (ctx: Context, node: DOMNode<TagProps>) => boolean,
-  ])[];
-
-  constructor(
-    specURL: string,
-    setName: string,
-    tags: (string | [
-      string,
-      string,
-      (ctx: Context, node: DOMNode<TagProps>) => boolean,
-    ])[],
-  ) {
-    super(specURL);
-    this.setName = setName;
-    this.tags = new Set();
-    this.special = new Set();
-    this.both = tags;
-
-    for (const candidate of tags) {
-      if (typeof candidate === "string") {
-        this.tags.add(candidate);
-      } else {
-        this.special.add(candidate);
-      }
+  ctx.loggingGroup(() => {
+    if (elaboration) {
+      info(ctx, elaboration);
     }
-  }
+    info(
+      ctx,
+      `Offending ${ctx.fmtCode(offending.info.tag)} tag at ${
+        ctx.fmtDebuggingInformation(
+          offending.definedAt!,
+        )
+      }`,
+    );
+    info(
+      ctx,
+      `Outer ${ctx.fmtCode(ancestor.info.tag)} tag at ${
+        ctx.fmtDebuggingInformation(
+          ancestor.definedAt!,
+        )
+      }`,
+    );
+  });
+}
 
-  override name(ctx: Context): string {
-    return `${this.setName} content, i.e., one of the following tags: ${
-      Array.from(
-        this.both.map((tag) =>
-          typeof tag === "string"
-            ? ctx.fmtCode(tag)
-            : `${ctx.fmtCode(tag[0])} (${tag[1]})`
-        ),
-      ).join(", ")
-    }`;
-  }
+/**
+ * The type of functions we use to check whether an individual html node is fine in some context. Returns `true` if it is ok, `false` if not and nothing would change that, and an elaboration string if it is not ok but that requires an explanation beyond its tag.
+ *
+ * Does not do any logging.
+ */
+type CheckElement<Props extends TagProps> = (
+  ctx: Context,
+  node: DOMNode<Props>,
+) => boolean | string;
 
-  override belongsToCategory<Props extends TagProps>(
-    ctx: Context,
-    node: DOMNode<Props>,
-  ): boolean {
-    if (this.tags.has(node.info.tag)) {
+export function singleTagCategory<Props extends TagProps>(
+  tag: string,
+): CheckElement<Props> {
+  return (_ctx: Context, node: DOMNode<Props>) => node.info.tag === tag;
+}
+
+export const CAT_HEAD = singleTagCategory("head");
+export const CAT_BODY = singleTagCategory("body");
+export const CAT_TITLE = singleTagCategory("title");
+export const CAT_BASE = singleTagCategory("base");
+export const CAT_LI = singleTagCategory("li");
+
+export function choiceCategory(
+  cats: CheckElement<TagProps>[],
+): CheckElement<TagProps> {
+  return (ctx: Context, node: DOMNode<TagProps>) => {
+    for (const cat of cats) {
+      const result = cat(ctx, node);
+      if (result === true) {
+        return true;
+      } else if (typeof result === "string") {
+        return result;
+      }
+      // Else, go to next iteration.
+    }
+
+    return false;
+  };
+}
+
+export const CAT_METADATA_CONTENT = choiceCategory([
+  singleTagCategory("base"),
+  singleTagCategory("link"),
+  singleTagCategory("meta"),
+  singleTagCategory("noscript"),
+  singleTagCategory("script"),
+  singleTagCategory("style"),
+  singleTagCategory("template"),
+  singleTagCategory("title"),
+]);
+
+export const CAT_HEADER_OR_FOOTER = choiceCategory([
+  singleTagCategory("header"),
+  singleTagCategory("footer"),
+]);
+
+export const CAT_SCRIPT_SUPPORTING = choiceCategory([
+  singleTagCategory("script"),
+  singleTagCategory("template"),
+]);
+
+export const CAT_LI_OR_SCRIPT_SUPPORTING = choiceCategory([
+  singleTagCategory("li"),
+  singleTagCategory("script"),
+  singleTagCategory("template"),
+]);
+
+export const CAT_NOT_IN_ADDRESS = choiceCategory([
+  singleTagCategory("h1"),
+  singleTagCategory("h2"),
+  singleTagCategory("h3"),
+  singleTagCategory("h4"),
+  singleTagCategory("h5"),
+  singleTagCategory("h6"),
+  singleTagCategory("hgroup"),
+  singleTagCategory("article"),
+  singleTagCategory("aside"),
+  singleTagCategory("nav"),
+  singleTagCategory("section"),
+  singleTagCategory("header"),
+  singleTagCategory("footer"),
+  singleTagCategory("address"),
+]);
+
+export const CAT_NOT_IN_DT = choiceCategory([
+  singleTagCategory("h1"),
+  singleTagCategory("h2"),
+  singleTagCategory("h3"),
+  singleTagCategory("h4"),
+  singleTagCategory("h5"),
+  singleTagCategory("h6"),
+  singleTagCategory("hgroup"),
+  singleTagCategory("article"),
+  singleTagCategory("aside"),
+  singleTagCategory("nav"),
+  singleTagCategory("section"),
+  singleTagCategory("header"),
+  singleTagCategory("footer"),
+]);
+
+export const CAT_FLOW_AREA = (ctx: Context, node: DOMNode<TagProps>) => {
+  if (node.info.tag === "area") {
+    if (isCurrentlyInsideMapElement(ctx)) {
       return true;
     } else {
-      for (const [_tag, _condition, predicate] of this.special.keys()) {
-        if (predicate(ctx, node)) {
-          return true;
-        }
+      return `In this context, an ${
+        ctx.fmtCode("area")
+      } tag is only allowed if it is a descendant of a ${
+        ctx.fmtCode("map")
+      } element.`;
+    }
+  } else {
+    return false;
+  }
+};
+
+export const CAT_LINK_ALLOWED_IN_BODY = (
+  ctx: Context,
+  node: DOMNode<TagProps>,
+) => {
+  if (node.info.tag === "link") {
+    if (isLinkAllowedInBody(node)) {
+      return true;
+    } else {
+      return `In this context, a ${
+        ctx.fmtCode("link")
+      } tag is only allowed if it is allowed in the body (see ${
+        ctx.fmtURL(
+          "https://html.spec.whatwg.org/multipage/semantics.html#allowed-in-the-body",
+        )
+      } ).`;
+    }
+  } else {
+    return false;
+  }
+};
+
+export const CAT_META_WITH_ITEMPROP = (
+  ctx: Context,
+  node: DOMNode<TagProps>,
+) => {
+  if (node.info.tag === "meta") {
+    if (node.attrs!.itemprop !== undefined) {
+      return true;
+    } else {
+      return `In this context, a ${
+        ctx.fmtCode("meta")
+      } tag is only allowed if it has an ${ctx.fmtCode("itemprop")} attribute.`;
+    }
+  } else {
+    return false;
+  }
+};
+
+export const CAT_FLOW_CONTENT = choiceCategory([
+  singleTagCategory("a"),
+  singleTagCategory("abbr"),
+  singleTagCategory("address"),
+  CAT_FLOW_AREA,
+  singleTagCategory("article"),
+  singleTagCategory("audio"),
+  singleTagCategory("b"),
+  singleTagCategory("bdi"),
+  singleTagCategory("bdo"),
+  singleTagCategory("blockquote"),
+  singleTagCategory("br"),
+  singleTagCategory("canvas"),
+  singleTagCategory("cite"),
+  singleTagCategory("code"),
+  singleTagCategory("data"),
+  singleTagCategory("datalist"),
+  singleTagCategory("del"),
+  singleTagCategory("details"),
+  singleTagCategory("dfn"),
+  singleTagCategory("dialog"),
+  singleTagCategory("div"),
+  singleTagCategory("dl"),
+  singleTagCategory("em"),
+  singleTagCategory("embed"),
+  singleTagCategory("fieldset"),
+  singleTagCategory("figure"),
+  singleTagCategory("footer"),
+  singleTagCategory("form"),
+  singleTagCategory("h1"),
+  singleTagCategory("h2"),
+  singleTagCategory("h3"),
+  singleTagCategory("h4"),
+  singleTagCategory("h5"),
+  singleTagCategory("h6"),
+  singleTagCategory("header"),
+  singleTagCategory("hgroup"),
+  singleTagCategory("hr"),
+  singleTagCategory("i"),
+  singleTagCategory("iframe"),
+  singleTagCategory("img"),
+  singleTagCategory("input"),
+  singleTagCategory("ins"),
+  singleTagCategory("kbd"),
+  singleTagCategory("label"),
+  CAT_LINK_ALLOWED_IN_BODY,
+  singleTagCategory("main"),
+  singleTagCategory("map"),
+  singleTagCategory("mark"),
+  singleTagCategory("menu"),
+  CAT_META_WITH_ITEMPROP,
+  singleTagCategory("meter"),
+  singleTagCategory("nav"),
+  singleTagCategory("noscript"),
+  singleTagCategory("object"),
+  singleTagCategory("ol"),
+  singleTagCategory("output"),
+  singleTagCategory("p"),
+  singleTagCategory("picture"),
+  singleTagCategory("pre"),
+  singleTagCategory("progress"),
+  singleTagCategory("q"),
+  singleTagCategory("ruby"),
+  singleTagCategory("s"),
+  singleTagCategory("samp"),
+  singleTagCategory("script"),
+  singleTagCategory("search"),
+  singleTagCategory("section"),
+  singleTagCategory("select"),
+  singleTagCategory("slot"),
+  singleTagCategory("small"),
+  singleTagCategory("span"),
+  singleTagCategory("strong"),
+  singleTagCategory("sub"),
+  singleTagCategory("sup"),
+  singleTagCategory("table"),
+  singleTagCategory("template"),
+  singleTagCategory("textarea"),
+  singleTagCategory("time"),
+  singleTagCategory("u"),
+  singleTagCategory("ul"),
+  singleTagCategory("var"),
+  singleTagCategory("video"),
+  singleTagCategory("wbr"),
+]);
+
+export const CAT_PHRASING_CONTENT = choiceCategory([
+  singleTagCategory("a"),
+  singleTagCategory("abbr"),
+  CAT_FLOW_AREA,
+  singleTagCategory("audio"),
+  singleTagCategory("b"),
+  singleTagCategory("bdi"),
+  singleTagCategory("bdo"),
+  singleTagCategory("br"),
+  singleTagCategory("button"),
+  singleTagCategory("canvas"),
+  singleTagCategory("cite"),
+  singleTagCategory("code"),
+  singleTagCategory("data"),
+  singleTagCategory("datalist"),
+  singleTagCategory("del"),
+  singleTagCategory("dfn"),
+  singleTagCategory("em"),
+  singleTagCategory("embed"),
+  singleTagCategory("i"),
+  singleTagCategory("iframe"),
+  singleTagCategory("img"),
+  singleTagCategory("input"),
+  singleTagCategory("ins"),
+  singleTagCategory("kbd"),
+  singleTagCategory("label"),
+  CAT_LINK_ALLOWED_IN_BODY,
+  singleTagCategory("map"),
+  singleTagCategory("mark"),
+  CAT_META_WITH_ITEMPROP,
+  singleTagCategory("meter"),
+  singleTagCategory("noscript"),
+  singleTagCategory("object"),
+  singleTagCategory("output"),
+  singleTagCategory("picture"),
+  singleTagCategory("progress"),
+  singleTagCategory("q"),
+  singleTagCategory("ruby"),
+  singleTagCategory("s"),
+  singleTagCategory("samp"),
+  singleTagCategory("script"),
+  singleTagCategory("select"),
+  singleTagCategory("slot"),
+  singleTagCategory("small"),
+  singleTagCategory("span"),
+  singleTagCategory("strong"),
+  singleTagCategory("sub"),
+  singleTagCategory("sup"),
+  singleTagCategory("template"),
+  singleTagCategory("textarea"),
+  singleTagCategory("time"),
+  singleTagCategory("u"),
+  singleTagCategory("var"),
+  singleTagCategory("video"),
+  singleTagCategory("wbr"),
+]);
+
+export const CAT_SELECT_ELEMENT_INNER_CONTENT_ELEMENTS = choiceCategory([
+  singleTagCategory("option"),
+  singleTagCategory("optgroup"),
+  singleTagCategory("hr"),
+  singleTagCategory("script"),
+  singleTagCategory("template"),
+  singleTagCategory("noscript"),
+  singleTagCategory("div"),
+]);
+
+export const CAT_OPTGROUP_ELEMENT_INNER_CONTENT_ELEMENTS = choiceCategory([
+  singleTagCategory("option"),
+  singleTagCategory("script"),
+  singleTagCategory("template"),
+  singleTagCategory("noscript"),
+  singleTagCategory("div"),
+]);
+
+const SIMPLE_INTERACTIVE_CONTENT = choiceCategory([
+  singleTagCategory("button"),
+  singleTagCategory("details"),
+  singleTagCategory("embed"),
+  singleTagCategory("iframe"),
+  singleTagCategory("label"),
+  singleTagCategory("select"),
+  singleTagCategory("textarea"),
+]);
+
+export const CAT_INTERACTIVE_CONTENT: CheckElement<TagProps> = (
+  ctx: Context,
+  node: DOMNode<TagProps>,
+) => {
+  if (node.info.tag === "a") {
+    if ((node as DOMNode<AProps>).evaledAttrs!["href"] === undefined) {
+      return `An ${ctx.fmtCode("a")} tag must have its ${
+        ctx.fmtCode("href")
+      } attribute specified to qualify as interactive content.`;
+    } else {
+      return true;
+    }
+  } else if (node.info.tag === "audio") {
+    if ((node as DOMNode<AudioProps>).evaledAttrs!["controls"] === undefined) {
+      return `An ${ctx.fmtCode("audio")} tag must have its ${
+        ctx.fmtCode("controls")
+      } attribute specified to qualify as interactive content.`;
+    } else {
+      return true;
+    }
+  } else if (node.info.tag === "video") {
+    if ((node as DOMNode<VideoProps>).evaledAttrs!["controls"] === undefined) {
+      return `A ${ctx.fmtCode("video")} tag must have its ${
+        ctx.fmtCode("controls")
+      } attribute specified to qualify as interactive content.`;
+    } else {
+      return true;
+    }
+  } else if (node.info.tag === "img") {
+    if ((node as DOMNode<ImgProps>).evaledAttrs!["usemap"] === undefined) {
+      return `An ${ctx.fmtCode("img")} tag must have its ${
+        ctx.fmtCode("usemap")
+      } attribute specified to qualify as interactive content.`;
+    } else {
+      return true;
+    }
+  } else if (node.info.tag === "input") {
+    if ((node as DOMNode<InputProps>).evaledAttrs!["type_"] === "hidden") {
+      return `An ${ctx.fmtCode("input")} tag must have a ${
+        ctx.fmtCode("type")
+      } attribute that is not set to ${
+        ctx.fmtCode("hidden")
+      } to qualify as interactive content.`;
+    } else {
+      return true;
+    }
+  } else {
+    return SIMPLE_INTERACTIVE_CONTENT(ctx, node);
+  }
+};
+
+export const CAT_OPTION_ELEMENT_INNER_CONTENT_ELEMENTS = (
+  ctx: Context,
+  node: DOMNode<TagProps>,
+) => {
+  if (node.info.tag === "div") {
+    return true;
+  } else {
+    const phrasing_result = CAT_PHRASING_CONTENT(ctx, node);
+    if (phrasing_result !== true) {
+      return phrasing_result;
+    } else {
+      // It is phrasing content, now we can filter the disallowed ones.
+      if (node.info.tag === "datalist" || node.info.tag === "object") {
+        return false;
+      } else if (node.evaledAttrs!["tabindex"] !== undefined) {
+        return `A ${ctx.fmtCode("option")} tag must not contain tags whose ${
+          ctx.fmtCode("tabindex")
+        } attribute is specified`;
+      } else if (CAT_INTERACTIVE_CONTENT(ctx, node) === true) {
+        return `A ${
+          ctx.fmtCode("option")
+        } tag must not contain interactive content (see ${
+          ctx.fmtURL(
+            "https://html.spec.whatwg.org/multipage/dom.html#interactive-content",
+          )
+        } ).`;
+      } else {
+        // Yay, this is non-excluded phrasing content
+        return true;
       }
-      return false;
     }
   }
-}
+};
 
-export const CAT_METADATA_CONTENT = new CategorySetOfElements(
-  "https://html.spec.whatwg.org/multipage/dom.html#metadata-content-2",
-  "metadata",
-  ["base", "link", "meta", "noscript", "script", "style", "template", "title"],
+export const cmAllFlow = cmAllChildrenPass(CAT_FLOW_CONTENT);
+export const cmAllPhrasing = cmAllChildrenPass(CAT_PHRASING_CONTENT);
+export const cmAllSelectElementInnerContentElements = cmAllChildrenPass(
+  CAT_SELECT_ELEMENT_INNER_CONTENT_ELEMENTS,
+);
+export const cmAllOptgroupElementInnerContentElements = cmAllChildrenPass(
+  CAT_OPTGROUP_ELEMENT_INNER_CONTENT_ELEMENTS,
+);
+export const cmAllOptionElementInnerContentElements = cmAllChildrenPass(
+  CAT_OPTION_ELEMENT_INNER_CONTENT_ELEMENTS,
 );
 
-export const CAT_HEADER_OR_FOOTER = new CategorySetOfElements(
-  "https://html.spec.whatwg.org/multipage/sections.html#the-header-element",
-  "header or footer",
-  ["header", "footer"],
-);
-
-export const CAT_SCRIPT_SUPPORTING = new CategorySetOfElements(
-  "https://html.spec.whatwg.org/multipage/dom.html#script-supporting-elements-2",
-  "script-supporting",
-  ["script", "template"],
-);
-
-export const CAT_NOT_IN_ADDRESS = new CategorySetOfElements(
-  "https://html.spec.whatwg.org/multipage/sections.html#the-address-element",
-  "heading content, sectioning content, header, footer, or address",
-  [
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "hgroup",
-    "article",
-    "aside",
-    "nav",
-    "section",
-    "header",
-    "footer",
-    "address",
-  ],
-);
-
-export const CAT_NOT_IN_DT = new CategorySetOfElements(
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-dt-element",
-  "heading content, sectioning content, header, or footer",
-  [
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "hgroup",
-    "article",
-    "aside",
-    "nav",
-    "section",
-    "header",
-    "footer",
-  ],
-);
-
-export const CAT_FLOW_CONTENT = new CategorySetOfElements(
-  "https://html.spec.whatwg.org/multipage/dom.html#flow-content-2",
-  "flow",
-  [
-    "a",
-    "abbr",
-    "address",
-    ["area", "(if it is a descendant of a map element)", (ctx, _node) => {
-      return isCurrentlyInsideMapElement(ctx);
-    }],
-    "article",
-    "audio",
-    "b",
-    "bdi",
-    "bdo",
-    "blockquote",
-    "br",
-    "canvas",
-    "cite",
-    "code",
-    "data",
-    "datalist",
-    "del",
-    "details",
-    "dfn",
-    "dialog",
-    "div",
-    "dl",
-    "em",
-    "embed",
-    "fieldset",
-    "figure",
-    "footer",
-    "form",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "header",
-    "hgroup",
-    "hr",
-    "i",
-    "iframe",
-    "img",
-    "input",
-    "ins",
-    "kbd",
-    "label",
-    [
-      "link",
-      "(if it is allowed in the body, see https://html.spec.whatwg.org/multipage/semantics.html#allowed-in-the-body )",
-      (_ctx, node) => {
-        return isLinkAllowedInBody(node);
-      },
-    ],
-    "main",
-    "map",
-    "mark",
-    "menu",
-    ["meta", "(if the itemprop attribute is present", (_ctx, node) => {
-      return node.attrs!.itemprop !== undefined;
-    }],
-    "meter",
-    "nav",
-    "noscript",
-    "object",
-    "ol",
-    "output",
-    "p",
-    "picture",
-    "pre",
-    "progress",
-    "q",
-    "ruby",
-    "s",
-    "samp",
-    "script",
-    "search",
-    "section",
-    "select",
-    "slot",
-    "small",
-    "span",
-    "strong",
-    "sub",
-    "sup",
-    "table",
-    "template",
-    "textarea",
-    "time",
-    "u",
-    "ul",
-    "var",
-    "video",
-    "wbr",
-  ],
-);
-
-export const CAT_PHRASING_CONTENT = new CategorySetOfElements(
-  "https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2",
-  "phrasing",
-  [
-    "a",
-    "abbr",
-    ["area", "(if it is a descendant of a map element)", (ctx, _node) => {
-      return isCurrentlyInsideMapElement(ctx);
-    }],
-    "audio",
-    "b",
-    "bdi",
-    "bdo",
-    "br",
-    "button",
-    "canvas",
-    "cite",
-    "code",
-    "data",
-    "datalist",
-    "del",
-    "dfn",
-    "em",
-    "embed",
-    "i",
-    "iframe",
-    "img",
-    "input",
-    "ins",
-    "kbd",
-    "label",
-    [
-      "link",
-      "(if it is allowed in the body, see https://html.spec.whatwg.org/multipage/semantics.html#allowed-in-the-body )",
-      (_ctx, node) => {
-        return isLinkAllowedInBody(node);
-      },
-    ],
-    "map",
-    "mark",
-    ["meta", "(if the itemprop attribute is present", (_ctx, node) => {
-      return node.attrs!.itemprop !== undefined;
-    }],
-    "meter",
-    "noscript",
-    "object",
-    "output",
-    "picture",
-    "progress",
-    "q",
-    "ruby",
-    "s",
-    "samp",
-    "script",
-    "select",
-    "slot",
-    "small",
-    "span",
-    "strong",
-    "sub",
-    "sup",
-    "template",
-    "textarea",
-    "time",
-    "u",
-    "var",
-    "video",
-    "wbr",
-  ],
-);
-
-export interface ContentModel {
-  /**
-   * Returns true iff the children are valid. Does not log anything.
-   */
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean;
-
-  /**
-   * Log with the `info` function a human-friendly description of what was expected (and optionally, where things went wrong).
-   */
-  expected(ctx: Context, children: DOMNode<TagProps>[]): void;
-}
-
 /**
- * To be called after printing an `expected` content of a ContentModel which was not satisfied.
+ * Passes verification iff the children correspond exactly to the given sequence of element checks.
  */
-function thingsWentWrongHere(ctx: Context) {
-  info(ctx, `${ctx.fmt.bgBrightRed(`^^^^ things went wrong here ^^^^`)}`);
-}
+export function cmSequence(
+  elements: CheckElement<TagProps>[],
+): CheckHtml<TagProps> {
+  return (ctx: Context, node: DOMNode<TagProps>) => {
+    if (node.children.length !== elements.length) {
+      warn(
+        ctx,
+        `Expected exactly ${elements.length} child tags, but got ${node.children.length}.`,
+      );
 
-/**
- * Works iff there are no contents at all
- */
-export class CmNothing implements ContentModel {
-  constructor() {
-  }
-
-  checkChildren(_ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    return children.length === 0;
-  }
-
-  expected(ctx: Context) {
-    info(ctx, `no inner content at all`);
-  }
-}
-
-/**
- * Works iff there are no contained tags (text is okay, however).
- */
-export class CmNoTags implements ContentModel {
-  constructor() {
-  }
-
-  checkChildren(_ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    return children.length === 0;
-  }
-
-  expected(ctx: Context) {
-    info(ctx, `no inner html elements at all (text content is fine, however)`);
-  }
-}
-
-/**
- * Always works, because we have not implemented the check.
- */
-export class CmUnverified implements ContentModel {
-  constructor() {
-  }
-
-  checkChildren(_ctx: Context, _children: DOMNode<TagProps>[]): boolean {
-    return true;
-  }
-
-  expected(ctx: Context) {
-    info(
-      ctx,
-      `anything whatsoever (we do not check this part of the html spec)`,
-    );
-  }
-}
-
-/**
- * Works iff there is exactly one child and its categories include this `category`.
- */
-export class CmCategory implements ContentModel {
-  category: Category;
-
-  constructor(category: Category) {
-    this.category = category;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    return children.length === 1 &&
-      this.category.belongsToCategory(ctx, children[0]);
-  }
-
-  expected(ctx: Context) {
-    info(
-      ctx,
-      `one ${this.category.name(ctx)} (see ${
-        ctx.fmtURL(this.category.specifiedAt())
-      } )`,
-    );
-  }
-}
-
-/**
- * Works iff no descendant belongs to this `category`.
- */
-export class CmNoDescendantOfCategory implements ContentModel {
-  category: Category;
-
-  constructor(category: Category) {
-    this.category = category;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    return children.every((child) => {
-      !this.category.belongsToCategory(ctx, child) &&
-        this.checkChildren(ctx, child.children);
-    });
-  }
-
-  expected(ctx: Context) {
-    info(
-      ctx,
-      `no nested ${this.category.name(ctx)} (see ${
-        ctx.fmtURL(this.category.specifiedAt())
-      } )`,
-    );
-  }
-}
-
-/**
- * Works iff exactly one of the children matches the `inner` content model.
- */
-export class CmContainsExactlyOne implements ContentModel {
-  inner: ContentModel;
-
-  constructor(inner: ContentModel) {
-    this.inner = inner;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    let matches = 0;
-
-    children.forEach((child) => {
-      if (this.inner.checkChildren(ctx, [child])) {
-        matches += 1;
-      }
-    });
-
-    return matches === 1;
-  }
-
-  expected(ctx: Context, children: DOMNode<TagProps>[]) {
-    info(
-      ctx,
-      `exactly one child tag satisfying the following:`,
-    );
-    ctx.loggingGroup(() => {
-      this.inner.expected(ctx, children);
-    });
-
-    const matchIndices: number[] = [];
-
-    children.forEach((child, i) => {
-      if (this.inner.checkChildren(ctx, [child])) {
-        matchIndices.push(i);
-      }
-    });
-
-    ctx.loggingGroup(() => {
-      if (matchIndices.length === 0) {
+      ctx.loggingGroup(() => {
         info(
           ctx,
-          `but ${ctx.fmt.italic("no")} child satisfied the requirement`,
+          `Tag with wrong number of children at ${
+            ctx.fmtDebuggingInformation(
+              node.definedAt!,
+            )
+          }`,
         );
-      } else {
-        info(
-          ctx,
-          `but ${
-            ctx.fmt.italic("too many")
-          } children satisfied the requirement, namely those at`,
-        );
-        ctx.loggingGroup(() => {
-          matchIndices.forEach((i) => {
-            info(
-              ctx,
-              `- ${ctx.fmtDebuggingInformation(children[i].definedAt!)}`,
-            );
-          });
-        });
-      }
-    });
-  }
-}
-
-/**
- * Works iff at most one of the children matches the `inner` content model.
- */
-export class CmContainsAtMostOne implements ContentModel {
-  inner: ContentModel;
-
-  constructor(inner: ContentModel) {
-    this.inner = inner;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    let matches = 0;
-
-    children.forEach((child) => {
-      if (this.inner.checkChildren(ctx, [child])) {
-        matches += 1;
-      }
-    });
-
-    return matches <= 1;
-  }
-
-  expected(ctx: Context, children: DOMNode<TagProps>[]) {
-    info(
-      ctx,
-      `at most one child tag to satisfy the following:`,
-    );
-    ctx.loggingGroup(() => {
-      this.inner.expected(ctx, children);
-    });
-
-    const matchIndices: number[] = [];
-
-    children.forEach((child, i) => {
-      if (this.inner.checkChildren(ctx, [child])) {
-        matchIndices.push(i);
-      }
-    });
-
-    ctx.loggingGroup(() => {
-      if (matchIndices.length > 1) {
-        info(
-          ctx,
-          `but ${
-            ctx.fmt.italic("too many")
-          } children satisfied the requirement, namely those at`,
-        );
-        ctx.loggingGroup(() => {
-          matchIndices.forEach((i) => {
-            info(
-              ctx,
-              `- ${ctx.fmtDebuggingInformation(children[i].definedAt!)}`,
-            );
-          });
-        });
-      }
-    });
-  }
-}
-
-/**
- * Works iff at least one of its `options` works.
- */
-export class CmChoice implements ContentModel {
-  options: ContentModel[];
-
-  constructor(options: ContentModel[]) {
-    this.options = options;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    return this.options.some((opt) => opt.checkChildren(ctx, children));
-  }
-
-  expected(ctx: Context, children: DOMNode<TagProps>[]) {
-    info(ctx, `any one of the following:`);
-    ctx.loggingGroup(() => {
-      this.options.forEach((opt) => {
-        opt.expected(ctx, children);
+        logEmptyLine(ctx, "warn");
       });
-    });
-  }
-}
 
-/**
- * Works iff the children correspond exactly to the `sequence`.
- */
-export class CmSequence implements ContentModel {
-  sequence: ContentModel[];
-
-  constructor(sequence: ContentModel[]) {
-    this.sequence = sequence;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    if (children.length !== this.sequence.length) {
       return false;
     } else {
-      for (let i = 0; i < this.sequence.length; i++) {
-        if (!this.sequence[i].checkChildren(ctx, [children[i]])) {
+      for (let i = 0; i < node.children.length; i++) {
+        const ret = elements[i](ctx, node.children[i]);
+
+        if (typeof ret === "string") {
+          logContentModelViolation(ctx, node, node.children[i], ret);
+          return false;
+        } else if (ret === false) {
+          logContentModelViolation(ctx, node, node.children[i]);
           return false;
         }
+        // Else, continue by checking the next child.
+      }
+
+      // All children passed.
+      return true;
+    }
+  };
+}
+
+/**
+ * Passes verification iff *all* the given `cms` pass verification.
+ */
+export function cmAnd(
+  cms: CheckHtml<TagProps>[],
+): CheckHtml<TagProps> {
+  return (ctx: Context, node: DOMNode<TagProps>) => {
+    for (const cm of cms) {
+      if (!cm(ctx, node)) {
+        return false;
       }
     }
 
     return true;
-  }
+  };
+}
 
-  expected(ctx: Context, children: DOMNode<TagProps>[]) {
-    info(ctx, `an exact sequence of the following:`);
-    ctx.loggingGroup(() => {
-      for (let i = 0; i < this.sequence.length; i++) {
-        this.sequence[i].expected(ctx, [children[i]]);
+/**
+ * Passes verification iff all children pass the given element check.
+ */
+export function cmAllChildrenPass(
+  checkChild: CheckElement<TagProps>,
+): CheckHtml<TagProps> {
+  return (ctx: Context, node: DOMNode<TagProps>) => {
+    for (let i = 0; i < node.children.length; i++) {
+      const ret = checkChild(ctx, node.children[i]);
 
-        if (i < children.length) {
-          if (!this.sequence[i].checkChildren(ctx, [children[i]])) {
-            thingsWentWrongHere(ctx);
-          }
-        } else {
-          if (!this.sequence[i].checkChildren(ctx, [])) {
-            thingsWentWrongHere(ctx);
-          }
-        }
+      if (typeof ret === "string") {
+        logContentModelViolation(ctx, node, node.children[i], ret);
+        return false;
+      } else if (ret === false) {
+        logContentModelViolation(ctx, node, node.children[i]);
+        return false;
       }
-    });
-  }
+      // Else, continue by checking the next child.
+    }
+
+    // All children passed.
+    return true;
+  };
 }
 
 /**
- * Works iff all the children correspond to the `inner` content model.
+ * Passes verification iff among all children exactly one passes the given element check.
  */
-export class CmZeroOrMore implements ContentModel {
-  inner: ContentModel;
+export function cmExactlyOneChild(
+  checkChild: CheckElement<TagProps>,
+  expected: (ctx: Context) => string,
+): CheckHtml<TagProps> {
+  return (ctx: Context, node: DOMNode<TagProps>) => {
+    const matches: DebuggingInformation[] = [];
 
-  constructor(inner: ContentModel) {
-    this.inner = inner;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    return children.every((child) => this.inner.checkChildren(ctx, [child]));
-  }
-
-  expected(ctx: Context, children: DOMNode<TagProps>[]) {
-    info(ctx, `zero or more of the following:`);
-    ctx.loggingGroup(() => {
-      this.inner.expected(ctx, children);
-    });
-  }
-}
-
-/**
- * Works iff there is at least one child and all the children correspond to the `inner` content model.
- */
-export class CmOneOrMore implements ContentModel {
-  inner: ContentModel;
-
-  constructor(inner: ContentModel) {
-    this.inner = inner;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    return children.length > 0 &&
-      children.every((child) => this.inner.checkChildren(ctx, [child]));
-  }
-
-  expected(ctx: Context, children: DOMNode<TagProps>[]) {
-    info(ctx, `one or more of the following:`);
-    ctx.loggingGroup(() => {
-      this.inner.expected(ctx, children);
-    });
-  }
-}
-
-/**
- * Works iff the children conform to all `inner` content models.
- */
-export class CmAnd implements ContentModel {
-  inner: ContentModel[];
-
-  constructor(inner: ContentModel[]) {
-    this.inner = inner;
-  }
-
-  checkChildren(ctx: Context, children: DOMNode<TagProps>[]): boolean {
-    return this.inner.every((cm) => cm.checkChildren(ctx, children));
-  }
-
-  expected(ctx: Context, children: DOMNode<TagProps>[]) {
-    const failureIndices: Set<number> = new Set();
-
-    this.inner.forEach((cm, i) => {
-      if (!cm.checkChildren(ctx, children)) {
-        failureIndices.add(i);
+    for (const child of node.children) {
+      if (checkChild(ctx, child) === true) {
+        matches.push(child.definedAt!);
       }
-    });
+    }
 
-    info(ctx, `contents satisfying all of the following criteria:`);
-    ctx.loggingGroup(() => {
-      this.inner.forEach((cm, i) => {
-        cm.expected(ctx, children);
-        if (failureIndices.has(i)) {
-          thingsWentWrongHere(ctx);
+    if (matches.length === 0) {
+      warn(
+        ctx,
+        `Expected exactly one ${expected(ctx)} among the children of this ${
+          ctx.fmtCode(node.info.tag)
+        } tag, but got none.`,
+      );
+      ctx.loggingGroup(() => {
+        info(
+          ctx,
+          `Outer ${ctx.fmtCode(node.info.tag)} tag at ${
+            ctx.fmtDebuggingInformation(
+              node.definedAt!,
+            )
+          }`,
+        );
+      });
+      return false;
+    } else if (matches.length === 1) {
+      return true;
+    } else {
+      warn(
+        ctx,
+        `Expected exactly one ${expected(ctx)} among the children of this ${
+          ctx.fmtCode(node.info.tag)
+        } tag, but got ${matches.length}.`,
+      );
+      ctx.loggingGroup(() => {
+        info(
+          ctx,
+          `Outer ${ctx.fmtCode(node.info.tag)} tag at ${
+            ctx.fmtDebuggingInformation(
+              node.definedAt!,
+            )
+          }`,
+        );
+
+        for (const match of matches) {
+          info(
+            ctx,
+            `Found ${expected(ctx)} at ${
+              ctx.fmtDebuggingInformation(
+                match,
+              )
+            }`,
+          );
         }
       });
+      return false;
+    }
+  };
+}
+
+/**
+ * Passes verification iff among all children at most one passes the given element check.
+ */
+export function cmAtMostOneChild(
+  checkChild: CheckElement<TagProps>,
+  expected: (ctx: Context) => string,
+): CheckHtml<TagProps> {
+  return (ctx: Context, node: DOMNode<TagProps>) => {
+    const matches: DebuggingInformation[] = [];
+
+    for (const child of node.children) {
+      if (checkChild(ctx, child) === true) {
+        matches.push(child.definedAt!);
+      }
+    }
+
+    if (matches.length <= 1) {
+      return true;
+    } else {
+      warn(
+        ctx,
+        `Expected at most one ${expected(ctx)} among the children of this ${
+          ctx.fmtCode(node.info.tag)
+        } tag, but got ${matches.length}.`,
+      );
+      ctx.loggingGroup(() => {
+        info(
+          ctx,
+          `Outer ${ctx.fmtCode(node.info.tag)} tag at ${
+            ctx.fmtDebuggingInformation(
+              node.definedAt!,
+            )
+          }`,
+        );
+
+        for (const match of matches) {
+          info(
+            ctx,
+            `Found ${expected(ctx)} at ${
+              ctx.fmtDebuggingInformation(
+                match,
+              )
+            }`,
+          );
+        }
+      });
+      return false;
+    }
+  };
+}
+
+/**
+ * Passes verification iff there are no child elements.
+ */
+export function cmNoChildElements(
+  ctx: Context,
+  node: DOMNode<TagProps>,
+): boolean {
+  if (node.children.length === 0) {
+    return true;
+  } else {
+    warn(
+      ctx,
+      `Expected no children for this ${ctx.fmtCode(node.info.tag)} tag.`,
+    );
+    ctx.loggingGroup(() => {
+      info(
+        ctx,
+        `Outer ${ctx.fmtCode(node.info.tag)} tag at ${
+          ctx.fmtDebuggingInformation(
+            node.definedAt!,
+          )
+        }`,
+      );
     });
+
+    return false;
   }
 }
 
-export class DOMNodeInfo {
-  contentModel: ContentModel;
+/**
+ * Always passes verification.
+ */
+export function cmTrivial(
+  _ctx: Context,
+  _node: DOMNode<TagProps>,
+): boolean {
+  return true;
+}
+
+/**
+ * Always passes verification, because we chose not to check this.
+ */
+export function cmUnverified(
+  _ctx: Context,
+  _node: DOMNode<TagProps>,
+): boolean {
+  return true;
+}
+
+/**
+ * Passes verification iff no strict descendant passes the given `forbiddenCm` check.
+ */
+export function cmNoDescendant(
+  forbiddenElements: CheckElement<TagProps>,
+  elaboration?: string,
+): CheckHtml<TagProps> {
+  return (ctx: Context, ancestor: DOMNode<TagProps>) => {
+    function checkFunction(ctx: Context, node: DOMNode<TagProps>): boolean {
+      if (forbiddenElements(ctx, node) === true) {
+        warn(
+          ctx,
+          `Must have no ${
+            ctx.fmtCode(node.info.tag)
+          } tag as a descendant of any ${ctx.fmtCode(ancestor.info.tag)} tag${
+            elaboration === undefined ? "." : ` like this.`
+          }`,
+        );
+
+        ctx.loggingGroup(() => {
+          if (elaboration) {
+            info(ctx, elaboration);
+          }
+          info(
+            ctx,
+            `Offending ${ctx.fmtCode(node.info.tag)} descendant tag at ${
+              ctx.fmtDebuggingInformation(
+                node.definedAt!,
+              )
+            }`,
+          );
+          info(
+            ctx,
+            `Ancestor ${ctx.fmtCode(ancestor.info.tag)} tag at ${
+              ctx.fmtDebuggingInformation(
+                ancestor.definedAt!,
+              )
+            }`,
+          );
+        });
+
+        return false;
+      } else {
+        for (const child of node.children) {
+          if (!checkFunction(ctx, child)) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+    }
+
+    for (const child of ancestor.children) {
+      if (!checkFunction(ctx, child)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+}
+
+/**
+ * Return `true` if the element is valid, `false` otherwise. If `false`, this function should also log the offending part of the html, using the `warn` (`import { warn } from "../mod.tsx";`) function.
+ *
+ * The checking function is called with the DOMNode after the children have been checked. Parent links, children, etp, definedAt, attra, and evaledAttrs are all set. The evaledAttrs are available on the descendents, but not on the ancestors.
+ */
+type CheckHtml<Props extends TagProps> = (
+  ctx: Context,
+  node: DOMNode<Props>,
+) => boolean;
+
+/**
+ * The static part of information specific to this kind of element.
+ */
+export class DOMNodeInfo<Props extends TagProps> {
+  /**
+   * Return `true` if the element is valid, `false` otherwise. If `false`, this function should also log the offending part of the html, using the `warn` (`import { warn } from "../mod.tsx";`) function.
+   *
+   * The checking function is called with the DOMNode after the children have been checked. Parent links, children, etp, definedAt, attra, and evaledAttrs are all set. The evaledAttrs are available on the descendents, but not on the ancestors.
+   */
+  checkContentModel: CheckHtml<Props>;
   /**
    * E.g. "div".
    */
   tag: string;
-  specLink: string;
 
   constructor(
     tag: string,
-    contentModel: ContentModel,
-    specLink: string,
+    checkContentModel: CheckHtml<Props>,
   ) {
     this.tag = tag;
-    this.contentModel = contentModel;
-    this.specLink = specLink;
+    this.checkContentModel = checkContentModel;
   }
 }
 
-const dummyNodeInfo = new DOMNodeInfo("dummy", new CmNoTags(), "");
+const dummyNodeInfo = new DOMNodeInfo(
+  "dummy",
+  (_ctx: Context, _node: DOMNode<TagProps>) => true,
+);
 
-export type EvaledProps<Props> = {
+export type EvaledProps<Props extends TagProps> = {
   [Attr in keyof Props]?: boolean | number | string;
 };
 
 export type DOMNode<Props extends TagProps> = {
-  info: DOMNodeInfo;
+  info: DOMNodeInfo<Props>;
   parent?: DOMNode<TagProps>;
   children: DOMNode<TagProps>[];
   etp?: EvaluationTreePosition;
@@ -847,7 +889,7 @@ const [TreeScope, getCurrentDOMNode] = Context.createScopedState<
   },
 );
 
-export type AttrRendering<Props> = {
+export type AttrRendering<Props extends TagProps> = {
   [Attr in keyof Props]: (
     ctx: Context,
     attr: Required<Props>[Attr],
@@ -861,7 +903,7 @@ export type AttrRendering<Props> = {
 export function BuildVerificationDOM<Attrs extends TagProps>(
   { children, dom, isVoid, attrs, attrRendering }: {
     children?: Children;
-    dom: DOMNodeInfo;
+    dom: DOMNodeInfo<Attrs>;
     attrs: Attrs;
     attrRendering: AttrRendering<Attrs>;
     isVoid?: boolean;
@@ -871,7 +913,7 @@ export function BuildVerificationDOM<Attrs extends TagProps>(
     <TreeScope>
       <effect
         fun={(ctx) => {
-          const node = getCurrentDOMNode(ctx);
+          const node = getCurrentDOMNode(ctx) as unknown as DOMNode<Attrs>;
           node.info = dom;
           node.etp = ctx.getEvaluationTreePosition();
           node.definedAt = ctx.getCurrentDebuggingInformation();
@@ -883,7 +925,9 @@ export function BuildVerificationDOM<Attrs extends TagProps>(
               <map
                 fun={(ctx, evaled) => {
                   // Fully evaluated all children, now it is time to verify things.
-                  const node = getCurrentDOMNode(ctx);
+                  const node = getCurrentDOMNode(ctx) as unknown as DOMNode<
+                    Attrs
+                  >;
 
                   // First, sort all children that registered themselves by their ordering in the macromania source code.
                   node.children.sort((
@@ -895,40 +939,24 @@ export function BuildVerificationDOM<Attrs extends TagProps>(
                   );
 
                   // Now, check our content model.
-                  if (!dom.contentModel.checkChildren(ctx, node.children)) {
+                  ctx.loggingGroup(() => {
                     withOtherKeys(ctx, [
                       "verify",
                       dom.tag as (keyof LoggingConfig),
                       (`${dom.tag}ContentModel`) as (keyof LoggingConfig),
                     ], () => {
-                      warn(
-                        ctx,
-                        `Failed content model verification for a ${
-                          ctx.fmtCode(
-                            dom.tag,
-                          )
-                        } tag, expected its content to be:`,
-                      );
-                      ctx.loggingGroup(() => {
-                        dom.contentModel.expected(ctx, node.children);
-                        info(
-                          ctx,
-                          `at ${
-                            ctx.fmtDebuggingInformation(
-                              ctx.getCurrentDebuggingInformation(),
-                            )
-                          }`,
-                        );
-                      });
-                      logEmptyLine(ctx, "warn");
+                      if (!dom.checkContentModel(ctx, node)) {
+                        logEmptyLine(ctx, "warn");
+                      }
                     });
-                  }
-
+                  });
                   // We are done verifying ourselves.
 
                   // Finally, register ourselves as children of our parent, so that they can resume *their* verification.
                   if (node.parent) {
-                    node.parent.children.push(node);
+                    node.parent.children.push(
+                      node as unknown as DOMNode<TagProps>,
+                    );
                   }
 
                   // Return the created html string.

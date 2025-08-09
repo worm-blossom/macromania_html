@@ -1,10 +1,8 @@
-import { Children, Expression } from "macromania";
+import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_FLOW_CONTENT,
-  CmCategory,
-  CmZeroOrMore,
+  cmAllFlow,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -27,6 +25,5 @@ export function Figcaption(
 
 const dom = new DOMNodeInfo(
   "figcaption",
-  new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
-  "https://html.spec.whatwg.org/multipage/grouping-content.html#the-figcaption-element",
+  cmAllFlow,
 );

@@ -2,12 +2,10 @@ import type { Children, Expression } from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CAT_FLOW_CONTENT,
   CAT_NOT_IN_ADDRESS,
-  CmAnd,
-  CmCategory,
-  CmNoDescendantOfCategory,
-  CmZeroOrMore,
+  cmAllFlow,
+  cmAnd,
+  cmNoDescendant,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -30,9 +28,8 @@ export function Address(
 
 const dom = new DOMNodeInfo(
   "address",
-  new CmAnd([
-    new CmZeroOrMore(new CmCategory(CAT_FLOW_CONTENT)),
-    new CmNoDescendantOfCategory(CAT_NOT_IN_ADDRESS),
+  cmAnd([
+    cmAllFlow,
+    cmNoDescendant(CAT_NOT_IN_ADDRESS),
   ]),
-  "https://html.spec.whatwg.org/multipage/sections.html#the-address-element",
 );

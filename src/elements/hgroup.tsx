@@ -1,12 +1,17 @@
-import type { Children, Context, Expression } from "macromania";
+import type {
+  Children,
+  Context, // @ts-types="../../../macromania/mod.ts"
+  DebuggingInformation,
+  Expression,
+} from "macromania";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  type ContentModel,
   type DOMNode,
   DOMNodeInfo,
+  logContentModelViolation,
 } from "../contentModel.tsx";
-import { info } from "../mod.tsx";
+import { info, warn } from "../mod.tsx";
 
 /**
  * The [hgroup element](https://html.spec.whatwg.org/multipage/sections.html#the-hgroup-element) represents a heading and related content. The element may be used to group an [h1–h6 element](https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements) with one or more [p elements](https://html.spec.whatwg.org/multipage/grouping-content.html#the-p-element) containing content representing a subheading, alternative title, or tagline.
@@ -25,49 +30,83 @@ export function Hgroup(
   );
 }
 
-const hgroupContentModel: ContentModel = {
-  /**
-   * Returns true iff the children are valid. Does not log anything.
-   */
-  checkChildren: (_ctx: Context, children: DOMNode<TagProps>[]) => {
-    let foundHeading = false;
+const hgroupContentModel = function hgroupContentModel(
+  ctx: Context,
+  node: DOMNode<TagProps>,
+): boolean {
+  let foundHeading: DebuggingInformation | null = null;
 
-    for (const child of children) {
-      const tag = child.info.tag;
+  for (const child of node.children) {
+    const tag = child.info.tag;
 
-      if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(tag)) {
-        if (foundHeading) {
-          return false;
-        } else {
-          foundHeading = true;
-        }
-      } else if (!["p", "script", "template"].includes(tag)) {
+    if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(tag)) {
+      if (foundHeading === null) {
+        foundHeading = child.definedAt!;
+      } else {
+        warn(
+          ctx,
+          `An ${
+            ctx.fmtCode("hgroup")
+          } tag can must have exactly one heading child (${
+            ctx.fmtCode("h1")
+          }, ${ctx.fmtCode("h2")}, etc), but this one has more.`,
+        );
+        ctx.loggingGroup(() => {
+          info(
+            ctx,
+            `First heading child at ${
+              ctx.fmtDebuggingInformation(foundHeading!)
+            }`,
+          );
+          info(
+            ctx,
+            `Second heading child at ${
+              ctx.fmtDebuggingInformation(child.definedAt!)
+            }`,
+          );
+          info(
+            ctx,
+            `Outer ${ctx.fmtCode("hgroup")} tag at ${
+              ctx.fmtDebuggingInformation(
+                node.definedAt!,
+              )
+            }`,
+          );
+        });
         return false;
       }
+    } else if (!["p", "script", "template"].includes(tag)) {
+      logContentModelViolation(ctx, node, child);
+      return false;
     }
+  }
 
-    return foundHeading;
-  },
-
-  /**
-   * Log with the `info` function a human-friendly description of what was expected (and optionally, where things went wrong).
-   */
-  expected: (ctx: Context, _children: DOMNode<TagProps>[]) => {
-    info(
+  if (foundHeading === null) {
+    warn(
       ctx,
-      `an ${ctx.fmtCode("h1")}, ${ctx.fmtCode("h2")}, ${ctx.fmtCode("h3")}, ${
-        ctx.fmtCode("h4")
-      }, ${ctx.fmtCode("h5")}, or ${
-        ctx.fmtCode("h6")
-      } tag, preceded and followed by any number of ${ctx.fmtCode("p")}, ${
-        ctx.fmtCode("script")
-      }, or ${ctx.fmtCode("template")} tags`,
+      `An ${
+        ctx.fmtCode("hgroup")
+      } tag can must have exactly one heading child (${ctx.fmtCode("h1")}, ${
+        ctx.fmtCode("h2")
+      }, etc), but this one had none.`,
     );
-  },
+    ctx.loggingGroup(() => {
+      info(
+        ctx,
+        `The ${ctx.fmtCode("hgroup")} tag is at ${
+          ctx.fmtDebuggingInformation(
+            node.definedAt!,
+          )
+        }`,
+      );
+    });
+    return false;
+  } else {
+    return true;
+  }
 };
 
 const dom = new DOMNodeInfo(
   "hgroup",
   hgroupContentModel,
-  "https://html.spec.whatwg.org/multipage/sections.html#the-hgroup-element",
 );

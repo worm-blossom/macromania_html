@@ -3,7 +3,7 @@ import type { NavigableTargetNameOrKeyword } from "../aOrArea.tsx";
 import { renderGlobalAttributes, type TagProps } from "../global.tsx";
 import {
   BuildVerificationDOM,
-  CmNothing,
+  cmTrivial,
   DOMNodeInfo,
 } from "../contentModel.tsx";
 
@@ -49,6 +49,5 @@ export function Base(
 
 const dom = new DOMNodeInfo(
   "base",
-  new CmNothing(),
-  "https://html.spec.whatwg.org/multipage/semantics.html#the-base-element",
+  cmTrivial,
 );
