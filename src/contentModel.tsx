@@ -52,7 +52,7 @@ export function logContentModelViolation(
   ctx: Context,
   ancestor: DOMNode<TagProps>,
   offending: DOMNode<TagProps>,
-  elaboration?: string,
+  elaboration?: string | ((ctx: Context) => string),
 ) {
   warn(
     ctx,
@@ -63,7 +63,10 @@ export function logContentModelViolation(
 
   ctx.loggingGroup(() => {
     if (elaboration) {
-      info(ctx, elaboration);
+      info(
+        ctx,
+        typeof elaboration === "string" ? elaboration : elaboration(ctx),
+      );
     }
     info(
       ctx,
@@ -817,7 +820,7 @@ export function cmTransparent(
  */
 export function cmNoDescendant(
   forbiddenElements: CheckElement<TagProps>,
-  elaboration?: string,
+  elaboration?: string | ((ctx: Context) => string),
 ): CheckHtml<TagProps> {
   return (ctx: Context, ancestor: DOMNode<TagProps>) => {
     function checkFunction(ctx: Context, node: DOMNode<TagProps>): boolean {
@@ -833,7 +836,10 @@ export function cmNoDescendant(
 
         ctx.loggingGroup(() => {
           if (elaboration) {
-            info(ctx, elaboration);
+            info(
+              ctx,
+              typeof elaboration === "string" ? elaboration : elaboration(ctx),
+            );
           }
           info(
             ctx,

@@ -29,6 +29,32 @@ export type AProps = AOrAreaLinkProps & {
   type_?: Expression;
 };
 
+const noDescendantA = cmNoDescendant(
+  (_ctx: Context, node: DOMNode<AProps>) => {
+    return node.info.tag === "a";
+  },
+  (ctx: Context) =>
+    `An ${ctx.fmtCode("a")} tag must not have another ${
+      ctx.fmtCode("a")
+    } tag as a descendant.`,
+);
+
+const noDescendantTabindex = cmNoDescendant(
+  (_ctx: Context, node: DOMNode<AProps>) => {
+    return node.evaledAttrs!["tabindex"] !== undefined;
+  },
+  (ctx: Context) =>
+    `An ${ctx.fmtCode("a")} tag must not have descendants whose ${
+      ctx.fmtCode("tabindex")
+    } attribute is set.`,
+);
+
+const noDescendantInteractive = cmNoDescendant(
+  CAT_INTERACTIVE_CONTENT,
+  (ctx: Context) =>
+    `An ${ctx.fmtCode("a")} tag must not interactive descendants.`,
+);
+
 /**
  * The [a element](https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element).
  */
@@ -41,34 +67,11 @@ export function A(
         "a",
         (ctx: Context, node: DOMNode<AProps>) => {
           // Content model: Transparent, but there must be no interactive content descendant, a element descendant, or descendant with the tabindex attribute specified.
-          if (
-            cmNoDescendant(
-              (_ctx: Context, node: DOMNode<AProps>) => {
-                return node.info.tag === "a";
-              },
-              `An ${ctx.fmtCode("a")} tag must not have another ${
-                ctx.fmtCode("a")
-              } tag as a descendant.`,
-            )
-          ) {
+          if (!noDescendantA(ctx, node)) {
             return false;
-          } else if (
-            cmNoDescendant(
-              (_ctx: Context, node: DOMNode<AProps>) => {
-                return node.evaledAttrs!["tabindex"] !== undefined;
-              },
-              `An ${ctx.fmtCode("a")} tag must not have descendants whose ${
-                ctx.fmtCode("tabindex")
-              } attribute is set.`,
-            )
-          ) {
+          } else if (!noDescendantTabindex(ctx, node)) {
             return false;
-          } else if (
-            cmNoDescendant(
-              CAT_INTERACTIVE_CONTENT,
-              `An ${ctx.fmtCode("a")} tag must not interactive descendants.`,
-            )
-          ) {
+          } else if (!noDescendantInteractive(ctx, node)) {
             return false;
           } else {
             return cmTransparent(ctx, node);
