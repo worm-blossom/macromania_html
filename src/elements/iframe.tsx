@@ -6,6 +6,7 @@ import {
 } from "../global.tsx";
 import {
   BuildVerificationDOM,
+  cmNoChildElements,
   cmTrivial,
   DOMNodeInfo,
 } from "../contentModel.tsx";
@@ -94,21 +95,20 @@ export type IframeProps = {
  * The [iframe element](https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element) represents its [content navigable](https://html.spec.whatwg.org/multipage/document-sequences.html#content-navigable).
  */
 export function Iframe(
-  props: IframeProps & { children?: Children },
+  props: IframeProps,
 ): Expression {
   return (
     <BuildVerificationDOM
       dom={dom}
       attrs={props}
       attrRendering={renderIframeAttributes}
-      isVoid
     />
   );
 }
 
 const dom = new DOMNodeInfo(
   "iframe",
-  cmTrivial,
+  cmNoChildElements,
 );
 
 const renderIframeAttributes = {

@@ -1586,30 +1586,30 @@ Deno.test("i", async () => {
 });
 
 Deno.test("iframe", async () => {
-  await testGlobalVoid(Iframe, "iframe")();
+  await testGlobalNonVoid(Iframe, "iframe", true)();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe src="bla"></Iframe>);
-    assertEquals(got, `<iframe src="bla" />`);
+    assertEquals(got, `<iframe src="bla"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe srcdoc="bla"></Iframe>);
-    assertEquals(got, `<iframe srcdoc="bla" />`);
+    assertEquals(got, `<iframe srcdoc="bla"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe name="bla"></Iframe>);
-    assertEquals(got, `<iframe name="bla" />`);
+    assertEquals(got, `<iframe name="bla"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe sandbox="allow-downloads"></Iframe>);
-    assertEquals(got, `<iframe sandbox="allow-downloads" />`);
+    assertEquals(got, `<iframe sandbox="allow-downloads"></iframe>`);
   })();
 
   await (async () => {
@@ -1619,44 +1619,44 @@ Deno.test("iframe", async () => {
     );
     assertEquals(
       got,
-      `<iframe sandbox="allow-downloads allow-forms" />`,
+      `<iframe sandbox="allow-downloads allow-forms"></iframe>`,
     );
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe allow="bla"></Iframe>);
-    assertEquals(got, `<iframe allow="bla" />`);
+    assertEquals(got, `<iframe allow="bla"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe allowfullscreen></Iframe>);
-    assertEquals(got, `<iframe allowfullscreen />`);
+    assertEquals(got, `<iframe allowfullscreen></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe width={17}></Iframe>);
-    assertEquals(got, `<iframe width="17" />`);
+    assertEquals(got, `<iframe width="17"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe height={42}></Iframe>);
-    assertEquals(got, `<iframe height="42" />`);
+    assertEquals(got, `<iframe height="42"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe referrerpolicy="origin"></Iframe>);
-    assertEquals(got, `<iframe referrerpolicy="origin" />`);
+    assertEquals(got, `<iframe referrerpolicy="origin"></iframe>`);
   })();
 
   await (async () => {
     const ctx = new Context();
     const got = await ctx.evaluate(<Iframe loading="lazy"></Iframe>);
-    assertEquals(got, `<iframe loading="lazy" />`);
+    assertEquals(got, `<iframe loading="lazy"></iframe>`);
   })();
 });
 
@@ -3111,6 +3111,7 @@ Deno.test("wbr", async () => {
 function testGlobalNonVoid(
   Macro: (props: TagProps & { children?: Children }) => Expression,
   name: string,
+  disallowsContent?: boolean,
 ) {
   return async () => {
     await (async () => {
@@ -3119,11 +3120,13 @@ function testGlobalNonVoid(
       assertEquals(got, `<${name}></${name}>`);
     })();
 
-    await (async () => {
-      const ctx = new Context();
-      const got = await ctx.evaluate(<Macro>uzuzu</Macro>);
-      assertEquals(got, `<${name}>uzuzu</${name}>`);
-    })();
+    if (!disallowsContent) {
+      await (async () => {
+        const ctx = new Context();
+        const got = await ctx.evaluate(<Macro>uzuzu</Macro>);
+        assertEquals(got, `<${name}>uzuzu</${name}>`);
+      })();
+    }
   };
 }
 
