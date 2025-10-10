@@ -8,17 +8,19 @@ import {
 } from "macromania";
 
 import {
-  type AProps,
-  type DynamicAttributes,
-  EscapeHtml,
   info,
   logEmptyLine,
   type LoggingConfig,
-  type TagProps,
+  SetCurrentKeys,
   warn,
   withOtherKeys,
+} from "./loggingExports.tsx";
+import {
+  type AProps,
+  type DynamicAttributes,
+  EscapeHtml,
+  type TagProps,
 } from "./mod.tsx";
-import { SetCurrentKeys } from "./mod.tsx";
 import { isLinkAllowedInBody } from "./elements/link.tsx";
 import type { AudioProps } from "./elements/audio.tsx";
 import type { VideoProps } from "./elements/video.tsx";
@@ -68,7 +70,7 @@ export function logContentModelViolation(
         typeof elaboration === "string" ? elaboration : elaboration(ctx),
       );
     }
-    info(
+    warn(
       ctx,
       `Offending ${ctx.fmtCode(offending.info.tag)} tag at ${
         ctx.fmtDebuggingInformation(
@@ -76,7 +78,7 @@ export function logContentModelViolation(
         )
       }`,
     );
-    info(
+    warn(
       ctx,
       `Outer ${ctx.fmtCode(ancestor.info.tag)} tag at ${
         ctx.fmtDebuggingInformation(
@@ -558,7 +560,7 @@ export function cmSequence(
       );
 
       ctx.loggingGroup(() => {
-        info(
+        warn(
           ctx,
           `Tag with wrong number of children at ${
             ctx.fmtDebuggingInformation(
@@ -655,7 +657,7 @@ export function cmExactlyOneChild(
         } tag, but got none.`,
       );
       ctx.loggingGroup(() => {
-        info(
+        warn(
           ctx,
           `Outer ${ctx.fmtCode(node.info.tag)} tag at ${
             ctx.fmtDebuggingInformation(
@@ -675,7 +677,7 @@ export function cmExactlyOneChild(
         } tag, but got ${matches.length}.`,
       );
       ctx.loggingGroup(() => {
-        info(
+        warn(
           ctx,
           `Outer ${ctx.fmtCode(node.info.tag)} tag at ${
             ctx.fmtDebuggingInformation(
@@ -685,7 +687,7 @@ export function cmExactlyOneChild(
         );
 
         for (const match of matches) {
-          info(
+          warn(
             ctx,
             `Found ${expected(ctx)} at ${
               ctx.fmtDebuggingInformation(
@@ -726,7 +728,7 @@ export function cmAtMostOneChild(
         } tag, but got ${matches.length}.`,
       );
       ctx.loggingGroup(() => {
-        info(
+        warn(
           ctx,
           `Outer ${ctx.fmtCode(node.info.tag)} tag at ${
             ctx.fmtDebuggingInformation(
@@ -736,7 +738,7 @@ export function cmAtMostOneChild(
         );
 
         for (const match of matches) {
-          info(
+          warn(
             ctx,
             `Found ${expected(ctx)} at ${
               ctx.fmtDebuggingInformation(
@@ -766,7 +768,7 @@ export function cmNoChildElements(
       `Expected no children for this ${ctx.fmtCode(node.info.tag)} tag.`,
     );
     ctx.loggingGroup(() => {
-      info(
+      warn(
         ctx,
         `Outer ${ctx.fmtCode(node.info.tag)} tag at ${
           ctx.fmtDebuggingInformation(
@@ -841,7 +843,7 @@ export function cmNoDescendant(
               typeof elaboration === "string" ? elaboration : elaboration(ctx),
             );
           }
-          info(
+          warn(
             ctx,
             `Offending ${ctx.fmtCode(node.info.tag)} descendant tag at ${
               ctx.fmtDebuggingInformation(
@@ -849,7 +851,7 @@ export function cmNoDescendant(
               )
             }`,
           );
-          info(
+          warn(
             ctx,
             `Ancestor ${ctx.fmtCode(ancestor.info.tag)} tag at ${
               ctx.fmtDebuggingInformation(
@@ -979,7 +981,7 @@ export function BuildVerificationDOM<Attrs extends TagProps>(
           node.attrs = attrs;
 
           return (
-            <SetCurrentKeys keys={["verify", dom.tag as (keyof LoggingConfig)]}>
+            <SetCurrentKeys keys={["verify"]}>
               <map
                 fun={(ctx, evaled) => {
                   // Fully evaluated all children, now it is time to verify things.
@@ -998,15 +1000,9 @@ export function BuildVerificationDOM<Attrs extends TagProps>(
 
                   // Now, check our content model.
                   ctx.loggingGroup(() => {
-                    withOtherKeys(ctx, [
-                      "verify",
-                      dom.tag as (keyof LoggingConfig),
-                      (`${dom.tag}ContentModel`) as (keyof LoggingConfig),
-                    ], () => {
-                      if (!dom.checkContentModel(ctx, node)) {
-                        logEmptyLine(ctx, "warn");
-                      }
-                    });
+                    if (!dom.checkContentModel(ctx, node)) {
+                      logEmptyLine(ctx, "warn");
+                    }
                   });
                   // We are done verifying ourselves.
 
@@ -1025,30 +1021,42 @@ export function BuildVerificationDOM<Attrs extends TagProps>(
                 {isVoid
                   ? (
                     <>
-                      {"<"}
-                      {dom.tag}
-                      <RenderAttrs
-                        attrs={attrs}
-                        attrRendering={attrRendering}
-                        node={node}
-                      />
-                      {" />"}
+                      {attrs.omitOuterHtml ? "" : (
+                        <>
+                          {"<"}
+                          {dom.tag}
+                          <RenderAttrs
+                            attrs={attrs}
+                            attrRendering={attrRendering}
+                            node={node}
+                          />
+                          {" />"}
+                        </>
+                      )}
                     </>
                   )
                   : (
                     <>
-                      {"<"}
-                      {dom.tag}
-                      <RenderAttrs
-                        attrs={attrs}
-                        attrRendering={attrRendering}
-                        node={node}
-                      />
-                      {">"}
+                      {attrs.omitOuterHtml ? "" : (
+                        <>
+                          {"<"}
+                          {dom.tag}
+                          <RenderAttrs
+                            attrs={attrs}
+                            attrRendering={attrRendering}
+                            node={node}
+                          />
+                          {">"}
+                        </>
+                      )}
                       {children}
-                      {"</"}
-                      {dom.tag}
-                      {">"}
+                      {attrs.omitOuterHtml ? "" : (
+                        <>
+                          {"</"}
+                          {dom.tag}
+                          {">"}
+                        </>
+                      )}
                     </>
                   )}
               </map>
@@ -1169,7 +1177,7 @@ function RenderAttrs<Attrs extends TagProps>(
             }
           }
         }
-        return <fragment x={exps} />;
+        return <xs x={exps} />;
       }}
     />
   );

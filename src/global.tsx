@@ -2,18 +2,13 @@
  * Global attributes.
  */
 
-import { Context, Expression } from "macromania";
-import { RenderDynamicAttributes } from "./renderUtils.tsx";
-import { EscapeHtml, RenderNumber } from "./renderUtils.tsx";
+import type { Context, Expression } from "macromania";
+import { EscapeHtml } from "./renderUtils.tsx";
 import {
   type DynamicAttributes,
-  RenderBoolean,
-  RenderBooleanOrEnum,
-  RenderEnum,
-  RenderExpression,
   RenderSpaceSeparatedList,
 } from "./renderUtils.tsx";
-import { AttrRendering } from "./contentModel.tsx";
+import type { AttrRendering } from "./contentModel.tsx";
 
 /**
  * The global attributes that are common to and may be specified on all HTML elements.
@@ -162,7 +157,7 @@ export type TagProps = {
    */
   tabindex?: number;
   /**
-   * The [title attribute]() represents advisory information for the element, such as would be appropriate for a tooltip. On a link, this could be the title or a description of the target resource; on an image, it could be the image credit or a description of the image; on a paragraph, it could be a footnote or commentary on the text; on a citation, it could be further information about the source; on interactive content, it could be a label for, or instructions for, use of the element; and so forth.
+   * The [title attribute](https://html.spec.whatwg.org/multipage/dom.html#the-title-attribute) represents advisory information for the element, such as would be appropriate for a tooltip. On a link, this could be the title or a description of the target resource; on an image, it could be the image credit or a description of the image; on a paragraph, it could be a footnote or commentary on the text; on a citation, it could be further information about the source; on interactive content, it could be a label for, or instructions for, use of the element; and so forth.
    */
   title?: Expression;
   /**
@@ -171,8 +166,30 @@ export type TagProps = {
   translate?: "yes" | "no";
   /**
    * User-supplied, dynamic attributes. These allow to render arbitrary attributes not covered by the statically typed API.
+   *
+   * ```ts
+const ctx = new Context();
+const got = await ctx.evaluate(
+    <H name="foo" isVoid attrs={{ bar: "zzz" }} />,
+);
+assertEquals(got, `<foo bar="zzz" />`);
+```
    */
   dynamicAttributes?: DynamicAttributes;
+  /**
+   * Do not render the "tags", only the content (i.e., the children). This can be used to indicate the presence of elements for the purposes of the HTML validaiton performed by the element macros without actually emitting the tags to the output.
+   *
+   * ```ts
+const ctx = new Context();
+const got = await ctx.evaluate(
+<Div omitOuterHtml>
+    <Span>foo</Span>
+</Div>,
+);
+assertEquals(got, `<span>foo</span>`);
+```
+   */
+  omitOuterHtml?: boolean;
 };
 
 export const renderGlobalAttributes: AttrRendering<TagProps> = {
@@ -242,5 +259,5 @@ function RenderExportparts(
     first = false;
   }
 
-  return <fragment x={exps} />;
+  return <xs x={exps} />;
 }

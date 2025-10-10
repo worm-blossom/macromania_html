@@ -10,7 +10,7 @@ import {
   DOMNodeInfo,
   logContentModelViolation,
 } from "../contentModel.tsx";
-import { info, warn } from "../mod.tsx";
+import { info, warn } from "../loggingExports.tsx";
 
 /**
  * The [div element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-div-element) has no special meaning at all. It represents its children.
@@ -75,7 +75,7 @@ function divContentModel(
         } must be a ${ctx.fmtCode("dd")} tag.`,
       );
       ctx.loggingGroup(() => {
-        info(
+        warn(
           ctx,
           `Outer ${ctx.fmtCode("dl")} tag at ${
             ctx.fmtDebuggingInformation(

@@ -1,11 +1,18 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@macromania/macromania@0.1": "0.1.0",
     "jsr:@std/assert@0.221": "0.221.0",
     "jsr:@std/fmt@0.221": "0.221.0",
     "jsr:@std/fmt@^1.0.8": "1.0.8"
   },
   "jsr": {
+    "@macromania/macromania@0.1.0": {
+      "integrity": "5f7f673ca1789e257cfa256fafc274781c074e609a86b0364aebdaf7ee8bce1f",
+      "dependencies": [
+        "jsr:@std/fmt@^1.0.8"
+      ]
+    },
     "@std/assert@0.221.0": {
       "integrity": "a5f1aa6e7909dbea271754fd4ab3f4e687aeff4873b4cef9a320af813adb489a",
       "dependencies": [
@@ -21,8 +28,8 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@0.221",
-      "jsr:@wormblossom/macromania@*"
+      "jsr:@macromania/macromania@0.1",
+      "jsr:@std/assert@0.221"
     ]
   }
 }

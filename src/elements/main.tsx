@@ -7,7 +7,7 @@ import {
   type DOMNode,
   DOMNodeInfo,
 } from "../contentModel.tsx";
-import { info, warn } from "../mod.tsx";
+import { info, warn } from "../loggingExports.tsx";
 
 /**
  * The [main element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-main-element) represents the dominant contents of the document.
@@ -52,7 +52,7 @@ function cmHierarchicallyCorrectMain(
       );
 
       ctx.loggingGroup(() => {
-        info(
+        warn(
           ctx,
           `Offending ${ctx.fmtCode("main")} tag at ${
             ctx.fmtDebuggingInformation(
@@ -60,7 +60,7 @@ function cmHierarchicallyCorrectMain(
             )
           }`,
         );
-        info(
+        warn(
           ctx,
           `Offending ancestor ${ctx.fmtCode(n!.info.tag)} tag at ${
             ctx.fmtDebuggingInformation(

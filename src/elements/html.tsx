@@ -12,7 +12,7 @@ import {
   DOMNode,
   DOMNodeInfo,
 } from "../contentModel.tsx";
-import { info, warn } from "../mod.tsx";
+import { info, warn } from "../loggingExports.tsx";
 
 /**
  * The [html element](https://html.spec.whatwg.org/multipage/semantics.html#the-html-element) represents the root of an HTML document.
@@ -45,7 +45,7 @@ const dom = new DOMNodeInfo(
       );
 
       ctx.loggingGroup(() => {
-        info(
+        warn(
           ctx,
           `Tag with wrong number of children at ${
             ctx.fmtDebuggingInformation(
@@ -66,7 +66,7 @@ const dom = new DOMNodeInfo(
         );
 
         ctx.loggingGroup(() => {
-          info(
+          warn(
             ctx,
             `Offending ${ctx.fmtCode(node.children[0].info.tag)} tag at ${
               ctx.fmtDebuggingInformation(
@@ -75,7 +75,7 @@ const dom = new DOMNodeInfo(
             }`,
           );
 
-          info(
+          warn(
             ctx,
             `Outer ${ctx.fmtCode("html")} tag at ${
               ctx.fmtDebuggingInformation(
@@ -95,7 +95,7 @@ const dom = new DOMNodeInfo(
         );
 
         ctx.loggingGroup(() => {
-          info(
+          warn(
             ctx,
             `Offending ${ctx.fmtCode(node.children[1].info.tag)} tag at ${
               ctx.fmtDebuggingInformation(
@@ -104,7 +104,7 @@ const dom = new DOMNodeInfo(
             }`,
           );
 
-          info(
+          warn(
             ctx,
             `Outer ${ctx.fmtCode("html")} tag at ${
               ctx.fmtDebuggingInformation(

@@ -118,6 +118,7 @@ import { type Children, Context, type Expression } from "macromania";
 import { assert, assertEquals } from "@std/assert";
 import { Base } from "../src/mod.tsx";
 import { EscapeHtml } from "../src/renderUtils.tsx";
+import { ConfigHtmlLogging } from "../mod.tsx";
 
 Deno.test("basic dynamic tags", async () => {
   await (async () => {
@@ -219,6 +220,14 @@ Deno.test("basic non-void tag", async () => {
   const ctx3 = new Context();
   const got3 = await ctx3.evaluate(<Div>foo{"bar"}</Div>);
   assertEquals(got3, `<div>foobar</div>`);
+
+  const ctx4 = new Context();
+  const got4 = await ctx4.evaluate(
+    <Div omitOuterHtml>
+      <Span>foo</Span>
+    </Div>,
+  );
+  assertEquals(got4, `<span>foo</span>`);
 });
 
 Deno.test("boolean attribute rendering", async () => {

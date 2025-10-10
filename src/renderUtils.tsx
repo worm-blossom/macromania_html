@@ -71,7 +71,7 @@ export function RenderSpaceSeparatedList(
     actualExps.push(value);
   }
 
-  return <fragment x={actualExps} />;
+  return <xs x={actualExps} />;
 }
 
 export function RenderBoolean(

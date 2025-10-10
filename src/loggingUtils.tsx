@@ -6,7 +6,6 @@ import {
   type LogLevel,
   logMin,
 } from "macromania";
-import { RenderChildren } from "./renderUtils.tsx";
 
 const joiner = "§ö@";
 
@@ -116,7 +115,7 @@ export function configurableLogging<
       doLog(
         true, /* prevents infinite recursion */
         ctx,
-        "info",
+        "warn",
         `To configure the logging level for the following logged message, use the ${renderedProps} prop${
           keys.length === 1 ? "" : "s"
         } of the ${ctx.fmtCode(configMacroName)} macro.`,
@@ -167,9 +166,6 @@ export function configurableLogging<
       });
       ctx.halt();
     }
-
-    const globalState = getGlobalState(ctx);
-    const joinedKeys = keys.join(joiner);
 
     const config = getConfig(ctx);
 

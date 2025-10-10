@@ -7,7 +7,7 @@ import {
   DOMNodeInfo,
   logContentModelViolation,
 } from "../contentModel.tsx";
-import { info, warn } from "../mod.tsx";
+import { info, warn } from "../loggingExports.tsx";
 
 /**
  * The [figure element](https://html.spec.whatwg.org/multipage/grouping-content.html#the-figure-element) represents some [flow content](https://html.spec.whatwg.org/multipage/dom.html#flow-content-2), optionally with a caption, that is self-contained (like a complete sentence) and is typically referenced as a single unit from the main flow of the document.
@@ -49,7 +49,7 @@ function figureContentModel(
         );
 
         ctx.loggingGroup(() => {
-          info(
+          warn(
             ctx,
             `Offending ${ctx.fmtCode("figcaption")} tag at ${
               ctx.fmtDebuggingInformation(
@@ -57,7 +57,7 @@ function figureContentModel(
               )
             }`,
           );
-          info(
+          warn(
             ctx,
             `Outer ${ctx.fmtCode("figure")} tag at ${
               ctx.fmtDebuggingInformation(
@@ -90,7 +90,7 @@ function figureContentModel(
           );
 
           ctx.loggingGroup(() => {
-            info(
+            warn(
               ctx,
               `Offending ${ctx.fmtCode(child.info.tag)} tag at ${
                 ctx.fmtDebuggingInformation(
@@ -98,7 +98,7 @@ function figureContentModel(
                 )
               }`,
             );
-            info(
+            warn(
               ctx,
               `Outer ${ctx.fmtCode("figure")} tag at ${
                 ctx.fmtDebuggingInformation(

@@ -11,7 +11,7 @@ import {
   DOMNodeInfo,
   logContentModelViolation,
 } from "../contentModel.tsx";
-import { info, warn } from "../mod.tsx";
+import { info, warn } from "../loggingExports.tsx";
 
 /**
  * The [hgroup element](https://html.spec.whatwg.org/multipage/sections.html#the-hgroup-element) represents a heading and related content. The element may be used to group an [h1–h6 element](https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements) with one or more [p elements](https://html.spec.whatwg.org/multipage/grouping-content.html#the-p-element) containing content representing a subheading, alternative title, or tagline.
@@ -52,19 +52,19 @@ const hgroupContentModel = function hgroupContentModel(
           }, ${ctx.fmtCode("h2")}, etc), but this one has more.`,
         );
         ctx.loggingGroup(() => {
-          info(
+          warn(
             ctx,
             `First heading child at ${
               ctx.fmtDebuggingInformation(foundHeading!)
             }`,
           );
-          info(
+          warn(
             ctx,
             `Second heading child at ${
               ctx.fmtDebuggingInformation(child.definedAt!)
             }`,
           );
-          info(
+          warn(
             ctx,
             `Outer ${ctx.fmtCode("hgroup")} tag at ${
               ctx.fmtDebuggingInformation(
@@ -91,7 +91,7 @@ const hgroupContentModel = function hgroupContentModel(
       }, etc), but this one had none.`,
     );
     ctx.loggingGroup(() => {
-      info(
+      warn(
         ctx,
         `The ${ctx.fmtCode("hgroup")} tag is at ${
           ctx.fmtDebuggingInformation(
